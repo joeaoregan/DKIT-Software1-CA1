@@ -1,0 +1,12 @@
+# Joe O'Regan
+# 1/10/2022
+
+*.exe
+*.dsym
+
+.vscode/
+.coverage/
+
+*.dll
+main.code-workspace
+Makefile
