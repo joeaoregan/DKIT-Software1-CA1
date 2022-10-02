@@ -26,6 +26,10 @@ Background::~Background()
 {
 }
 
+void Background::init()
+{
+}
+
 void Background::move()
 {
 }
@@ -41,3 +45,5 @@ void Background::draw()
     DrawTextEx(fontRetro, txtSubheading2, {(float)txtSubHeading2WidthCenter, 300.0F}, fontSizeSubheading, 1, BLACK);
     DrawTextEx(fontRetro, instructionMove, {(float)txtInstructionMove, 700.0F}, fontSizeSubheading, 1, BLACK);
 }
+
+void Background::destroy() {}

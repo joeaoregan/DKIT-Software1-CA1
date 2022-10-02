@@ -11,6 +11,8 @@ GameObject::GameObject()
 
 GameObject::~GameObject() {}
 
+void GameObject::init() {}
 void GameObject::move() {}
 void GameObject::collisions() {}
 void GameObject::draw() {}
+void GameObject::destroy() {}

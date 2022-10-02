@@ -5,13 +5,13 @@
 
 #include "Background.hpp"
 #include "Player.hpp"
-#include <vector>
 
 std::vector<GameObject *> objects;
 
 int main()
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Basic Movement - Joe O'Regan");
+    InitAudioDevice();
 
     SetTargetFPS(60);
 
@@ -19,6 +19,11 @@ int main()
     GameObject *bg = new Background();
     objects.push_back(bg);
     objects.push_back(player);
+
+    for (GameObject *obj : objects)
+    {
+        (*obj).init();
+    }
 
     SetTargetFPS(60);
 
@@ -37,6 +42,13 @@ int main()
 
         EndDrawing();
     }
+
+    for (GameObject *obj : objects)
+    {
+        (*obj).destroy();
+    }
+
+    CloseAudioDevice();
 
     CloseWindow();
 

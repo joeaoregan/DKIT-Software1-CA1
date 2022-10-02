@@ -7,6 +7,7 @@
 
 #include "raylib.h"
 #include "Constants.hpp"
+#include <vector>
 
 class GameObject
 {
@@ -14,9 +15,11 @@ public:
     GameObject();
     ~GameObject();
 
+    virtual void init();
     virtual void move();
     virtual void collisions();
     virtual void draw();
+    virtual void destroy();
 
     Vector2 getPosition()
     {
@@ -78,11 +81,38 @@ public:
         m_height = height;
     }
 
+    Texture2D getTexture()
+    {
+        return m_sprite;
+    }
+
+    void setSprite(const char *textureSRC)
+    {
+        m_sprite = LoadTexture(textureSRC);
+    }
+
+    bool getActive()
+    {
+        return isActive;
+    }
+
+    void toggleActive()
+    {
+        isActive = !isActive;
+    }
+
+    void setActive(bool active)
+    {
+        isActive = active;
+    }
+
 private:
     Vector2 m_position;
     float m_speed;
     int m_height;
     int m_width;
+    Texture2D m_sprite;
+    bool isActive;
 };
 
 #endif

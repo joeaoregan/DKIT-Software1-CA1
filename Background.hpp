@@ -14,9 +14,11 @@ public:
     Background();
     ~Background();
 
+    void init();
     void move();
     void collisions();
     void draw();
+    void destroy();
 
     Font fontRetro = LoadFont("resources/fonts/Retro.ttf");
 

@@ -7,6 +7,8 @@ Game constants
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+const bool DEBUG_MODE = true;
+
 const int SCREEN_WIDTH{1280};
 const int SCREEN_HEIGHT{720};
 
