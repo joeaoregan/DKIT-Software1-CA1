@@ -3,8 +3,10 @@
     01/10/2022
 */
 
-#include "raylib.h"
-#include "GameObject.h"
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
+#include "GameObject.hpp"
 
 class Player : public GameObject
 {
@@ -14,4 +16,7 @@ public:
 
     void move();
     void collisions();
+    void draw();
 };
+
+#endif

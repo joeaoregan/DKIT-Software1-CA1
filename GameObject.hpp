@@ -2,8 +2,11 @@
     Joe O'Regan
     01/10/2022
 */
+#ifndef GAME_OBJECT_HPP
+#define GAME_OBJECT_HPP
 
 #include "raylib.h"
+#include "Constants.hpp"
 
 class GameObject
 {
@@ -13,6 +16,7 @@ public:
 
     virtual void move();
     virtual void collisions();
+    virtual void draw();
 
     Vector2 getPosition()
     {
@@ -80,3 +84,5 @@ private:
     int m_height;
     int m_width;
 };
+
+#endif
