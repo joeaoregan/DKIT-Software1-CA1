@@ -31,6 +31,8 @@ public:
     int txtSubHeading1WidthCenter;
     int txtSubHeading2WidthCenter;
     int txtInstructionMove;
+
+    int bg2X;
 };
 
 #endif

@@ -8,6 +8,10 @@
 GameObject::GameObject()
 {
 }
+GameObject::GameObject(Vector2 coordinates)
+{
+    m_position = coordinates;
+}
 
 GameObject::~GameObject() {}
 

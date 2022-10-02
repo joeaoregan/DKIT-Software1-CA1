@@ -13,6 +13,7 @@ class GameObject
 {
 public:
     GameObject();
+    GameObject(Vector2 coordinates);
     ~GameObject();
 
     virtual void init();
@@ -89,6 +90,11 @@ public:
     void setSprite(const char *textureSRC)
     {
         m_sprite = LoadTexture(textureSRC);
+    }
+
+    void setTexture(Image image)
+    {
+        m_sprite = LoadTextureFromImage(image);
     }
 
     bool getActive()
