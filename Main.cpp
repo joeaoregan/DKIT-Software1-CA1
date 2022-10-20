@@ -15,6 +15,8 @@ int main()
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Basic Movement - Joe O'Regan");
     InitAudioDevice();
+    Image icon = LoadImage("resources/joe.png");
+    SetWindowIcon(icon);
 
     SetRandomSeed(GetTime());
 
