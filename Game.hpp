@@ -43,7 +43,7 @@ public:
     int m_currentGameState; // current game state
 
 private:
-    Game(); // constructor
+    Game() : m_Score(0), m_Level(1), m_fontRetro(LoadFont("resources/fonts/Retro.ttf")) {} // constructor
 
     int m_Score;      // game current score
     int m_Level;      // game current level

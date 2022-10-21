@@ -10,6 +10,7 @@
 #include "Constants.hpp"
 #include "Level.hpp"
 #include "Background.hpp"
+#include "Player.hpp"
 #include "BloodCell.hpp"
 
 const int Level::s_levelID = LEVEL_1; // int more efficient than string, enum more readable
@@ -22,6 +23,9 @@ bool Level::init()
 
     GameObject *bg = new Background(); // scrolling background
     objects.push_back(bg);             // add to object list
+
+    GameObject *player = new Player();
+    objects.push_back(player);
 
     for (int i = 0; i < NUM_BLOOD_CELLS; i++) // set the number of blood cell objects in constants header file
     {

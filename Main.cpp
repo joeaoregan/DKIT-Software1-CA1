@@ -22,8 +22,6 @@ int main()
 
     SetTargetFPS(60); // frame rate - 60 frames per second
 
-    // GameObject *player = new Player();
-    // objects.push_back(player);
     // while(Game::Instance->isRunning())
 
     while (!WindowShouldClose())

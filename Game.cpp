@@ -15,12 +15,6 @@
 Game *Game::s_pGame = 0;
 GameObject *player;
 
-Game::Game()
-{
-    m_fontRetro = LoadFont("resources/fonts/Retro.ttf");
-    m_Level = 1;
-}
-
 bool Game::init()
 {
     m_bRunning = true;

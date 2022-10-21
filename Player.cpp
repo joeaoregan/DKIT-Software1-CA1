@@ -30,48 +30,16 @@ void Player::init()
     for (int i = 0; i < NUM_BULLETS; i++)
     {
         bullets.push_back(new Bullet());
-        if (DEBUG_MODE)
-        {
-            std::cout << "bullet " << i << " added";
-        }
+        // if (DEBUG_MODE)
+        // {
+        //     std::cout << "bullet " << i << " added";
+        // }
     }
 }
 
 void Player::move()
 {
-    // // move
-    // if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
-    //     setX(getX() + getSpeed());
-    // else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
-    //     setX(getX() - getSpeed());
-    // if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
-    //     setY(getY() - getSpeed());
-    // else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-    //     setY(getY() + getSpeed());
-
-    // // attack
-    // if (IsKeyPressed(KEY_SPACE))
-    // {
-    //     if (DEBUG_MODE)
-    //     {
-    //         std::cout << "Player fire" << std::endl;
-    //     }
-
-    //     for (GameObject *b : bullets) // spawn bullets
-    //     {
-    //         if (!(*b).getActive())
-    //         {
-    //             PlaySound(fxFire);
-
-    //             (*b).setX(getX());
-    //             (*b).setY(getY());
-    //             (*b).toggleActive();
-
-    //             std::cout << "bullet active" << std::endl;
-    //             break;
-    //         }
-    //     }
-    // }
+    handleInput();
 
     for (GameObject *b : bullets) // move bullets
     {
@@ -80,6 +48,8 @@ void Player::move()
             (*b).move();
         }
     }
+
+    collisions();
 }
 
 void Player::collisions()
@@ -132,15 +102,52 @@ void Player::destroy()
 
 void Player::handleInput()
 {
-    if (InputHandler::Instance()->isKeyDown(KEY_A) ||
-        InputHandler::Instance()->isKeyDown(KEY_LEFT))
+    if (InputHandler::Instance()->isKeyDown(KEY_RIGHT) ||
+        InputHandler::Instance()->isKeyDown(KEY_D))
     {
         setX(getX() + getSpeed());
+        // std::cout << "Pressed Left" << std::endl;
     }
-    else if (InputHandler::Instance()->isKeyDown(KEY_LEFT) || InputHandler::Instance()->isKeyDown(KEY_A))
+    else if (InputHandler::Instance()->isKeyDown(KEY_LEFT) ||
+             InputHandler::Instance()->isKeyDown(KEY_A))
+    {
         setX(getX() - getSpeed());
-    if (InputHandler::Instance()->isKeyDown(KEY_UP) || InputHandler::Instance()->isKeyDown(KEY_W))
+        // std::cout << "Pressed Right" << std::endl;
+    }
+
+    if (InputHandler::Instance()->isKeyDown(KEY_UP) ||
+        InputHandler::Instance()->isKeyDown(KEY_W))
+    {
         setY(getY() - getSpeed());
-    else if (InputHandler::Instance()->isKeyDown(KEY_DOWN) || InputHandler::Instance()->isKeyDown(KEY_S))
+    }
+    else if (InputHandler::Instance()->isKeyDown(KEY_DOWN) ||
+             InputHandler::Instance()->isKeyDown(KEY_S))
+    {
+
         setY(getY() + getSpeed());
+    }
+
+    // attack
+    if (InputHandler::Instance()->isKeyDown(KEY_SPACE))
+    {
+        // if (DEBUG_MODE)
+        // {
+        //     std::cout << "Player fire" << std::endl;
+        // }
+
+        for (GameObject *b : bullets) // spawn bullets
+        {
+            if (!(*b).getActive())
+            {
+                PlaySound(fxFire);
+
+                (*b).setX(getX());
+                (*b).setY(getY());
+                (*b).toggleActive();
+
+                // std::cout << "bullet active" << std::endl;
+                break;
+            }
+        }
+    }
 }
