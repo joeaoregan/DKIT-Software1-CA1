@@ -1,8 +1,11 @@
 /*
+    Background.hpp
     Joe O'Regan
     02/10/2022
-*/
 
+    Scrolling Background
+    Renders behind other game objects
+*/
 #ifndef BACKGROUND_HPP
 #define BACKGROUND_HPP
 
@@ -11,28 +14,16 @@
 class Background : public GameObject
 {
 public:
-    Background();
-    ~Background();
+    Background();  // constructor
+    ~Background(); // deconstructor
 
-    void init();
-    void move();
-    void collisions();
-    void draw();
-    void destroy();
+    void init();       // initialise the object
+    void move();       // update the object
+    void collisions(); // check collisions with other objects
+    void draw();       // render the object
+    void destroy();    // remove the object from memory
 
-    Font fontRetro = LoadFont("resources/fonts/Retro.ttf");
-
-    const char *txtHeading;
-    const char *txtSubheading1;
-    const char *txtSubheading2;
-    const char *instructionMove;
-
-    int txtHeadingWidthCenter;
-    int txtSubHeading1WidthCenter;
-    int txtSubHeading2WidthCenter;
-    int txtInstructionMove;
-
-    int bg2X;
+    int bg2X; // starting point for 2nd part of scrolling background
 };
 
 #endif

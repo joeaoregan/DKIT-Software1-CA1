@@ -1,6 +1,9 @@
 /*
+    GameObject.hpp
     Joe O'Regan
     01/10/2022
+
+    Base class for game objects, such as player, background, etc
 */
 #ifndef GAME_OBJECT_HPP
 #define GAME_OBJECT_HPP
@@ -16,11 +19,11 @@ public:
     GameObject(Vector2 coordinates);
     ~GameObject();
 
-    virtual void init();
-    virtual void move();
+    virtual void init() = 0;
+    virtual void move() = 0;
     virtual void collisions();
-    virtual void draw();
-    virtual void destroy();
+    virtual void draw() = 0;
+    virtual void destroy() = 0;
 
     Vector2 getPosition()
     {

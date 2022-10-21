@@ -1,6 +1,9 @@
 /*
+    BloodCell.hpp
     Joe O'Regan
     03/10/2022
+
+    BloodCell background object -- to do -- make obstacle
 */
 
 #ifndef BLOOD_CELL_HPP

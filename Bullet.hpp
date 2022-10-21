@@ -1,6 +1,9 @@
 /*
+    Bullet.hpp
     Joe O'Regan
     02/10/2022
+
+    Player weapon
 */
 
 #ifndef BACKGROUND_HPP
@@ -8,17 +11,17 @@
 
 #include "GameObject.hpp"
 
-class Bullet : public GameObject
+class Bullet : public GameObject // child of GameObject base class
 {
 public:
-    Bullet();
-    ~Bullet();
+    Bullet();  // constructor
+    ~Bullet(); // deconstructor
 
-    void init();
-    void move();
-    void collisions();
-    void draw();
-    void destroy();
+    void init();       // initialise bullet object
+    void move();       // update the bullet object
+    void collisions(); // check collisions with other objects
+    void draw();       // render bullet object
+    void destroy();    // clear bullet object from memory
 };
 
 #endif

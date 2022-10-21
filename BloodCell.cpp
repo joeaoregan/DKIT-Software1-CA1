@@ -1,3 +1,11 @@
+/*
+    BloodCell.cpp
+    Joe O'Regan
+    03/10/2022
+
+    BloodCell background object -- to do -- make obstacle
+*/
+
 #include "BloodCell.hpp"
 
 int MOVEMENT = (GetRandomValue(0, 20) * 5) + 350;

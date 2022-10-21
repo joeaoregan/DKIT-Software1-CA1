@@ -1,33 +1,27 @@
 /*
+    Background.cpp
     Joe O'Regan
     02/10/2022
+
+    Scrolling Background
+    Renders behind other game objects
 */
 
 #include "Background.hpp"
 
-const int SCROLL_SPEED = 2;
+const int SCROLL_SPEED = 2; // speed to scroll the background across the screen
 
 Background::Background()
 {
-    Image image = LoadImage("resources/Background720.png");
-    setTexture(image);
-    UnloadImage(image);
+    Image image = LoadImage("resources/Background720.png"); // Image to use as background
+    setTexture(image);                                      // create texture from image
+    UnloadImage(image);                                     // unload the image now the texture is created
 
-    setPosition({0.0f, 0.0f});
-    setHeight(SCREEN_HEIGHT);
-    setWidth(SCREEN_WIDTH);
-    setX(0);
+    setPosition({0.0f, 0.0f}); // starting position is the origin x,y = 0,0
+    setHeight(SCREEN_HEIGHT);  // match height of screen
+    setWidth(SCREEN_WIDTH);    // match width of screen
+    setX(0);                   //
     bg2X = getX() + SCREEN_WIDTH;
-
-    txtHeading = "CA1 Raylib Application";
-    txtSubheading1 = "By Joe O'Regan";
-    txtSubheading2 = "D00262717";
-    instructionMove = "Move with arrows and ASDW keys";
-
-    txtHeadingWidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(fontRetro, txtHeading, fontSizeHeading, 1).x / 2);
-    txtSubHeading1WidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(fontRetro, txtSubheading1, fontSizeSubheading, 1).x / 2);
-    txtSubHeading2WidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(fontRetro, txtSubheading2, fontSizeSubheading, 1).x / 2);
-    txtInstructionMove = (SCREEN_WIDTH / 2) - (MeasureTextEx(fontRetro, instructionMove, fontSizeSubheading, 1).x / 2);
 }
 
 Background::~Background()
@@ -36,6 +30,7 @@ Background::~Background()
 
 void Background::init()
 {
+    // sort constructor stuff, maybe some goes here
 }
 
 void Background::move()
@@ -61,11 +56,6 @@ void Background::draw()
 {
     DrawTexture(getTexture(), getX(), 0, WHITE);
     DrawTexture(getTexture(), bg2X, 0, WHITE);
-
-    DrawTextEx(fontRetro, txtHeading, {(float)txtHeadingWidthCenter, 200.0F}, fontSizeHeading, 1, BLACK);
-    DrawTextEx(fontRetro, txtSubheading1, {(float)txtSubHeading1WidthCenter, 250.0F}, fontSizeSubheading, 1, BLACK);
-    DrawTextEx(fontRetro, txtSubheading2, {(float)txtSubHeading2WidthCenter, 300.0F}, fontSizeSubheading, 1, BLACK);
-    DrawTextEx(fontRetro, instructionMove, {(float)txtInstructionMove, 700.0F}, fontSizeSubheading, 1, BLACK);
 }
 
 void Background::destroy() {}

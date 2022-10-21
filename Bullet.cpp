@@ -1,6 +1,9 @@
 /*
+    Bullet.cpp
     Joe O'Regan
     02/10/2022
+
+    Player weapon
 */
 
 #include "Bullet.hpp"

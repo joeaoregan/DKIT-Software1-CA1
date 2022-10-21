@@ -1,11 +1,15 @@
 /*
+    Player.cpp
     Joe O'Regan
     01/10/2022
+
+    Player spaceship game object
 */
 
 #include "Player.hpp"
 #include "Bullet.hpp"
 #include <iostream>
+#include "InputHandler.hpp"
 
 Player::Player()
 {
@@ -35,39 +39,39 @@ void Player::init()
 
 void Player::move()
 {
-    // move
-    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
-        setX(getX() + getSpeed());
-    else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
-        setX(getX() - getSpeed());
-    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
-        setY(getY() - getSpeed());
-    else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-        setY(getY() + getSpeed());
+    // // move
+    // if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
+    //     setX(getX() + getSpeed());
+    // else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
+    //     setX(getX() - getSpeed());
+    // if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
+    //     setY(getY() - getSpeed());
+    // else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
+    //     setY(getY() + getSpeed());
 
-    // attack
-    if (IsKeyPressed(KEY_SPACE))
-    {
-        if (DEBUG_MODE)
-        {
-            std::cout << "Player fire" << std::endl;
-        }
+    // // attack
+    // if (IsKeyPressed(KEY_SPACE))
+    // {
+    //     if (DEBUG_MODE)
+    //     {
+    //         std::cout << "Player fire" << std::endl;
+    //     }
 
-        for (GameObject *b : bullets) // spawn bullets
-        {
-            if (!(*b).getActive())
-            {
-                PlaySound(fxFire);
+    //     for (GameObject *b : bullets) // spawn bullets
+    //     {
+    //         if (!(*b).getActive())
+    //         {
+    //             PlaySound(fxFire);
 
-                (*b).setX(getX());
-                (*b).setY(getY());
-                (*b).toggleActive();
+    //             (*b).setX(getX());
+    //             (*b).setY(getY());
+    //             (*b).toggleActive();
 
-                std::cout << "bullet active" << std::endl;
-                break;
-            }
-        }
-    }
+    //             std::cout << "bullet active" << std::endl;
+    //             break;
+    //         }
+    //     }
+    // }
 
     for (GameObject *b : bullets) // move bullets
     {
@@ -110,6 +114,7 @@ void Player::collisions()
 
 void Player::draw()
 {
+    GameObject::draw();
     DrawCircleV(getPosition(), getHeight(), MAROON);
     DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
 
@@ -123,4 +128,19 @@ void Player::draw()
 void Player::destroy()
 {
     UnloadSound(fxFire);
+}
+
+void Player::handleInput()
+{
+    if (InputHandler::Instance()->isKeyDown(KEY_A) ||
+        InputHandler::Instance()->isKeyDown(KEY_LEFT))
+    {
+        setX(getX() + getSpeed());
+    }
+    else if (InputHandler::Instance()->isKeyDown(KEY_LEFT) || InputHandler::Instance()->isKeyDown(KEY_A))
+        setX(getX() - getSpeed());
+    if (InputHandler::Instance()->isKeyDown(KEY_UP) || InputHandler::Instance()->isKeyDown(KEY_W))
+        setY(getY() - getSpeed());
+    else if (InputHandler::Instance()->isKeyDown(KEY_DOWN) || InputHandler::Instance()->isKeyDown(KEY_S))
+        setY(getY() + getSpeed());
 }

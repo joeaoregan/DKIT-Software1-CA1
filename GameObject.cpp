@@ -1,6 +1,9 @@
 /*
+    GameObject.cpp
     Joe O'Regan
     01/10/2022
+
+    Base class for game objects, such as player, background, etc
 */
 
 #include "GameObject.hpp"

@@ -1,68 +1,48 @@
 /*
     Joe O'Regan
     01/10/2022
+
+    Main program entry point
 */
 
-#include "Background.hpp"
-#include "Player.hpp"
-#include "BloodCell.hpp"
+#include "Game.hpp"
 
-std::vector<GameObject *> objects;
-
-const int NUM_BLOOD_CELLS = 15;
+// Game *g_game = 0;
 
 int main()
 {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Basic Movement - Joe O'Regan");
-    InitAudioDevice();
-    Image icon = LoadImage("resources/joe.png");
-    SetWindowIcon(icon);
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Score - Joe O'Regan"); // initialise the game window
+    InitAudioDevice();                                              // initialise the audio device
+    Image icon = LoadImage("resources/joe.png");                    // load the window icon image
+    SetWindowIcon(icon);                                            // set the window icon image
 
-    SetRandomSeed(GetTime());
+    Game::Instance()->init(); // initialise game objects (starts in menu state) -- to do -- add splash screen
 
-    SetTargetFPS(60);
+    SetRandomSeed(GetTime()); // seed for random numbers
 
-    GameObject *player = new Player();
-    GameObject *bg = new Background();
-    objects.push_back(bg);
-    objects.push_back(player);
-    for (int i = 0; i < NUM_BLOOD_CELLS; i++)
-    {
-        GameObject *bc1 = new BloodCell();
-        objects.push_back(bc1);
-    }
+    SetTargetFPS(60); // frame rate - 60 frames per second
 
-    for (GameObject *obj : objects)
-    {
-        (*obj).init();
-    }
-
-    SetTargetFPS(60);
+    // GameObject *player = new Player();
+    // objects.push_back(player);
+    // while(Game::Instance->isRunning())
 
     while (!WindowShouldClose())
     {
-        BeginDrawing();
+        BeginDrawing(); // start rendering
 
-        ClearBackground(WHITE);
+        ClearBackground(WHITE); // clear the screen before rendering the next frame
 
-        for (GameObject *obj : objects)
-        {
-            (*obj).move();
-            (*obj).collisions();
-            (*obj).draw();
-        }
+        Game::Instance()->handleEvents(); // handle input events etc.
+        Game::Instance()->update();       // update game objects
+        Game::Instance()->draw();         // render game objects
 
-        EndDrawing();
+        EndDrawing(); // finish rendering
     }
 
-    for (GameObject *obj : objects)
-    {
-        (*obj).destroy();
-    }
+    Game::Instance()->close(); // clear game objects from memory
 
-    CloseAudioDevice();
-
-    CloseWindow();
+    CloseAudioDevice(); // close the audio device
+    CloseWindow();      // close the game window
 
     return 0;
 }
