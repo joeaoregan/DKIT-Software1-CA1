@@ -11,6 +11,7 @@
 #include "Game.hpp"
 
 const int SCROLL_SPEED = 1; // speed to scroll the background across the screen
+int framesCounter = 0;
 
 BackgroundMenu::BackgroundMenu()
 {
@@ -33,6 +34,9 @@ BackgroundMenu::BackgroundMenu()
     txtSubHeading1WidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtSubheading1, fontSizeSubheading, 1).x / 2); // center subheading 1
     txtSubHeading2WidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtSubheading2, fontSizeSubheading, 1).x / 2); // center subheading 2
     txtInstructionMove = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), instructionMove, fontSizeSubheading, 1).x / 2);       // center instructions
+
+    txtPressEnter = "Press Enter To Play!";
+    txtCenterPressEnter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtPressEnter, fontSizeHeading, 1).x / 2); // center heading
 }
 
 BackgroundMenu::~BackgroundMenu() {}
@@ -41,6 +45,8 @@ void BackgroundMenu::init() {}
 
 void BackgroundMenu::move()
 {
+    framesCounter++;
+
     setX(getX() - SCROLL_SPEED); // move first image
     bg2X -= SCROLL_SPEED;        // move 2nd image
 
@@ -65,6 +71,9 @@ void BackgroundMenu::draw()
     DrawTextEx(Game::Instance()->getFont(), txtSubheading1, {(float)txtSubHeading1WidthCenter, 250.0F}, fontSizeSubheading, 1, BLACK); // render sub heading 1
     DrawTextEx(Game::Instance()->getFont(), txtSubheading2, {(float)txtSubHeading2WidthCenter, 300.0F}, fontSizeSubheading, 1, BLACK); // render sub heading 2
     DrawTextEx(Game::Instance()->getFont(), instructionMove, {(float)txtInstructionMove, 700.0F}, fontSizeSubheading, 1, BLACK);       // render instuctions
+
+    if (((framesCounter / 30) % 2))
+        DrawText(txtPressEnter, txtCenterPressEnter, (SCREEN_HEIGHT / 2) - (32 / 2), 32, LIGHTGRAY);
 }
 
 void BackgroundMenu::destroy() {}

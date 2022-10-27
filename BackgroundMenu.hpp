@@ -29,10 +29,13 @@ public:
     const char *txtSubheading2;  // subheading string 2
     const char *instructionMove; // instructions string
 
+    const char *txtPressEnter;
+
     int txtHeadingWidthCenter;     // heading center position, x
     int txtSubHeading1WidthCenter; // sub heading 1 center position, x
     int txtSubHeading2WidthCenter; // sub heading 2 center position, x
     int txtInstructionMove;        // instructions center position, x
+    int txtCenterPressEnter;
 
     int bg2X; // starting position for 2nd background image
 };
