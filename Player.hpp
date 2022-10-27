@@ -28,6 +28,12 @@ public:
     Sound fxFire;                      // sound to play when bullet fires
     std::vector<GameObject *> bullets; // list of bullet objects to update rendering etc.
 
+    int flash = 255;           // Start with green and blue values as 255
+    int direction = 1;         // change colour up and down by making this postive / negative value and multiplying
+    const int flashSpeed = 20; // increment flashing by this amount each frame
+    const int flashTimes = 5;  // number of times to flash player
+    int flashCount = 1;        // number of times player has flashed
+
 private:
     void handleInput(); // handle input for player
 };

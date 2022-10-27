@@ -13,6 +13,7 @@
 const int SCROLL_SPEED = 1; // speed to scroll the background across the screen
 int framesCounter = 0;
 
+// GameObject is not a direct base
 BackgroundMenu::BackgroundMenu()
 {
     Image image = LoadImage("resources/Background720.png"); // image to use
@@ -22,7 +23,6 @@ BackgroundMenu::BackgroundMenu()
     setPosition({0.0f, 0.0f});    // starting position
     setHeight(SCREEN_HEIGHT);     // image fills screen height
     setWidth(SCREEN_WIDTH);       // image fills screen width
-    setX(0);                      // start point of scrolling
     bg2X = getX() + SCREEN_WIDTH; // start point of 2nd image scrolling
 
     txtHeading = "CA1 Raylib Application";              // text heading

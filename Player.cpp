@@ -11,14 +11,11 @@
 #include <iostream>
 #include "InputHandler.hpp"
 
-Player::Player()
+Player::Player() : GameObject("resources/sprites/Player1Ship.png", {50.0f, 320.0f, 50.0f, 50.0f}, true)
 {
     setSpeed(8.0f);
-    setPosition({50.0f, 320.0f});
-    setHeight(50);
-    setWidth(50);
     fxFire = LoadSound("resources/fx/laser1.wav");
-    setSprite("resources/sprites/Player1Ship.png");
+    setCollision(false);
 }
 
 Player::~Player()
@@ -39,6 +36,30 @@ void Player::init()
 
 void Player::move()
 {
+    // Player flashes if collision with obstacle / enemy
+    if (getCollision())
+    {
+        flash += (flashSpeed * direction);
+
+        if (flash > 254 || flash < 1) // change flash direction, white to red, red to white
+        {
+            direction *= -1; // change direction at the top
+            if (flash > 255)
+            {
+                flash = 255; // don't go beyond 255
+                flashCount++;
+            }
+            else if (flash < 0)
+                flash = 0; // don't go below 0
+        }
+
+        if (flashCount >= flashTimes)
+        {
+            setCollision(false);
+            flashCount = 0; // reset flashCount
+        }
+    }
+
     handleInput();
 
     for (GameObject *b : bullets) // move bullets
@@ -54,6 +75,12 @@ void Player::move()
 
 void Player::collisions()
 {
+    // test collision
+    // if (getX() > 200 && !getCollision()) // if the player moves over 200 px, and the player is not already after colliding with an object
+    // {
+    //     setCollision(true); // the player is after colliding
+    // }
+
     if (getX() < getWidth())
     {
         setX(getWidth());
@@ -86,7 +113,10 @@ void Player::draw()
 {
     GameObject::draw();
     DrawCircleV(getPosition(), getHeight(), MAROON);
-    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
+    // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
+    // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);
+    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)flash, (unsigned char)flash, 255});
+    // Color(255, 255, 255);
 
     // bullets
     for (GameObject *b : bullets)

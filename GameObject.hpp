@@ -17,6 +17,7 @@ class GameObject
 public:
     GameObject();
     GameObject(Vector2 coordinates);
+    GameObject(const char *textureSRC, Rectangle rect, bool collidable);
     ~GameObject();
 
     virtual void init() = 0;
@@ -115,6 +116,26 @@ public:
         isActive = active;
     }
 
+    bool getCollision() { return m_collision; }
+    void setCollision(bool collision) { m_collision = collision; }
+
+    Rectangle *getRect()
+    {
+        // Rectangle boundingRect = {m_position.x, m_position.y, (float)m_sprite.width, (float)m_sprite.height};
+        m_boundingBox = {m_position.x, m_position.y, (float)m_sprite.width, (float)m_sprite.height};
+        // return (&){m_position.x, m_position.y, m_sprite.width, m_sprite.height};
+        return &m_boundingBox;
+    }
+    void setCollidable(bool collidable)
+    {
+        m_collidable = collidable;
+    }
+
+    bool isCollidable()
+    {
+        return m_collidable;
+    }
+
 private:
     Vector2 m_position;
     float m_speed;
@@ -122,6 +143,10 @@ private:
     int m_width;
     Texture2D m_sprite;
     bool isActive;
+    bool m_collision;
+    bool m_collidable;
+
+    Rectangle m_boundingBox;
 };
 
 #endif

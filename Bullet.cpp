@@ -8,14 +8,11 @@
 
 #include "Bullet.hpp"
 
-Bullet::Bullet()
+const int BULLET_SPEED{10};
+
+Bullet::Bullet() : GameObject("resources/sprites/LaserGreen.png", {50.0f, 360.0f, 50.0f, 5.0f}, true)
 {
-    setX(50);
-    setY(360);
-    setSpeed(5);
-    setWidth(50);
-    setHeight(5);
-    setSprite("resources/sprites/LaserGreen.png");
+    setSpeed(BULLET_SPEED);
     setActive(false);
 }
 

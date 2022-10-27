@@ -11,16 +11,8 @@
 
 const int SCROLL_SPEED = 2; // speed to scroll the background across the screen
 
-Background::Background()
+Background::Background() : GameObject("resources/Background720.png", {0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT}, false)
 {
-    Image image = LoadImage("resources/Background720.png"); // Image to use as background
-    setTexture(image);                                      // create texture from image
-    UnloadImage(image);                                     // unload the image now the texture is created
-
-    setPosition({0.0f, 0.0f}); // starting position is the origin x,y = 0,0
-    setHeight(SCREEN_HEIGHT);  // match height of screen
-    setWidth(SCREEN_WIDTH);    // match width of screen
-    setX(0);                   //
     bg2X = getX() + SCREEN_WIDTH;
 }
 
