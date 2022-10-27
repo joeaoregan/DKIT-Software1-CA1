@@ -34,6 +34,8 @@ public:
     const int flashTimes = 5;  // number of times to flash player
     int flashCount = 1;        // number of times player has flashed
 
+    int laserFireCount = 0; // current time until next laser fire
+
 private:
     void handleInput(); // handle input for player
 };

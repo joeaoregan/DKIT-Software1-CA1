@@ -11,6 +11,8 @@
 #include <iostream>
 #include "InputHandler.hpp"
 
+const int LASER_FIRE_RATE = 20; // time until next laser blast
+
 Player::Player() : GameObject("resources/sprites/Player1Ship.png", {50.0f, 320.0f, 50.0f, 50.0f}, true)
 {
     setSpeed(8.0f);
@@ -157,6 +159,9 @@ void Player::handleInput()
         setY(getY() + getSpeed());
     }
 
+    if (laserFireCount < LASER_FIRE_RATE) // Only count if needs to
+        laserFireCount++;                 // increment laser count each frame
+
     // attack
     if (InputHandler::Instance()->isKeyDown(KEY_SPACE))
     {
@@ -167,17 +172,19 @@ void Player::handleInput()
 
         for (GameObject *b : bullets) // spawn bullets
         {
-            if (!(*b).getActive())
-            {
-                PlaySound(fxFire);
+            if (laserFireCount >= LASER_FIRE_RATE)
+                if (!(*b).getActive())
+                {
+                    PlaySound(fxFire);
 
-                (*b).setX(getX());
-                (*b).setY(getY());
-                (*b).toggleActive();
+                    (*b).setX(getX());
+                    (*b).setY(getY());
+                    (*b).toggleActive();
+                    laserFireCount = 0; // reset wait until next bullet
 
-                // std::cout << "bullet active" << std::endl;
-                break;
-            }
+                    // std::cout << "bullet active" << std::endl;
+                    break;
+                }
         }
     }
 }
