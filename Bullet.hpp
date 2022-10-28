@@ -6,8 +6,8 @@
     Player weapon
 */
 
-#ifndef BACKGROUND_HPP
-#define BACKGROUND_HPP
+#ifndef BULLET_HPP
+#define BULLET_HPP
 
 #include "GameObject.hpp"
 

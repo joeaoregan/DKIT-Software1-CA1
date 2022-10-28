@@ -18,6 +18,7 @@ Player::Player() : GameObject("resources/sprites/Player1Ship.png", {50.0f, 320.0
     setSpeed(8.0f);
     fxFire = LoadSound("resources/fx/laser1.wav");
     setCollision(false);
+    laserFireCount = 0;
 }
 
 Player::~Player()
@@ -26,6 +27,7 @@ Player::~Player()
 
 void Player::init()
 {
+    laserFireCount = 0;
     for (int i = 0; i < NUM_BULLETS; i++)
     {
         bullets.push_back(new Bullet());
@@ -64,7 +66,7 @@ void Player::move()
 
     handleInput();
 
-    for (GameObject *b : bullets) // move bullets
+    for (GameObject *b : bullets) // move objects
     {
         if ((*b).getActive())
         {
@@ -100,15 +102,6 @@ void Player::collisions()
     {
         setY(SCREEN_HEIGHT - getHeight());
     }
-
-    // bullets
-    for (GameObject *b : bullets)
-    {
-        if ((*b).getActive())
-        {
-            (*b).collisions();
-        }
-    }
 }
 
 void Player::draw()
@@ -119,12 +112,6 @@ void Player::draw()
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);
     DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)flash, (unsigned char)flash, 255});
     // Color(255, 255, 255);
-
-    // bullets
-    for (GameObject *b : bullets)
-    {
-        (*b).draw();
-    }
 }
 
 void Player::destroy()
@@ -159,8 +146,8 @@ void Player::handleInput()
         setY(getY() + getSpeed());
     }
 
-    if (laserFireCount < LASER_FIRE_RATE) // Only count if needs to
-        laserFireCount++;                 // increment laser count each frame
+    if (laserFireCount <= LASER_FIRE_RATE) // Only count if needs to
+        laserFireCount++;                  // increment laser count each frame
 
     // attack
     if (InputHandler::Instance()->isKeyDown(KEY_SPACE))
@@ -182,7 +169,7 @@ void Player::handleInput()
                     (*b).toggleActive();
                     laserFireCount = 0; // reset wait until next bullet
 
-                    // std::cout << "bullet active" << std::endl;
+                    std::cout << "bullet active: " << (*b).getActive() << " x: " << (*b).getX() << " y: " << (*b).getY() << std::endl;
                     break;
                 }
         }

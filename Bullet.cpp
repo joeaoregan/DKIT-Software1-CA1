@@ -7,10 +7,11 @@
 */
 
 #include "Bullet.hpp"
+#include <iostream>
 
 const int BULLET_SPEED{10};
 
-Bullet::Bullet() : GameObject("resources/sprites/LaserGreen.png", {50.0f, 360.0f, 50.0f, 5.0f}, true)
+Bullet::Bullet() : GameObject("resources/sprites/LaserGreen.png", {-50.0f, 360.0f, 50.0f, 5.0f}, true)
 {
     setSpeed(BULLET_SPEED);
     setActive(false);
@@ -30,13 +31,17 @@ void Bullet::move()
     {
         setX(getX() + getSpeed());
     }
+
+    collisions();
 }
 
 void Bullet::collisions()
 {
-    if (getActive() && getX() > SCREEN_WIDTH)
+    if (getCollision() || getX() >= SCREEN_WIDTH)
     {
-        toggleActive();
+        setActive(false);
+        setX(-getWidth());
+        setCollision(false);
     }
 }
 

@@ -25,6 +25,9 @@ public:
 
     GameObject *player;
 
+    std::vector<GameObject *> niceList;
+    std::vector<GameObject *> naughtyList;
+
 private:
     static const int s_levelID; // identify current state
 };

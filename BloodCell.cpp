@@ -7,6 +7,7 @@
 */
 
 #include "BloodCell.hpp"
+#include <iostream>
 
 int MOVEMENT = (GetRandomValue(0, 20) * 5) + 350;
 ;
@@ -55,14 +56,17 @@ void BloodCell::move()
         movingUp = false;
     else if (dy <= 0)
         movingUp = true;
+
+    collisions();
 }
 
 void BloodCell::collisions()
 {
-    if (getX() < -getWidth())
+    if ((getX() < -getWidth()) || getCollision()) // if moved off screen, or collided with
     {
-        // setActive(false);
         setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
+        // std::cout << "bloodcell off screen" << std::endl;
+        setCollision(false);
     }
 }
 
