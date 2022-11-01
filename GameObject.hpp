@@ -136,6 +136,9 @@ public:
         return m_collidable;
     }
 
+    int frame;
+    bool canDestroy{false};
+
 private:
     Vector2 m_position;
     float m_speed;

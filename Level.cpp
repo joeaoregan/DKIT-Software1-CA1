@@ -13,6 +13,7 @@
 #include "Player.hpp"
 #include "BloodCell.hpp"
 #include "Bullet.hpp"
+#include "Explosion.hpp"
 
 const int Level::s_levelID = LEVEL_1; // int more efficient than string, enum more readable
 
@@ -41,15 +42,15 @@ bool Level::checkCollision(Rectangle *a, Rectangle *b)
     {
         return false;
     }
-    if (topA >= bottomB)
+    else if (topA >= bottomB)
     {
         return false;
     }
-    if (rightA <= leftB)
+    else if (rightA <= leftB)
     {
         return false;
     }
-    if (leftA >= rightB)
+    else if (leftA >= rightB)
     {
         return false;
     }
@@ -69,6 +70,9 @@ bool Level::init()
     player = new Player();
     player->init();
     niceList.push_back(player);
+
+    // GameObject *exp = new Explosion();
+    // naughtyList.push_back(exp);
 
     for (int i = 0; i < NUM_BLOOD_CELLS; i++) // set the number of blood cell objects in constants header file
     {
@@ -127,6 +131,11 @@ void Level::update()
             if (collision)
             {
                 collision = false;
+
+                GameObject *exp = new Explosion();
+                exp->setPosition(naughtyList[j]->getPosition());
+                objects.push_back(exp);
+                // std::cout << "new explosion created: " << naughtyList[j]->getPosition().x << ":" << naughtyList[j]->getPosition().y << std::endl;
 
                 niceList[i]->setCollision(true);
                 naughtyList[j]->setCollision(true);
