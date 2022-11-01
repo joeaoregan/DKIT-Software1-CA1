@@ -11,6 +11,8 @@
 
 #include "GameObject.hpp"
 
+const bool TEST_PLAYER = true;
+
 const int NUM_BULLETS = 5; // The player currently has 5 bullets -- to do -- make this a power up
 
 class Player : public GameObject // Player inherits directly from the GameObject base class

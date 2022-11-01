@@ -11,6 +11,8 @@
 
 #include "GameObject.hpp"
 
+const bool TEST_BLOODCELL = true;
+
 class BloodCell : public GameObject
 {
 public:

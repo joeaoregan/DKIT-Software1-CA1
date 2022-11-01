@@ -50,6 +50,12 @@ void Bullet::draw()
     if (getActive())
     {
         DrawTexturePro(getTexture(), {0, 0, (float)getWidth(), (float)getHeight()}, {getX(), getY(), (float)getWidth(), (float)getHeight()}, {0.0f, 0.0f}, 0.0f, WHITE);
+
+        if (TEST_BULLET)
+        {
+            // Bounding box to check collisions
+            DrawRectangleLines(getX(), getY(), getWidth(), getHeight(), WHITE);
+        }
     }
 }
 

@@ -112,6 +112,12 @@ void Player::draw()
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);
     DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)flash, (unsigned char)flash, 255});
     // Color(255, 255, 255);
+
+    if (TEST_PLAYER)
+    {
+        // Bounding box to check collisions
+        DrawRectangleLines(getX() - 50, getY() - 25, 100, 47, WHITE);
+    }
 }
 
 void Player::destroy()

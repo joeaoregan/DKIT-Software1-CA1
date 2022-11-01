@@ -57,6 +57,8 @@ void BloodCell::move()
     else if (dy <= 0)
         movingUp = true;
 
+    // setY(getY() + (dy / upDownSpeed));
+
     collisions();
 }
 
@@ -72,7 +74,16 @@ void BloodCell::collisions()
 
 void BloodCell::draw()
 {
-    DrawTexturePro(getTexture(), {0, 0, (float)getWidth(), (float)getHeight()}, {getX(), (getY() + (dy / upDownSpeed)), (float)getWidth(), (float)getHeight()}, {getWidth() / 2.0f, getHeight() / 2.0f}, ((rotateClockwise) ? getDegrees() : getDegrees() * -1), WHITE);
+    // setY(getY() + (dy / upDownSpeed));
+
+    DrawTexturePro(getTexture(), {0, 0, (float)getWidth(), (float)getHeight()},
+                   {getX() + (getWidth() / 2), getY() + (getHeight() / 2), (float)getWidth(), (float)getHeight()},
+                   {getWidth() / 2.0f, getHeight() / 2.0f}, ((rotateClockwise) ? getDegrees() : getDegrees() * -1), WHITE);
+
+    if (TEST_BLOODCELL)
+    {
+        DrawRectangleLines(getX(), getY(), getWidth(), getHeight(), WHITE);
+    }
 }
 
 void BloodCell::destroy() {}
