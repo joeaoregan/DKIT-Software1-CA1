@@ -13,7 +13,7 @@
 
 const int LASER_FIRE_RATE = 20; // time until next laser blast
 
-Player::Player() : GameObject("resources/sprites/Player1Ship.png", {50.0f, 320.0f, 50.0f, 50.0f}, true)
+Player::Player() : GameObject("sprites/Player1Ship", {50.0f, 320.0f, 50.0f, 50.0f}, true)
 {
     setSpeed(8.0f);
     fxFire = LoadSound("resources/fx/laser1.wav");

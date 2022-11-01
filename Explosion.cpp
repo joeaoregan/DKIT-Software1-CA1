@@ -11,13 +11,14 @@
 const float updateTime(1.0f / 20);
 const int NUM_FRAMES{16};
 
-Explosion::Explosion() : GameObject("resources/ExplosionBlood.png", {50.0f, 320.0f, 128.0f, 128.0f}, false)
+Explosion::Explosion(Vector2 position) : GameObject("ExplosionBlood", {position.x, position.y, 128.0f, 128.0f}, false)
 {
-    frame = 0;
+    setTotalFrames(NUM_FRAMES);
 }
 
 Explosion::~Explosion()
 {
+    std::cout << "Explosion destroyed" << std::endl;
 }
 
 void Explosion::init() {}
@@ -29,11 +30,11 @@ void Explosion::move()
     if (runningTime > updateTime)
     {
         runningTime = 0.0f;
-        frame++;
-        if (frame >= NUM_FRAMES)
+        incrementFrame();
+        if (isAnimationFinished())
         {
             setActive(false);
-            canDestroy = true;
+            setCanDestroy(true);
         }
     }
 }
@@ -43,11 +44,10 @@ void Explosion::collisions() {}
 void Explosion::draw()
 {
     if (getActive())
-        DrawTextureRec(getTexture(), {(frame * 128.0f), 0.0f, 128.0f, 128.0f}, {getX() - (getWidth() / 4), getY() - (getHeight() / 4)}, WHITE);
+        DrawTextureRec(getTexture(), {(getFrame() * 128.0f), 0.0f, 128.0f, 128.0f}, {getX() - (getWidth() / 4), getY() - (getHeight() / 4)}, WHITE);
 }
 
 void Explosion::destroy()
 {
-    UnloadTexture(getTexture());
-    // std: :cout << "explosion destroyed" << std::endl;
+    GameObject::destroy(); // call destroy in base class
 }

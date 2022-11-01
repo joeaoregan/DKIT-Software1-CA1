@@ -17,21 +17,15 @@ bool movingUp = (GetRandomValue(0, 10) % 2 == 0) ? true : false;
 float dRotate = 0.0f;
 int upDownSpeed = GetRandomValue(10, 15);
 
-BloodCell::BloodCell()
+BloodCell::BloodCell() : GameObject("sprites/BloodCell", {50.0f, 320.0f, 100.0f, 55.0f}, true)
 {
     setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
-    setY(350);
     int randomYPosition = (GetRandomValue(0, 7) * 55) + 90;
     // setY((GetRandomValue(1, 10) * getHeight()) + 20);
-    // setY(90);// top of screen
-    // setY(495); // bottom of screen
     // setY((GetRandomValue(0, 7) * getHeight()) + 90);
     // setY((getHeight() * GetRandomValue(0, 7)) + 90);
     setY(randomYPosition);
-    setWidth(100);
-    setHeight(55);
     setSpeed((GetRandomValue(1, 5) / 5.0f) + 0.6f);
-    setSprite("resources/sprites/BloodCell.png");
     setRotateClockwise((GetRandomValue(0, 10) % 2 == 0) ? true : false);
     dRotate = (GetRandomValue(1, 10) / 10 * 0.5f) + 0.5f;
     setDegrees(GetRandomValue(0, 360));

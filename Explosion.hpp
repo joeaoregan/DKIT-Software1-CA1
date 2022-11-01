@@ -14,7 +14,7 @@
 class Explosion : public GameObject // Explosion inherits directly from the GameObject base class
 {
 public:
-    Explosion();  // constructor
+    Explosion(Vector2 position);
     ~Explosion(); // deconstructor
 
     void init();       // initialise explosion

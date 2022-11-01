@@ -71,9 +71,6 @@ bool Level::init()
     player->init();
     niceList.push_back(player);
 
-    // GameObject *exp = new Explosion();
-    // naughtyList.push_back(exp);
-
     for (int i = 0; i < NUM_BLOOD_CELLS; i++) // set the number of blood cell objects in constants header file
     {
         GameObject *bc = new BloodCell(); // create bloodcell
@@ -132,8 +129,8 @@ void Level::update()
             {
                 collision = false;
 
-                GameObject *exp = new Explosion();
-                exp->setPosition(naughtyList[j]->getPosition());
+                GameObject *exp = new Explosion(naughtyList[j]->getPosition());
+                // exp->setPosition(naughtyList[j]->getPosition());
                 objects.push_back(exp);
                 // std::cout << "new explosion created: " << naughtyList[j]->getPosition().x << ":" << naughtyList[j]->getPosition().y << std::endl;
 

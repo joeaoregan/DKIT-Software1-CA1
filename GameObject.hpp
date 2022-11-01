@@ -11,13 +11,14 @@
 #include "raylib.h"
 #include "Constants.hpp"
 #include <vector>
+#include <string>
 
 class GameObject
 {
 public:
     GameObject();
     GameObject(Vector2 coordinates);
-    GameObject(const char *textureSRC, Rectangle rect, bool collidable);
+    GameObject(std::string src, Rectangle rect, bool collidable);
     ~GameObject();
 
     virtual void init() = 0;
@@ -26,65 +27,21 @@ public:
     virtual void draw() = 0;
     virtual void destroy() = 0;
 
-    Vector2 getPosition()
-    {
-        return m_position;
-    }
+    Vector2 getPosition() { return m_position; }
+    void setPosition(Vector2 position) { m_position = position; }
 
-    void setPosition(Vector2 position)
-    {
-        m_position = position;
-    }
+    float getSpeed() { return m_speed; }
+    void setSpeed(float speed) { m_speed = speed; }
 
-    float getSpeed()
-    {
-        return m_speed;
-    }
+    float getX() { return m_position.x; }
+    float getY() { return m_position.y; }
+    void setX(float x) { m_position.x = x; }
+    void setY(float y) { m_position.y = y; }
 
-    void setSpeed(float speed)
-    {
-        m_speed = speed;
-    }
-
-    float getX()
-    {
-        return m_position.x;
-    }
-
-    float getY()
-    {
-        return m_position.y;
-    }
-
-    void setX(float x)
-    {
-        m_position.x = x;
-    }
-
-    void setY(float y)
-    {
-        m_position.y = y;
-    }
-
-    int getWidth()
-    {
-        return m_width;
-    }
-
-    void setWidth(int width)
-    {
-        m_width = width;
-    }
-
-    int getHeight()
-    {
-        return m_height;
-    }
-
-    void setHeight(int height)
-    {
-        m_height = height;
-    }
+    int getWidth() { return m_width; }
+    int getHeight() { return m_height; }
+    void setWidth(int width) { m_width = width; }
+    void setHeight(int height) { m_height = height; }
 
     Texture2D getTexture()
     {
@@ -101,53 +58,45 @@ public:
         m_sprite = LoadTextureFromImage(image);
     }
 
-    bool getActive()
-    {
-        return isActive;
-    }
-
-    void toggleActive()
-    {
-        isActive = !isActive;
-    }
-
-    void setActive(bool active)
-    {
-        isActive = active;
-    }
+    bool getActive() { return isActive; }
+    void setActive(bool active) { isActive = active; }
+    void toggleActive() { isActive = !isActive; }
 
     bool getCollision() { return m_collision; }
     void setCollision(bool collision) { m_collision = collision; }
 
     Rectangle *getRect()
     {
-        // Rectangle boundingRect = {m_position.x, m_position.y, (float)m_sprite.width, (float)m_sprite.height};
         m_boundingBox = {m_position.x, m_position.y, (float)m_sprite.width, (float)m_sprite.height};
-        // return (&){m_position.x, m_position.y, m_sprite.width, m_sprite.height};
         return &m_boundingBox;
     }
-    void setCollidable(bool collidable)
-    {
-        m_collidable = collidable;
-    }
 
-    bool isCollidable()
-    {
-        return m_collidable;
-    }
+    bool isCollidable() { return m_collidable; }
+    void setCollidable(bool collidable) { m_collidable = collidable; }
 
-    int frame;
-    bool canDestroy{false};
+    bool canDestroy() { return m_canDestroy; }
+    void setCanDestroy(bool destroy) { m_canDestroy = destroy; }
+
+    void incrementFrame();
+    int getFrame() { return m_currentFrame; }
+    void setTotalFrames(int totalFrames) { m_totalFrames = totalFrames; }
+    bool isAnimationFinished() { return m_isAnimationFinished; }
+    bool isAnimationLoop() { return m_isAnimationLoop; }
+    void setAnimationLoop(bool loop) { m_isAnimationLoop = loop; }
 
 private:
     Vector2 m_position;
     float m_speed;
-    int m_height;
-    int m_width;
+    int m_height, m_width;
     Texture2D m_sprite;
     bool isActive;
     bool m_collision;
     bool m_collidable;
+
+    bool m_canDestroy;
+
+    int m_currentFrame, m_totalFrames;
+    bool m_isAnimationFinished, m_isAnimationLoop;
 
     Rectangle m_boundingBox;
 };
