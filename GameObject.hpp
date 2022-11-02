@@ -84,6 +84,12 @@ public:
     bool isAnimationLoop() { return m_isAnimationLoop; }
     void setAnimationLoop(bool loop) { m_isAnimationLoop = loop; }
 
+    int getHealth() { return m_health; }
+    void setHealth(int health) { m_health = health; }
+
+    int getDamage() { return m_damage; }
+    void setDamage(int damage) { m_damage = damage; }
+
 private:
     Vector2 m_position;
     float m_speed;
@@ -99,6 +105,8 @@ private:
     bool m_isAnimationFinished, m_isAnimationLoop;
 
     Rectangle m_boundingBox;
+
+    int m_health, m_damage;
 };
 
 #endif

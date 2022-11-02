@@ -12,6 +12,7 @@
 #include "GameObject.hpp"
 
 const bool TEST_PLAYER = true;
+const float HEALTH_TOTAL = 100.0f;
 
 const int NUM_BULLETS = 5; // The player currently has 5 bullets -- to do -- make this a power up
 
@@ -28,7 +29,7 @@ public:
     void destroy();    // clear player textures etc. from memory
 
     Sound fxFire;                      // sound to play when bullet fires
-    std::vector<GameObject *> bullets; // list of bullet objects to update rendering etc.
+    std::vector<GameObject *> objects; // list of objects to update rendering etc.
 
     int flash = 255;           // Start with green and blue values as 255
     int direction = 1;         // change colour up and down by making this postive / negative value and multiplying
@@ -38,8 +39,16 @@ public:
 
     int laserFireCount; // current time until next laser fire
 
+    bool isFlashing() { return m_flashing; }
+    void setFlashing(bool flash) { m_flashing = flash; }
+
+    GameObject *healthBar;
+
+    void setHealth(int health);
+
 private:
     void handleInput(); // handle input for player
+    bool m_flashing;
 };
 
 #endif

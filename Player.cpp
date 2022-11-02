@@ -10,6 +10,7 @@
 #include "Bullet.hpp"
 #include <iostream>
 #include "InputHandler.hpp"
+#include "StatusBar.hpp"
 
 const int LASER_FIRE_RATE = 20; // time until next laser blast
 
@@ -19,6 +20,7 @@ Player::Player() : GameObject("sprites/Player1Ship", {50.0f, 320.0f, 50.0f, 50.0
     fxFire = LoadSound("resources/fx/laser1.wav");
     setCollision(false);
     laserFireCount = 0;
+    m_flashing = false;
 }
 
 Player::~Player()
@@ -27,10 +29,13 @@ Player::~Player()
 
 void Player::init()
 {
+    healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}, 1.0f);
+    objects.push_back(healthBar);
+
     laserFireCount = 0;
     for (int i = 0; i < NUM_BULLETS; i++)
     {
-        bullets.push_back(new Bullet());
+        objects.push_back(new Bullet());
         // if (DEBUG_MODE)
         // {
         //     std::cout << "bullet " << i << " added";
@@ -40,8 +45,28 @@ void Player::init()
 
 void Player::move()
 {
+    // healthBar->setPosition(getPosition());
+    healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
+
+    // healthBar->setPercent(getHealth() / 100);
+    // StatusBar *sb = dynamic_cast<StatusBar *>(healthBar);
+    // if (sb != nullptr)
+    // {
+    //     sb->setPercent(getHealth() / 100);
+    // }
+
     // Player flashes if collision with obstacle / enemy
-    if (getCollision())
+    if (getCollision() && !isFlashing())
+    {
+        // update status bar
+        // StatusBar *hb = static_cast<StatusBar *>(healthBar);
+        // hb->setPercent(getHealth() / 100.0f);
+
+        setFlashing(true);
+        setCollision(false);
+    }
+
+    if (isFlashing())
     {
         flash += (flashSpeed * direction);
 
@@ -59,14 +84,14 @@ void Player::move()
 
         if (flashCount >= flashTimes)
         {
-            setCollision(false);
-            flashCount = 0; // reset flashCount
+            setFlashing(false); // stop flashing
+            flashCount = 0;     // reset flashCount
         }
     }
 
     handleInput();
 
-    for (GameObject *b : bullets) // move objects
+    for (GameObject *b : objects) // move objects
     {
         if ((*b).getActive())
         {
@@ -163,7 +188,7 @@ void Player::handleInput()
         //     std::cout << "Player fire" << std::endl;
         // }
 
-        for (GameObject *b : bullets) // spawn bullets
+        for (GameObject *b : objects) // spawn bullets
         {
             if (laserFireCount >= LASER_FIRE_RATE)
                 if (!(*b).getActive())
@@ -180,4 +205,13 @@ void Player::handleInput()
                 }
         }
     }
+}
+
+void Player::setHealth(int health)
+{
+    GameObject::setHealth(health);
+
+    StatusBar *hb = static_cast<StatusBar *>(healthBar);
+    hb->setPercent((float)getHealth() / 100.0f);
+    std::cout << "healthbar should update - percent: " << hb->getPercent() << std::endl;
 }

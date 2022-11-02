@@ -79,7 +79,7 @@ bool Level::init()
 
     GameState::init(); // initialise the list of objects
 
-    std::vector<GameObject *> &playerBullets = ((Player *)player)->bullets;
+    std::vector<GameObject *> &playerBullets = ((Player *)player)->objects;
 
     for (unsigned int i = 0; i < playerBullets.size(); i++)
     {
@@ -122,6 +122,8 @@ void Level::update()
     for (unsigned int i = 0; i < niceList.size(); i++)
     {
         (*niceList[i]).move(); // update the object
+        if (!niceList[i]->isCollidable())
+            continue;
         for (unsigned int j = 0; j < naughtyList.size(); j++)
         {
             collision = checkCollision(niceList[i]->getRect(), naughtyList[j]->getRect());
@@ -130,12 +132,21 @@ void Level::update()
                 collision = false;
 
                 GameObject *exp = new Explosion(naughtyList[j]->getPosition());
-                // exp->setPosition(naughtyList[j]->getPosition());
                 objects.push_back(exp);
                 // std::cout << "new explosion created: " << naughtyList[j]->getPosition().x << ":" << naughtyList[j]->getPosition().y << std::endl;
 
                 niceList[i]->setCollision(true);
                 naughtyList[j]->setCollision(true);
+
+                Player *playerType = dynamic_cast<Player *>(niceList[i]);
+                if (playerType != nullptr && niceList[i]->getCollision())
+                {
+                    // niceList[i]->setHealth(niceList[i]->getHealth() - naughtyList[j]->getDamage()); // reduce health by the amount of damage inflicted
+                    playerType->setHealth(playerType->getHealth() - naughtyList[j]->getDamage());
+                    std::cout << "Player Health: " << niceList[i]->getHealth() << std::endl;
+                    // playerType->setCollision(false);
+                    // niceList[i]->setCollision(false);
+                }
             }
         }
     }
