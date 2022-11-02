@@ -43,6 +43,11 @@ void Game::handleEvents()
     {
         m_pStateMachine->change(new Level());
     }
+
+    if (IsKeyDown(KEY_ESCAPE))
+    {
+        m_paused = !m_paused;
+    }
 }
 
 void Game::draw()

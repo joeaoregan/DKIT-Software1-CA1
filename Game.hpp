@@ -39,18 +39,24 @@ public:
     int getScore() { return m_Score; }      // getter: score
     int getLevel() { return m_Level; }      // getter: level
     Font getFont() { return m_fontRetro; }  // getter: font
+    bool isPaused() { return m_paused; }    // getter: game paused
 
     int m_currentGameState; // current game state
 
 private:
-    Game() : m_Score(0), m_Level(1), m_fontRetro(LoadFont("resources/fonts/Retro.ttf")) {} // constructor
-
     int m_Score;      // game current score
     int m_Level;      // game current level
     Font m_fontRetro; // font for text
 
     static Game *s_pGame; // singleton instance of game
     bool m_bRunning;      // is the game running
+
+    bool m_paused;
+
+    Game() : m_Score(0), m_Level(1), m_fontRetro(LoadFont("resources/fonts/Retro.ttf"))
+    {
+        m_paused = false;
+    } // constructor
 };
 
 #endif
