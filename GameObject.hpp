@@ -43,20 +43,9 @@ public:
     void setWidth(int width) { m_width = width; }
     void setHeight(int height) { m_height = height; }
 
-    Texture2D getTexture()
-    {
-        return m_sprite;
-    }
-
-    void setSprite(const char *textureSRC)
-    {
-        m_sprite = LoadTexture(textureSRC);
-    }
-
-    void setTexture(Image image)
-    {
-        m_sprite = LoadTextureFromImage(image);
-    }
+    Texture2D getTexture() { return m_sprite; }
+    void setSprite(const char *textureSRC) { m_sprite = LoadTexture(textureSRC); }
+    void setTexture(Image image) { m_sprite = LoadTextureFromImage(image); }
 
     bool getActive() { return isActive; }
     void setActive(bool active) { isActive = active; }
@@ -90,6 +79,9 @@ public:
     int getDamage() { return m_damage; }
     void setDamage(int damage) { m_damage = damage; }
 
+    std::vector<GameObject *> getSubObjects() { return m_subObjects; }
+    void addSubObject(GameObject *obj) { m_subObjects.push_back(obj); }
+
 private:
     Vector2 m_position;
     float m_speed;
@@ -107,6 +99,8 @@ private:
     Rectangle m_boundingBox;
 
     int m_health, m_damage;
+
+    std::vector<GameObject *> m_subObjects; // list of sub-objects to update rendering etc. e.g. status bars, weapons
 };
 
 #endif

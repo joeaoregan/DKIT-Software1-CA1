@@ -12,15 +12,18 @@
 #include "InputHandler.hpp"
 #include "StatusBar.hpp"
 
-const int LASER_FIRE_RATE = 20; // time until next laser blast
-
 Player::Player() : GameObject("sprites/Player1Ship", {50.0f, 320.0f, 50.0f, 50.0f}, true)
 {
     setSpeed(8.0f);
-    fxFire = LoadSound("resources/fx/laser1.wav");
     setCollision(false);
-    laserFireCount = 0;
+
+    m_fxFire = LoadSound("resources/fx/laser1.wav");
+    m_laserFireCount = 0;
+
     m_flashing = false;
+    m_flashCount = 0;
+    m_flashColourValue = 255; // start green and blue values at max, only red flashes
+    m_flashDirection = 1;     // colour values change positive / minus to flash the player
 }
 
 Player::~Player()
@@ -29,13 +32,15 @@ Player::~Player()
 
 void Player::init()
 {
-    healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}, 1.0f);
-    objects.push_back(healthBar);
+    m_healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}, 1.0f); // offset position to center under player
+    // objects.push_back(m_healthBar);                                                              // add to objects list
+    addSubObject(m_healthBar);
 
-    laserFireCount = 0;
+    m_laserFireCount = 0;
     for (int i = 0; i < NUM_BULLETS; i++)
     {
-        objects.push_back(new Bullet());
+        // objects.push_back(new Bullet());
+        addSubObject(new Bullet());
         // if (DEBUG_MODE)
         // {
         //     std::cout << "bullet " << i << " added";
@@ -45,53 +50,55 @@ void Player::init()
 
 void Player::move()
 {
-    // healthBar->setPosition(getPosition());
-    healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
-
-    // healthBar->setPercent(getHealth() / 100);
-    // StatusBar *sb = dynamic_cast<StatusBar *>(healthBar);
-    // if (sb != nullptr)
-    // {
-    //     sb->setPercent(getHealth() / 100);
-    // }
+    m_healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
 
     // Player flashes if collision with obstacle / enemy
     if (getCollision() && !isFlashing())
     {
-        // update status bar
-        // StatusBar *hb = static_cast<StatusBar *>(healthBar);
-        // hb->setPercent(getHealth() / 100.0f);
-
         setFlashing(true);
+        std::cout << "player has started flashing" << std::endl;
+        setCollision(false);
+    }
+    else
+    {
         setCollision(false);
     }
 
     if (isFlashing())
     {
-        flash += (flashSpeed * direction);
-
-        if (flash > 254 || flash < 1) // change flash direction, white to red, red to white
-        {
-            direction *= -1; // change direction at the top
-            if (flash > 255)
-            {
-                flash = 255; // don't go beyond 255
-                flashCount++;
-            }
-            else if (flash < 0)
-                flash = 0; // don't go below 0
-        }
-
-        if (flashCount >= flashTimes)
+        if (m_flashCount >= FLASH_TIMES) // when number of required of flashes reached
         {
             setFlashing(false); // stop flashing
-            flashCount = 0;     // reset flashCount
+            m_flashCount = 0;   // reset flashCount
+            std::cout << "player has stopped flashing " << m_flashColourValue << std::endl;
+        }
+        else
+        {
+            m_flashColourValue += (FLASH_SPEED * m_flashDirection);
+
+            if (m_flashColourValue >= 255 || m_flashColourValue <= 0) // change flash direction, white to red, red to white
+            {
+                m_flashDirection *= -1; // change direction of colour change at max and min values (255, 0)
+                std::cout << "flash direction changed " << m_flashColourValue << std::endl;
+            }
+
+            if (m_flashColourValue >= 255)
+            {
+                m_flashColourValue = 255; // don't go beyond 255
+                m_flashCount++;
+                // std::cout << "player has flashed high " << m_flashCount << " times" << std::endl;
+            }
+            else if (m_flashColourValue <= 0)
+            {
+                m_flashColourValue = 0; // don't go below 0
+                // std::cout << "player has flashed low " << m_flashCount << " times" << std::endl;
+            }
         }
     }
 
     handleInput();
 
-    for (GameObject *b : objects) // move objects
+    for (GameObject *b : getSubObjects()) // move objects
     {
         if ((*b).getActive())
         {
@@ -135,7 +142,7 @@ void Player::draw()
     DrawCircleV(getPosition(), getHeight(), MAROON);
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);
-    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)flash, (unsigned char)flash, 255});
+    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)m_flashColourValue, (unsigned char)m_flashColourValue, 255});
     // Color(255, 255, 255);
 
     if (TEST_PLAYER)
@@ -147,7 +154,7 @@ void Player::draw()
 
 void Player::destroy()
 {
-    UnloadSound(fxFire);
+    UnloadSound(m_fxFire);
 }
 
 void Player::handleInput()
@@ -156,13 +163,11 @@ void Player::handleInput()
         InputHandler::Instance()->isKeyDown(KEY_D))
     {
         setX(getX() + getSpeed());
-        // std::cout << "Pressed Left" << std::endl;
     }
     else if (InputHandler::Instance()->isKeyDown(KEY_LEFT) ||
              InputHandler::Instance()->isKeyDown(KEY_A))
     {
         setX(getX() - getSpeed());
-        // std::cout << "Pressed Right" << std::endl;
     }
 
     if (InputHandler::Instance()->isKeyDown(KEY_UP) ||
@@ -177,8 +182,8 @@ void Player::handleInput()
         setY(getY() + getSpeed());
     }
 
-    if (laserFireCount <= LASER_FIRE_RATE) // Only count if needs to
-        laserFireCount++;                  // increment laser count each frame
+    if (m_laserFireCount <= LASER_FIRE_RATE) // Only count if needs to
+        m_laserFireCount++;                  // increment laser count each frame
 
     // attack
     if (InputHandler::Instance()->isKeyDown(KEY_SPACE))
@@ -188,17 +193,17 @@ void Player::handleInput()
         //     std::cout << "Player fire" << std::endl;
         // }
 
-        for (GameObject *b : objects) // spawn bullets
+        for (GameObject *b : getSubObjects()) // spawn bullets
         {
-            if (laserFireCount >= LASER_FIRE_RATE)
+            if (m_laserFireCount >= LASER_FIRE_RATE)
                 if (!(*b).getActive())
                 {
-                    PlaySound(fxFire);
+                    PlaySound(m_fxFire); // play laser sound effect
 
                     (*b).setX(getX());
                     (*b).setY(getY());
                     (*b).toggleActive();
-                    laserFireCount = 0; // reset wait until next bullet
+                    m_laserFireCount = 0; // reset wait until next bullet
 
                     std::cout << "bullet active: " << (*b).getActive() << " x: " << (*b).getX() << " y: " << (*b).getY() << std::endl;
                     break;
@@ -211,7 +216,14 @@ void Player::setHealth(int health)
 {
     GameObject::setHealth(health);
 
-    StatusBar *hb = static_cast<StatusBar *>(healthBar);
+    StatusBar *hb = static_cast<StatusBar *>(m_healthBar);
     hb->setPercent((float)getHealth() / 100.0f);
-    std::cout << "healthbar should update - percent: " << hb->getPercent() << std::endl;
+    // std::cout << "healthbar should update - percent: " << hb->getPercent() << std::endl;
 }
+
+// healthBar->setPercent(getHealth() / 100);
+// StatusBar *sb = dynamic_cast<StatusBar *>(healthBar);
+// if (sb != nullptr)
+// {
+//     sb->setPercent(getHealth() / 100);
+// }

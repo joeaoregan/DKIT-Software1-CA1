@@ -79,12 +79,12 @@ bool Level::init()
 
     GameState::init(); // initialise the list of objects
 
-    std::vector<GameObject *> &playerBullets = ((Player *)player)->objects;
+    std::vector<GameObject *> playerObjects = ((Player *)player)->getSubObjects();
 
-    for (unsigned int i = 0; i < playerBullets.size(); i++)
+    for (unsigned int i = 0; i < playerObjects.size(); i++)
     {
-        (*playerBullets[i]).setActive(false);
-        niceList.push_back(playerBullets[i]);
+        (*playerObjects[i]).setActive(false);
+        niceList.push_back(playerObjects[i]);
     }
 
     txtScoreWidthCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), TextFormat("Score: %08i", Game::Instance()->getScore()), fontSizeHeading, 1).x / 2); // calculate the score center position (done once now, with 8 positions of integer)
@@ -139,7 +139,7 @@ void Level::update()
                 naughtyList[j]->setCollision(true);
 
                 Player *playerType = dynamic_cast<Player *>(niceList[i]);
-                if (playerType != nullptr && niceList[i]->getCollision())
+                if (playerType != nullptr && niceList[i]->getCollision() && !playerType->isFlashing())
                 {
                     // niceList[i]->setHealth(niceList[i]->getHealth() - naughtyList[j]->getDamage()); // reduce health by the amount of damage inflicted
                     playerType->setHealth(playerType->getHealth() - naughtyList[j]->getDamage());
