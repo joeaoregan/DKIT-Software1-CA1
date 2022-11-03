@@ -21,7 +21,8 @@ enum game_states
     LEVEL_1 = 1,
     LEVEL_2 = 2,
     LEVEL_3 = 3,
-    GAME_OVER = 4
+    GAME_OVER = 4,
+    PAUSE = 5
 };
 
 class GameState

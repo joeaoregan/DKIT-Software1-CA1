@@ -11,6 +11,7 @@
 #include "InputHandler.hpp"
 #include "Player.hpp"
 #include "Level.hpp"
+#include "Pause.hpp"
 
 Game *Game::s_pGame = 0;
 GameObject *player;
@@ -44,9 +45,15 @@ void Game::handleEvents()
         m_pStateMachine->change(new Level());
     }
 
-    if (IsKeyDown(KEY_ESCAPE))
+    if (IsKeyPressed(KEY_ESCAPE))
     {
+        if (!m_paused)
+            m_pStateMachine->push(new Pause());
+        else
+            m_pStateMachine->pop();
+
         m_paused = !m_paused;
+        std::cout << "game paused: " << m_paused << std::endl;
     }
 }
 

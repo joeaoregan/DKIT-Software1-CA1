@@ -40,8 +40,12 @@ void StateMachine::draw()
 call its onEnter() */
 void StateMachine::push(GameState *pState)
 {
+    // std::cout << "before push - m_gameStates size: " << m_gameStates.size() << std::endl;
+
     m_gameStates.push_back(pState); // Add state to the states list
     m_gameStates.back()->init();    // init the state
+
+    // std::cout << "after push - m_gameStates size: " << m_gameStates.size() << std::endl;
 }
 
 /* Check if there's states available to remove, & if there is,

@@ -35,8 +35,8 @@ int main()
         if (!Game::Instance()->isPaused())
             Game::Instance()->update(); // update game objects
 
-        BeginDrawing();           // start rendering
-        ClearBackground(WHITE);   // clear the screen before rendering the next frame
+        BeginDrawing(); // start rendering
+        // ClearBackground(WHITE);   // clear the screen before rendering the next frame
         Game::Instance()->draw(); // render game objects
         EndDrawing();             // finish rendering
     }
