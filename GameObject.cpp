@@ -29,6 +29,7 @@ GameObject::GameObject(std::string src, Rectangle rect, bool collidable) : GameO
     m_canDestroy = false;          // object can be removed from memory
     m_isAnimationLoop = false;     // does the animation loop
     m_health = 100;                // health for object
+    m_id = GAME_OBJECT;            // everything is a game object
 }
 
 GameObject::~GameObject() {}

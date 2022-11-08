@@ -15,6 +15,14 @@
 
 typedef Color Colour; // Spell colour correctly
 
+enum object_id
+{
+    GAME_OBJECT = 0,
+    PLAYER = 1,
+    BULLET = 2,
+    BLOOD_CELL = 3
+};
+
 class GameObject
 {
 public:
@@ -84,7 +92,12 @@ public:
     std::vector<GameObject *> getSubObjects() { return m_subObjects; }
     void addSubObject(GameObject *obj) { m_subObjects.push_back(obj); }
 
+    int getID() { return m_id; }
+    void setID(int id) { m_id = id; }
+
 private:
+    int m_id; // identify the type of object
+
     Vector2 m_position;
     float m_speed;
     int m_height, m_width;

@@ -10,3 +10,7 @@
 *.dll
 main.code-workspace
 Makefile
+
+# exclude from project
+# notes + code snippets
+notes/

@@ -30,6 +30,7 @@ BloodCell::BloodCell() : GameObject("sprites/BloodCell", {50.0f, 320.0f, 100.0f,
     dRotate = (GetRandomValue(1, 10) / 10 * 0.5f) + 0.5f;
     setDegrees(GetRandomValue(0, 360));
     setDamage(5); // amount of damage to inflict on the player
+    setID(BLOOD_CELL);
 }
 
 BloodCell::~BloodCell() {}

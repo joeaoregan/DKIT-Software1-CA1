@@ -160,7 +160,6 @@ void Pause::draw()
         // draw status bars for volume levels, and label buttons
         if (i == RESUME)
         {
-
             DrawTextEx(Game::Instance()->getFont(), lbl1Resume, {menuButton.x + (float)lblCenter1, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
         }
         if (i == MUSIC_VOLUME)

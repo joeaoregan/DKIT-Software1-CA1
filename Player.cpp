@@ -24,6 +24,7 @@ Player::Player() : GameObject("sprites/Player1Ship", {50.0f, 320.0f, 50.0f, 50.0
     m_flashCount = 0;
     m_flashColourValue = 255; // start green and blue values at max, only red flashes
     m_flashDirection = 1;     // colour values change positive / minus to flash the player
+    setID(PLAYER);
 }
 
 Player::~Player()
@@ -39,7 +40,6 @@ void Player::init()
     m_laserFireCount = 0;
     for (int i = 0; i < NUM_BULLETS; i++)
     {
-        // objects.push_back(new Bullet());
         addSubObject(new Bullet());
         // if (DEBUG_MODE)
         // {
@@ -56,7 +56,7 @@ void Player::move()
     if (getCollision() && !isFlashing())
     {
         setFlashing(true);
-        std::cout << "player has started flashing" << std::endl;
+        // std::cout << "player has started flashing" << std::endl;
         setCollision(false);
     }
     else
@@ -196,7 +196,7 @@ void Player::handleInput()
         for (GameObject *b : getSubObjects()) // spawn bullets
         {
             if (m_laserFireCount >= LASER_FIRE_RATE)
-                if (!(*b).getActive())
+                if (!(*b).getActive() && (*b).getID() == BULLET)
                 {
                     PlaySound(m_fxFire); // play laser sound effect
 
@@ -220,10 +220,3 @@ void Player::setHealth(int health)
     hb->setPercent((float)getHealth() / 100.0f);
     // std::cout << "healthbar should update - percent: " << hb->getPercent() << std::endl;
 }
-
-// healthBar->setPercent(getHealth() / 100);
-// StatusBar *sb = dynamic_cast<StatusBar *>(healthBar);
-// if (sb != nullptr)
-// {
-//     sb->setPercent(getHealth() / 100);
-// }

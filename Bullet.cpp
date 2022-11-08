@@ -15,6 +15,7 @@ Bullet::Bullet() : GameObject("sprites/LaserGreen", {-50.0f, 360.0f, 50.0f, 5.0f
 {
     setSpeed(BULLET_SPEED);
     setActive(false);
+    setID(BULLET);
 }
 
 Bullet::~Bullet()
@@ -39,6 +40,7 @@ void Bullet::collisions()
 {
     if (getCollision() || getX() >= SCREEN_WIDTH)
     {
+        std::cout << "bullet collision" << std::endl;
         setActive(false);
         setX(-getWidth());
         setCollision(false);
