@@ -14,8 +14,10 @@
 
 const int Pause::s_pauseID = PAUSE;
 const int PAUSE_FONT_SIZE = 80;
+
 const int MENU_ITEM_HEIGHT_DISTANCE = 50;
-const int BUTTON_WIDTH = 200;
+const int BUTTON_WIDTH = 350;
+const int BUTTON_HEIGHT = 40;
 
 GameObject *audioBar;
 float timePlayed = 0.0f; // normalized time played
@@ -28,10 +30,29 @@ const char *txtSongTitle;
 int menuOption = 0;
 int menuOptionsTotal = 5; // number of enum values
 
+const char *lbl1Resume = "Resume Game";
+const char *lbl2MusicVol = "Music Volume";
+const char *lbl3FXVol = "Sound FX Volume";
+const char *lbl4MasterVol = "Master Audio";
+const char *lbl5Exit = "Exit Game";
+int lblCenter1{0};
+int lblCenter2{0};
+int lblCenter3{0};
+int lblCenter4{0};
+int lblCenter5{0};
+int btnFontSize{0};
+
 bool Pause::init()
 {
     GameState::init();
     // std::cout << "Init pause state" << std::endl;
+    btnFontSize = BUTTON_HEIGHT * 0.75f;
+
+    lblCenter1 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl1Resume, btnFontSize, 1).x / 2);
+    lblCenter2 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl2MusicVol, btnFontSize, 1).x / 2);
+    lblCenter3 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl3FXVol, btnFontSize, 1).x / 2);
+    lblCenter4 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl4MasterVol, btnFontSize, 1).x / 2);
+    lblCenter5 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl5Exit, btnFontSize, 1).x / 2);
 
     txtPause = "Paused!!";
     txtPauseCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtPause, PAUSE_FONT_SIZE, 1).x / 2);
@@ -68,8 +89,7 @@ void Pause::handleInput()
         switch (menuOption)
         {
         case RESUME:
-            // unpause
-            Game::Instance()->changePauseState();
+            Game::Instance()->changePauseState(); // resume the game
             break;
         }
     }
@@ -126,24 +146,10 @@ void Pause::handleInput()
         }
     }
 }
-/*
-float changeVolume(float volume, float amount)
-{
-    volume += amount;
-    if (volume > 1.0f)
-    {
-        volume = 1.0f;
-    }
-    else if (volume < 0.0f)
-    {
-        volume = 0.0f;
-    }
-    return volume;
-}
-*/
+
 void Pause::draw()
 {
-    Rectangle menuButton = {50, 50, BUTTON_WIDTH, 40};
+    Rectangle menuButton = {50, 50, BUTTON_WIDTH, BUTTON_HEIGHT};
 
     for (int i = 0; i < menuOptionsTotal; i++)
     {
@@ -151,25 +157,33 @@ void Pause::draw()
         menuButton.y += MENU_ITEM_HEIGHT_DISTANCE; // space 50 pixels apart
         DrawRectangleRec(menuButton, LIGHTGRAY);
 
-        // draw status bars for volume levels
+        // draw status bars for volume levels, and label buttons
+        if (i == RESUME)
+        {
+
+            DrawTextEx(Game::Instance()->getFont(), lbl1Resume, {menuButton.x + (float)lblCenter1, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
+        }
         if (i == MUSIC_VOLUME)
         {
             float musicWidth = BUTTON_WIDTH * Audio::Instance()->getMusicVolume();
             DrawRectangleRec({menuButton.x, menuButton.y, musicWidth, menuButton.height}, MAROON);
+            DrawTextEx(Game::Instance()->getFont(), lbl2MusicVol, {menuButton.x + (float)lblCenter2, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
         }
-
         if (i == FX_VOLUME)
         {
             float fxWidth = BUTTON_WIDTH * Audio::Instance()->getFXVolume();
-            // DrawRectangleRec(menuButton, MAROON);
             DrawRectangleRec({menuButton.x, menuButton.y, fxWidth, menuButton.height}, MAROON);
+            DrawTextEx(Game::Instance()->getFont(), lbl3FXVol, {menuButton.x + (float)lblCenter3, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
         }
-
         if (i == MASTER_VOLUME)
         {
             float masterWidth = BUTTON_WIDTH * Audio::Instance()->getMasterVolume();
-            // DrawRectangleRec(menuButton, MAROON);
             DrawRectangleRec({menuButton.x, menuButton.y, masterWidth, menuButton.height}, MAROON);
+            DrawTextEx(Game::Instance()->getFont(), lbl4MasterVol, {menuButton.x + (float)lblCenter4, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
+        }
+        if (i == EXIT)
+        {
+            DrawTextEx(Game::Instance()->getFont(), lbl5Exit, {menuButton.x + (float)lblCenter5, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
         }
 
         // highlight selected menu option
