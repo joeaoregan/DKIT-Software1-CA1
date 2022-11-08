@@ -17,7 +17,7 @@ bool movingUp = (GetRandomValue(0, 10) % 2 == 0) ? true : false;
 float dRotate = 0.0f;
 int upDownSpeed = GetRandomValue(10, 15);
 
-BloodCell::BloodCell() : GameObject("sprites/BloodCell", {50.0f, 320.0f, 100.0f, 55.0f}, true)
+BloodCell::BloodCell() : GameObject({50.0f, 320.0f, 100.0f, 55.0f}, "sprites/BloodCell", true)
 {
     setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
     int randomYPosition = (GetRandomValue(0, 7) * 55) + 90;

@@ -11,7 +11,7 @@
 
 const int SCROLL_SPEED = 2; // speed to scroll the background across the screen
 
-Background::Background() : GameObject("Background720", {0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT}, false)
+Background::Background() : GameObject({0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT}, "Background720")
 {
     bg2X = getX() + SCREEN_WIDTH;
 }

@@ -12,7 +12,7 @@
 #include "InputHandler.hpp"
 #include "StatusBar.hpp"
 
-Player::Player() : GameObject("sprites/Player1Ship", {50.0f, 320.0f, 50.0f, 50.0f}, true)
+Player::Player() : GameObject({50.0f, 320.0f, 50.0f, 50.0f}, "sprites/Player1Ship", true)
 {
     setSpeed(8.0f);
     setCollision(false);

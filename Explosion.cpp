@@ -11,7 +11,7 @@
 const float updateTime(1.0f / 20);
 const int NUM_FRAMES{16};
 
-Explosion::Explosion(Vector2 position) : GameObject("ExplosionBlood", {position.x, position.y, 128.0f, 128.0f}, false)
+Explosion::Explosion(Vector2 position) : GameObject({position.x, position.y, 128.0f, 128.0f}, "ExplosionBlood")
 {
     setTotalFrames(NUM_FRAMES);
     setID(EXPLOSION);

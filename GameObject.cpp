@@ -8,28 +8,18 @@
 
 #include "GameObject.hpp"
 
-GameObject::GameObject() : m_collision(false)
+GameObject::GameObject() : m_id{GAME_OBJECT}, m_collision(false), m_currentFrame{0}, m_totalFrames{1}, m_isAnimationFinished{false}, m_isAnimationLoop{false}, m_health{100}
 {
+    m_canDestroy = false;
 }
 
-GameObject::GameObject(Vector2 coordinates)
+GameObject::GameObject(Rectangle rect, std::string src, bool collidable) : GameObject()
 {
-    m_position = coordinates;
-}
-
-GameObject::GameObject(std::string src, Rectangle rect, bool collidable) : GameObject({rect.x, rect.y})
-{
+    m_position = {rect.x, rect.y};
     m_width = rect.width;
     m_height = rect.height;
     m_collidable = collidable;
     m_sprite = LoadTexture(("resources/" + src + ".png").c_str());
-    m_currentFrame = 0;            // current frame of sprite animation
-    m_totalFrames = 1;             // number of frames for animation
-    m_isAnimationFinished = false; // animation finished
-    m_canDestroy = false;          // object can be removed from memory
-    m_isAnimationLoop = false;     // does the animation loop
-    m_health = 100;                // health for object
-    m_id = GAME_OBJECT;            // everything is a game object
 }
 
 GameObject::~GameObject() {}

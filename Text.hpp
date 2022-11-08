@@ -6,8 +6,8 @@
     Draw Text on screen
 */
 
-#ifndef LEVEL_HPP
-#define LEVEL_HPP
+#ifndef TEXT_HPP
+#define TEXT_HPP
 
 #include "GameObject.hpp"
 

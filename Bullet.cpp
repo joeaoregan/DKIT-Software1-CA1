@@ -11,7 +11,7 @@
 
 const int BULLET_SPEED{10};
 
-Bullet::Bullet() : GameObject("sprites/LaserGreen", {-50.0f, 360.0f, 50.0f, 5.0f}, true)
+Bullet::Bullet() : GameObject({-50.0f, 360.0f, 50.0f, 5.0f}, "sprites/LaserGreen", true)
 {
     setSpeed(BULLET_SPEED);
     setActive(false);

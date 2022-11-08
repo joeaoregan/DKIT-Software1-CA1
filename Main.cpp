@@ -10,11 +10,11 @@
 
 int main()
 {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Score - Joe O'Regan"); // initialise the game window
-    InitAudioDevice();                                              // initialise the audio device
-    Image icon = LoadImage("resources/joe.png");                    // load the window icon image
-    SetWindowIcon(icon);                                            // set the window icon image
-    SetExitKey(KEY_NULL);                                           // esc no longer exits game
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Antibody - Joe O'Regan"); // initialise the game window
+    InitAudioDevice();                                                 // initialise the audio device
+    Image icon = LoadImage("resources/joe.png");                       // load the window icon image
+    SetWindowIcon(icon);                                               // set the window icon image
+    SetExitKey(KEY_NULL);                                              // esc no longer exits game
 
     Game::Instance()->init(); // initialise game objects (starts in menu state) -- to do -- add splash screen
 

@@ -30,7 +30,7 @@ class GameObject
 public:
     GameObject();
     GameObject(Vector2 coordinates);
-    GameObject(std::string src, Rectangle rect, bool collidable);
+    GameObject(Rectangle rect, std::string src = "", bool collidable = false);
     GameObject(int id)
     {
         m_id = id;
@@ -102,24 +102,26 @@ public:
     void setID(int id) { m_id = id; }
 
 private:
-    int m_id; // identify the type of object
+    int m_id;              // identify the type of object
+    Vector2 m_position;    // object position
+    float m_speed;         // how quickly the object moves
+    int m_height, m_width; // object dimensions
+    Texture2D m_sprite;    // object sprite texture
+    bool isActive;         // draw the object on screen
+    bool m_collision;      // the object has collided with another object
+    bool m_collidable;     // object can collide with others
 
-    Vector2 m_position;
-    float m_speed;
-    int m_height, m_width;
-    Texture2D m_sprite;
-    bool isActive;
-    bool m_collision;
-    bool m_collidable;
+    bool m_canDestroy; // object can be removed from memory
 
-    bool m_canDestroy;
+    int m_currentFrame;         // current frame of sprite animation
+    int m_totalFrames;          // number of frames for animation
+    bool m_isAnimationFinished; // is sprite animation finished
+    bool m_isAnimationLoop;     // does the animation loop
 
-    int m_currentFrame, m_totalFrames;
-    bool m_isAnimationFinished, m_isAnimationLoop;
+    Rectangle m_boundingBox; // bounding box of object (might be redundant for now)
 
-    Rectangle m_boundingBox;
-
-    int m_health, m_damage;
+    int m_health; // health for object
+    int m_damage; // damage object inflicts
 
     std::vector<GameObject *> m_subObjects; // list of sub-objects to update rendering etc. e.g. status bars, weapons
 };

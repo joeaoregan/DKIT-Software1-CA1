@@ -5,6 +5,9 @@
     Using singleton pattern so it only exists once in the program
 */
 
+#ifndef INPUT_HANDLER_HPP
+#define INPUT_HANDLER_HPP
+
 class InputHandler
 {
 public:
@@ -30,3 +33,4 @@ private:
 
     static InputHandler *s_pInstance; // Singleton instance of input handler
 };
+#endif

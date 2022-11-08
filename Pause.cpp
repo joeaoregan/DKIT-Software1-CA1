@@ -10,7 +10,7 @@
 #include "Game.hpp"
 #include "StatusBar.hpp"
 #include "Audio.hpp"
-#include "inputHandler.hpp"
+#include "InputHandler.hpp"
 
 const int Pause::s_pauseID = PAUSE;
 const int PAUSE_FONT_SIZE = 80;

@@ -8,13 +8,14 @@
 #include "Menu.hpp"
 #include "Background.hpp"
 #include "Text.hpp"
+#include "Button.hpp"
 
 const int Menu::s_menuID = MENU; // identify current state
 
-struct Button
-{
-    Rectangle rect;
-};
+// struct Button
+// {
+//     Rectangle rect;
+// };
 
 bool Menu::init()
 {
@@ -25,6 +26,8 @@ bool Menu::init()
     GameObject *txt1 = new Text("CA1 Raylib Application", HEADING);
     objects.push_back(txt1);
     objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING)));
+    objects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
+    objects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 120, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
 
     GameState::init(); // initialise objects in object list
 
