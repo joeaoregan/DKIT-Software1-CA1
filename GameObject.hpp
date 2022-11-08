@@ -20,7 +20,9 @@ enum object_id
     GAME_OBJECT = 0,
     PLAYER = 1,
     BULLET = 2,
-    BLOOD_CELL = 3
+    BLOOD_CELL = 3,
+    EXPLOSION = 4,
+    TEXT = 5
 };
 
 class GameObject
@@ -29,6 +31,10 @@ public:
     GameObject();
     GameObject(Vector2 coordinates);
     GameObject(std::string src, Rectangle rect, bool collidable);
+    GameObject(int id)
+    {
+        m_id = id;
+    }
     ~GameObject();
 
     virtual void init() = 0;
