@@ -32,6 +32,9 @@ public:
         setPosition(pos);          // position of text (overridden by centered)
         m_colour = colour;         // colour of text
         m_spacing = 1.0f;          // spacing 1 by default
+
+        m_flashing = false;
+        m_framesCounter = 0;
     }
 
     Text(const char *text, int fontSize) : Text(text)
@@ -41,10 +44,12 @@ public:
     ~Text(){}; // deconstructor
 
     void init();         // initialise objects
-    void move(){};       // update objects
+    void move();         // update objects
     void collisions() {} // check object collisions (no need here)
     void draw();         // render objects
     void destroy(){};    // clear objects from memory
+
+    void setFlashing(bool flash) { m_flashing = flash; } // flash the text
 
 private:
     const char *m_text; // text to display
@@ -52,6 +57,9 @@ private:
     bool m_centered;    // is the text centered
     Colour m_colour;    // colour of text
     float m_spacing;    // character spacing
+
+    bool m_flashing;
+    int m_framesCounter;
 };
 
 #endif

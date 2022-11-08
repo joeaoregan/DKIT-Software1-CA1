@@ -14,7 +14,25 @@ void Text::init()
         setX((SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), m_text, m_fontSize, 1).x / 2));
 }
 
+void Text::move()
+{
+    if (m_flashing)
+    {
+        m_framesCounter++;
+    }
+}
+
 void Text::draw()
 {
-    DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_colour);
+    if (m_flashing)
+    {
+        if ((m_framesCounter / 30) % 2 == 0)
+            DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_colour);
+        else
+            (DrawRectangle(0, 600, 1280, 120, BLACK));
+    }
+    else
+    {
+        DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_colour);
+    }
 }

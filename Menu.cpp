@@ -28,6 +28,9 @@ bool Menu::init()
     objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING)));
     objects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
     objects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 120, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
+    Text *flashText = new Text("Press Enter to Start", {100, 635}, HEADING);
+    flashText->setFlashing(true);
+    objects.push_back((GameObject *)flashText);
 
     GameState::init(); // initialise objects in object list
 
