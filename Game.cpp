@@ -31,30 +31,35 @@ bool Game::init()
     return success;
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
-    m_pStateMachine->update();
+    m_pStateMachine->update(deltaTime);
 }
 
 void Game::handleEvents()
 {
     InputHandler::Instance()->update();
 
-    if (IsKeyDown(KEY_ENTER))
+    if ((m_pStateMachine->getID() == MENU) && (IsKeyDown(KEY_ENTER))) // pressing enter
     {
         m_pStateMachine->change(new Level());
     }
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        if (!m_paused)
-            m_pStateMachine->push(new Pause());
-        else
-            m_pStateMachine->pop();
-
-        m_paused = !m_paused;
-        std::cout << "game paused: " << m_paused << std::endl;
+        changePauseState();
     }
+}
+
+void Game::changePauseState()
+{
+    if (!m_paused)
+        m_pStateMachine->push(new Pause());
+    else
+        m_pStateMachine->pop();
+
+    m_paused = !m_paused;
+    std::cout << "game paused: " << m_paused << std::endl;
 }
 
 void Game::draw()

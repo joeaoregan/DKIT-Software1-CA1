@@ -94,31 +94,31 @@ bool Level::init()
 
 bool collision = false;
 
-void Level::update()
+void Level::update(float deltaTime)
 {
-    GameState::update(); // update the game objects, functionality inherited from GameState
-                         /*
-                             for (unsigned int i = 0; i < objects.size(); i++)
-                             {
-                                 GameObject *playerType = dynamic_cast<Player *>(objects[i]);
-                                 GameObject *backgroundType = dynamic_cast<Background *>(objects[i]);
-                                 GameObject *typeBullet = dynamic_cast<Bullet *>(objects[i]);
-                                 GameObject *typeBloodCell = dynamic_cast<BloodCell *>(objects[i]);
-                     
-                                 if (playerType || backgroundType)
-                                     continue;
-                     
-                                 collision = checkCollision(player->getRect(), objects[i]->getRect());
-                                 if (collision)
-                                 {
-                                     player->setCollision(true);
-                                     objects[i]->setCollision(true);
-                                     collision = false;
-                                     std::cout << "Collision" << std::endl;
-                                 }
-                                 // std::cout << "Player obstacle: " << i << "/" << objects.size() << std::endl;
-                             }
-                             */
+    GameState::update(deltaTime); // update the game objects, functionality inherited from GameState
+                                  /*
+                                      for (unsigned int i = 0; i < objects.size(); i++)
+                                      {
+                                          GameObject *playerType = dynamic_cast<Player *>(objects[i]);
+                                          GameObject *backgroundType = dynamic_cast<Background *>(objects[i]);
+                                          GameObject *typeBullet = dynamic_cast<Bullet *>(objects[i]);
+                                          GameObject *typeBloodCell = dynamic_cast<BloodCell *>(objects[i]);
+                              
+                                          if (playerType || backgroundType)
+                                              continue;
+                              
+                                          collision = checkCollision(player->getRect(), objects[i]->getRect());
+                                          if (collision)
+                                          {
+                                              player->setCollision(true);
+                                              objects[i]->setCollision(true);
+                                              collision = false;
+                                              std::cout << "Collision" << std::endl;
+                                          }
+                                          // std::cout << "Player obstacle: " << i << "/" << objects.size() << std::endl;
+                                      }
+                                      */
     for (unsigned int i = 0; i < niceList.size(); i++)
     {
         (*niceList[i]).move(); // update the object

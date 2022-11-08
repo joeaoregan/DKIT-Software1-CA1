@@ -13,6 +13,8 @@
 #include <vector>
 #include <string>
 
+typedef Color Colour; // Spell colour correctly
+
 class GameObject
 {
 public:

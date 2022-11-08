@@ -7,20 +7,42 @@
 */
 #include "StatusBar.hpp"
 
-StatusBar::StatusBar(Rectangle rect, float percent) : GameObject("ExplosionBlood", {rect.x, rect.y, rect.width, rect.height}, false)
+StatusBar::StatusBar(Rectangle rect)
 {
-    percent = (percent > 1.f) ? 1.f : (percent < 0.f) ? 0.f
-                                                      : percent; // make sure percent is between 0 and 1
     bgRect = rect;
-    float newWidth = ((float)rect.width * percent);
-    // float newX = rect.x + (rect.width - newWidth);
+
+    setPosition({rect.x, rect.y});
+
     fgRect = {
         rect.x,
         rect.y,
-        newWidth,
+        rect.width,
         rect.height};
+
     setCollidable(false);
-    m_percent = 1.0f;
+
+    m_percent = 1.0f; // starting percent of foreground bar
+
+    m_colourBG = RED;        // default background colour
+    m_colourFG = GREEN;      // default foreground colour
+    m_colourOutline = BLACK; // default outline colour
+}
+
+StatusBar::StatusBar(Rectangle rect, Colour bg, Colour fg, Colour o) : StatusBar(rect)
+{
+    m_colourBG = bg;
+    m_colourFG = fg;
+    m_colourOutline = o;
+}
+
+StatusBar::StatusBar(Rectangle rect, float percent) : StatusBar(rect)
+{
+    percent = (percent > 1.f) ? 1.f : (percent < 0.f) ? 0.f
+                                                      : percent; // ensure percent between 0 and 1
+
+    float newWidth = ((float)rect.width * percent);
+
+    fgRect = {rect.x, rect.y, newWidth, rect.height};
 }
 
 void StatusBar::init() {}
@@ -37,8 +59,8 @@ void StatusBar::move()
 void StatusBar::collisions() {}
 void StatusBar::draw()
 {
-    DrawRectangle(bgRect.x, bgRect.y, bgRect.width, bgRect.height, RED);
-    DrawRectangle(fgRect.x, fgRect.y, fgRect.width * m_percent, fgRect.height, GREEN);
-    DrawRectangleLines(bgRect.x, bgRect.y, bgRect.width, bgRect.height, BLACK);
+    DrawRectangle(bgRect.x, bgRect.y, bgRect.width, bgRect.height, m_colourBG);             // background
+    DrawRectangle(fgRect.x, fgRect.y, fgRect.width * m_percent, fgRect.height, m_colourFG); // foreground
+    DrawRectangleLines(bgRect.x, bgRect.y, bgRect.width, bgRect.height, m_colourOutline);   // outline
 }
 void StatusBar::destroy() {}

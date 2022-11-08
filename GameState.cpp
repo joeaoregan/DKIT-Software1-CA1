@@ -17,7 +17,7 @@ bool GameState::init()
     return true; // return true if no errors (possibly no need if no raylib functions causing errors)
 }
 
-void GameState::update()
+void GameState::update(float deltaTime)
 {
     for (GameObject *obj : objects) // for every object in this state
     {

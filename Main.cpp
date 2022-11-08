@@ -28,12 +28,13 @@ int main()
 
     while (!WindowShouldClose())
     {
+        const float deltaTime{GetFrameTime()};
         Audio::Instance()->handleEvents(); // handle input events etc.
         Audio::Instance()->update();       // update music buffer with new stream data
 
-        Game::Instance()->handleEvents(); // handle input events etc.
-        if (!Game::Instance()->isPaused())
-            Game::Instance()->update(); // update game objects
+        Game::Instance()->handleEvents();    // handle input events etc.
+                                             // if (!Game::Instance()->isPaused())
+        Game::Instance()->update(deltaTime); // update game objects
 
         BeginDrawing(); // start rendering
         // ClearBackground(WHITE);   // clear the screen before rendering the next frame

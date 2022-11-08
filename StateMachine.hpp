@@ -18,10 +18,11 @@ public:
     void pop();                     // pop the last state (e.g. switching from menu back to level)
     void change(GameState *pState); // change the current state
 
-    void update(); // update the objects for the current state
-    void draw();   // render the objects for the current state
+    void update(float deltaTime); // update the objects for the current state
+    void draw();                  // render the objects for the current state
 
     // std::vector<GameState *> &getGameStates() { return m_gameStates; }
+    int getID(); // current state id
 
 private:
     std::vector<GameState *> m_gameStates; // list of states

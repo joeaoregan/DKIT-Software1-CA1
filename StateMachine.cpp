@@ -20,11 +20,11 @@
 //     }
 // }
 
-void StateMachine::update()
+void StateMachine::update(float deltaTime)
 {
     if (!m_gameStates.empty())
     {
-        m_gameStates.back()->update(); // If there is a state update it
+        m_gameStates.back()->update(deltaTime); // If there is a state update it
     }
 }
 
@@ -83,4 +83,10 @@ void StateMachine::change(GameState *pState)
 
     m_gameStates.push_back(pState); // Push back new state
     m_gameStates.back()->init();    // init new state
+}
+
+// get the id of the current state
+int StateMachine::getID()
+{
+    return m_gameStates.back()->getStateID();
 }

@@ -28,10 +28,10 @@ enum game_states
 class GameState
 {
 public:
-    virtual bool init() = 0;   // initialise the objects
-    virtual void update() = 0; // update the objects in the state
-    virtual void draw() = 0;   // render the objects
-    virtual bool close() = 0;  // clear the objects from memory
+    virtual bool init() = 0;                  // initialise the objects
+    virtual void update(float deltaTime) = 0; // update the objects in the state
+    virtual void draw() = 0;                  // render the objects
+    virtual bool close() = 0;                 // clear the objects from memory
 
     virtual void resume() {} // restart current state -- to do -- necessary?
 

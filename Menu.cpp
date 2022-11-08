@@ -22,9 +22,10 @@ bool Menu::init()
     return true; // successfully initialised -- to do -- check this, or make void function
 }
 
-void Menu::update()
+void Menu::update(float deltaTime)
 {
-    GameState::update(); // update the menu objects
+    // std::cout << "menu update" << std::endl;
+    GameState::update(deltaTime); // update the menu objects
 }
 
 void Menu::draw()

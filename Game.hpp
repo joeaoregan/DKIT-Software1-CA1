@@ -26,12 +26,14 @@ public:
         return s_pGame; // otherwise use existing instance
     }
 
-    bool init();           // initialise game
-    void update();         // update the game
-    void handleEvents();   // handle game events
-    void draw();           // render the game
-    void close();          // remove objects from memory
-    void reset(int level); // reset the current level
+    bool init();                  // initialise game
+    void update(float deltaTime); // update the game
+    void handleEvents();          // handle game events
+    void draw();                  // render the game
+    void close();                 // remove objects from memory
+    void reset(int level);        // reset the current level
+
+    void changePauseState(); // pause / unpause
 
     StateMachine *m_pStateMachine; // state handler (finite state machine (FSM))
 

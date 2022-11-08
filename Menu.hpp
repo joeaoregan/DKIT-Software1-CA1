@@ -14,10 +14,10 @@
 class Menu : public GameState // Menu inherits from GameState base class
 {
 public:
-    virtual bool init();   // initialise menu objects
-    virtual void update(); // update menu objects
-    virtual void draw();   // render menu objects
-    virtual bool close();  // clear menu objects from memory
+    virtual bool init();                  // initialise menu objects
+    virtual void update(float deltaTime); // update menu objects
+    virtual void draw();                  // render menu objects
+    virtual bool close();                 // clear menu objects from memory
 
     virtual int getStateID() const { return s_menuID; } // identifies current state
 

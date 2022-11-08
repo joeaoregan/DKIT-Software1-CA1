@@ -23,6 +23,7 @@ public:
     void update();
     void close();
     bool isKeyDown(int key);
+    bool isKeyDownDelay(int key); // delay for menu 200ms items
 
 private:
     InputHandler() {} // constructor, private for singleton pattern
