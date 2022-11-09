@@ -14,17 +14,17 @@
 class Explosion : public GameObject // Explosion inherits directly from the GameObject base class
 {
 public:
-    Explosion(Vector2 position);
-    ~Explosion(); // deconstructor
+    Explosion(Vector2 position); // constructor
+    ~Explosion();                // deconstructor
 
-    void init();       // initialise explosion
-    void move();       // update the explosion
-    void collisions(); // check for collisions
-    void draw();       // render explosion texture
-    void destroy();    // clear explosion textures etc. from memory
+    void init() {}       // initialise explosion
+    void move();         // update the explosion
+    void collisions() {} // check for collisions
+    void draw();         // render explosion texture
+    void destroy();      // clear explosion textures etc. from memory
 
-    Sound fxExplode; // sound to play when explosion occurs
-    float runningTime{};
+    Sound fxExplode;     // sound to play when explosion occurs
+    float runningTime{}; // how often to increment the frame
 };
 
 #endif

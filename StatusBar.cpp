@@ -45,7 +45,6 @@ StatusBar::StatusBar(Rectangle rect, float percent) : StatusBar(rect)
     fgRect = {rect.x, rect.y, newWidth, rect.height};
 }
 
-void StatusBar::init() {}
 void StatusBar::move()
 {
     bgRect.x = getX();
@@ -56,11 +55,14 @@ void StatusBar::move()
     // float newWidth = ((float)fgRect.width * m_percent); // recursive
     // fgRect.width = newWidth;
 }
-void StatusBar::collisions() {}
+
 void StatusBar::draw()
 {
     DrawRectangle(bgRect.x, bgRect.y, bgRect.width, bgRect.height, m_colourBG);             // background
     DrawRectangle(fgRect.x, fgRect.y, fgRect.width * m_percent, fgRect.height, m_colourFG); // foreground
     DrawRectangleLines(bgRect.x, bgRect.y, bgRect.width, bgRect.height, m_colourOutline);   // outline
 }
-void StatusBar::destroy() {}
+void StatusBar::destroy()
+{
+    GameObject::destroy();
+}

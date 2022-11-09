@@ -18,14 +18,6 @@ Bullet::Bullet() : GameObject({-50.0f, 360.0f, 50.0f, 5.0f}, "sprites/LaserGreen
     setID(BULLET);
 }
 
-Bullet::~Bullet()
-{
-}
-
-void Bullet::init()
-{
-}
-
 void Bullet::move()
 {
     if (getActive())
@@ -60,5 +52,3 @@ void Bullet::draw()
         }
     }
 }
-
-void Bullet::destroy() {}

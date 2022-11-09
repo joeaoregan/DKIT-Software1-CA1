@@ -23,8 +23,8 @@ const int FLASH_TIMES = 5;  // number of times to flash player
 class Player : public GameObject // Player inherits directly from the GameObject base class
 {
 public:
-    Player();  // constructor
-    ~Player(); // deconstructor
+    Player();    // constructor
+    ~Player() {} // deconstructor
 
     void init();       // initialise player
     void move();       // update the player

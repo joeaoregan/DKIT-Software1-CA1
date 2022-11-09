@@ -17,11 +17,11 @@ public:
     StatusBar(Rectangle rect, Colour bg, Colour fg, Colour o);
     ~StatusBar();
 
-    void init();
-    void move();
-    void collisions();
-    void draw();
-    void destroy();
+    void init(){};       // heavy lifting done in constructor
+    void move();         // update the object
+    void collisions(){}; // not needed here
+    void draw();         // render the object
+    void destroy();      // clear the object
 
     Rectangle bgRect, fgRect;
 

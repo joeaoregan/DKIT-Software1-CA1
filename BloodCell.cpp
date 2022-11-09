@@ -33,8 +33,6 @@ BloodCell::BloodCell() : GameObject({50.0f, 320.0f, 100.0f, 55.0f}, "sprites/Blo
     setID(BLOOD_CELL);
 }
 
-BloodCell::~BloodCell() {}
-void BloodCell::init() {}
 void BloodCell::move()
 {
     setX(getX() - getSpeed());
@@ -81,5 +79,3 @@ void BloodCell::draw()
         DrawRectangleLines(getX(), getY(), getWidth(), getHeight(), WHITE);
     }
 }
-
-void BloodCell::destroy() {}

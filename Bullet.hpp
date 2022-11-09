@@ -16,14 +16,14 @@ const bool TEST_BULLET = true;
 class Bullet : public GameObject // child of GameObject base class
 {
 public:
-    Bullet();  // constructor
-    ~Bullet(); // deconstructor
+    Bullet();    // constructor
+    ~Bullet() {} // deconstructor
 
-    void init();       // initialise bullet object
+    void init() {}     // initialise bullet object
     void move();       // update the bullet object
     void collisions(); // check collisions with other objects
     void draw();       // render bullet object
-    void destroy();    // clear bullet object from memory
+    void destroy() {}  // clear bullet object from memory
 };
 
 #endif

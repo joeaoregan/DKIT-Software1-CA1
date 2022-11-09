@@ -22,13 +22,6 @@ GameObject::GameObject(Rectangle rect, std::string src, bool collidable) : GameO
     m_sprite = LoadTexture(("resources/" + src + ".png").c_str());
 }
 
-GameObject::~GameObject() {}
-
-void GameObject::init() {}
-void GameObject::move() {}
-void GameObject::collisions() {}
-void GameObject::draw() {}
-
 void GameObject::destroy()
 {
     UnloadTexture(m_sprite); // unload the texture

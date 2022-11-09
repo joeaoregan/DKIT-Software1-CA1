@@ -16,15 +16,6 @@ Background::Background() : GameObject({0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT},
     bg2X = getX() + SCREEN_WIDTH;
 }
 
-Background::~Background()
-{
-}
-
-void Background::init()
-{
-    // sort constructor stuff, maybe some goes here
-}
-
 void Background::move()
 {
     setX(getX() - SCROLL_SPEED);
@@ -40,14 +31,8 @@ void Background::move()
     }
 }
 
-void Background::collisions()
-{
-}
-
 void Background::draw()
 {
     DrawTexture(getTexture(), getX(), 0, WHITE);
     DrawTexture(getTexture(), bg2X, 0, WHITE);
 }
-
-void Background::destroy() {}

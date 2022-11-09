@@ -22,8 +22,6 @@ Explosion::~Explosion()
     std::cout << "Explosion destroyed" << std::endl;
 }
 
-void Explosion::init() {}
-
 void Explosion::move()
 {
     const float deltaTime(GetFrameTime());
@@ -39,8 +37,6 @@ void Explosion::move()
         }
     }
 }
-
-void Explosion::collisions() {}
 
 void Explosion::draw()
 {

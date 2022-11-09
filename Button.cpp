@@ -21,6 +21,9 @@ void Button::init()
 
 void Button::draw()
 {
+    // DrawRectangleRounded({BTN_X, 100, BTN_W, 50}, 0.15f, 12, MAROON);
+    // DrawRectangleRoundedLines({BTN_X, 100, BTN_W, 50}, 0.15f, 12, 1.5f, WHITE);
+
     DrawRectangleRounded({getX(), getY(), (float)getWidth(), (float)getHeight()}, m_roundness, m_segments, m_bgColour);
     DrawRectangleRoundedLines({getX(), getY(), (float)getWidth(), (float)getHeight()}, m_roundness, m_segments, m_lineThickness, m_lineColour);
     text->draw();

@@ -27,10 +27,6 @@ Player::Player() : GameObject({50.0f, 320.0f, 50.0f, 50.0f}, "sprites/Player1Shi
     setID(PLAYER);
 }
 
-Player::~Player()
-{
-}
-
 void Player::init()
 {
     m_healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}, 1.0f); // offset position to center under player
@@ -138,7 +134,6 @@ void Player::collisions()
 
 void Player::draw()
 {
-    GameObject::draw();
     DrawCircleV(getPosition(), getHeight(), MAROON);
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
     // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);

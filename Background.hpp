@@ -14,14 +14,14 @@
 class Background : public GameObject
 {
 public:
-    Background();  // constructor
-    ~Background(); // deconstructor
+    Background();    // constructor
+    ~Background() {} // deconstructor
 
-    void init();       // initialise the object
-    void move();       // update the object
-    void collisions(); // check collisions with other objects
-    void draw();       // render the object
-    void destroy();    // remove the object from memory
+    void init() {}       // initialise the object
+    void move();         // update the object
+    void collisions() {} // check collisions with other objects
+    void draw();         // render the object
+    void destroy() {}    // remove the object from memory
 
     int bg2X; // starting point for 2nd part of scrolling background
 };

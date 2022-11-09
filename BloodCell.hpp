@@ -16,14 +16,14 @@ const bool TEST_BLOODCELL = true;
 class BloodCell : public GameObject
 {
 public:
-    BloodCell();  // constructor
-    ~BloodCell(); // deconstructor
+    BloodCell();    // constructor
+    ~BloodCell() {} // deconstructor
 
-    void init();       // initialise objects
+    void init() {}     // initialise objects
     void move();       // update objects
     void collisions(); // check object collisions (no need here)
     void draw();       // render objects
-    void destroy();    // clear objects from memory
+    void destroy() {}  // clear objects from memory
 
     void setRotateClockwise(bool clockwise)
     {

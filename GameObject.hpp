@@ -28,6 +28,7 @@ enum object_id
 class GameObject
 {
 public:
+    // constructor
     GameObject();
     GameObject(Vector2 coordinates);
     GameObject(Rectangle rect, std::string src = "", bool collidable = false);
@@ -35,13 +36,16 @@ public:
     {
         m_id = id;
     }
-    ~GameObject();
 
-    virtual void init() = 0;
-    virtual void move() = 0;
-    virtual void collisions();
-    virtual void draw() = 0;
-    virtual void destroy() = 0;
+    ~GameObject(){}; // deconstructor
+
+    // pure virtual functions
+    virtual void init() = 0; // init each object
+    virtual void move() = 0; // update each object
+    virtual void draw() = 0; // render each object
+
+    virtual void destroy(); // destroy each object
+    virtual void collisions(){};
 
     Vector2 getPosition() { return m_position; }
     void setPosition(Vector2 position) { m_position = position; }
