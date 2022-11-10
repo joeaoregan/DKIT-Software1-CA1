@@ -27,12 +27,12 @@ void Text::draw()
     if (m_flashing)
     {
         if ((m_framesCounter / 30) % 2 == 0)
-            DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_colour);
+            DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_unselectedColour);
         else
-            (DrawRectangle(0, 600, 1280, 120, BLACK));
+            (DrawRectangle(0, 600, 1280, 120, BLACK)); // need to clear screen for draw in main to flash properly
     }
     else
     {
-        DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_colour);
+        DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, (isSelected()) ? m_selectedColour : m_unselectedColour);
     }
 }

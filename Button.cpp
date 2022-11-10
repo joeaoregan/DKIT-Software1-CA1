@@ -8,6 +8,7 @@
 
 #include "Button.hpp"
 #include "Game.hpp"
+#include "Text.hpp"
 
 const float BTN_X = SCREEN_WIDTH * 0.2f;
 const float BTN_W = SCREEN_WIDTH * 0.6f;
@@ -21,10 +22,8 @@ void Button::init()
 
 void Button::draw()
 {
-    // DrawRectangleRounded({BTN_X, 100, BTN_W, 50}, 0.15f, 12, MAROON);
-    // DrawRectangleRoundedLines({BTN_X, 100, BTN_W, 50}, 0.15f, 12, 1.5f, WHITE);
-
     DrawRectangleRounded({getX(), getY(), (float)getWidth(), (float)getHeight()}, m_roundness, m_segments, m_bgColour);
-    DrawRectangleRoundedLines({getX(), getY(), (float)getWidth(), (float)getHeight()}, m_roundness, m_segments, m_lineThickness, m_lineColour);
+    DrawRectangleRoundedLines({getX(), getY(), (float)getWidth(), (float)getHeight()}, m_roundness, m_segments, m_lineThickness, (isSelected()) ? m_selectedLineColour : m_unselectedLineColour);
+    text->setSelected(isSelected());
     text->draw();
 }

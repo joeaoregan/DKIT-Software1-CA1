@@ -105,6 +105,9 @@ public:
     int getID() { return m_id; }
     void setID(int id) { m_id = id; }
 
+    bool isSelected() { return m_selected; }
+    void setSelected(bool selected) { m_selected = selected; }
+
 private:
     int m_id;              // identify the type of object
     Vector2 m_position;    // object position
@@ -126,6 +129,8 @@ private:
 
     int m_health; // health for object
     int m_damage; // damage object inflicts
+
+    bool m_selected = false; // object is selected
 
     std::vector<GameObject *> m_subObjects; // list of sub-objects to update rendering etc. e.g. status bars, weapons
 };

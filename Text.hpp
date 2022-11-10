@@ -21,17 +21,18 @@ class Text : public GameObject
 {
 public:
     // constructor
-    Text(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool centered = true, Colour colour = WHITE) : GameObject(TEXT)
+    Text(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool centered = true, Colour unselectedColour = BLACK, Colour selectedColour = WHITE) : GameObject(TEXT)
     {
         m_text = text;
         m_centered = centered;
         if (fontSize == 0)
             m_fontSize = GetFontDefault().baseSize; // use default font size
         else
-            m_fontSize = fontSize; // use specified font size
-        setPosition(pos);          // position of text (overridden by centered)
-        m_colour = colour;         // colour of text
-        m_spacing = 1.0f;          // spacing 1 by default
+            m_fontSize = fontSize;             // use specified font size
+        setPosition(pos);                      // position of text (overridden by centered)
+        m_unselectedColour = unselectedColour; // colour of text when not selected
+        m_selectedColour = selectedColour;     // colour of text when selected
+        m_spacing = 1.0f;                      // spacing 1 by default
 
         m_flashing = false;
         m_framesCounter = 0;
@@ -52,14 +53,15 @@ public:
     void setFlashing(bool flash) { m_flashing = flash; } // flash the text
 
 private:
-    const char *m_text; // text to display
-    float m_fontSize;   // font size to use
-    bool m_centered;    // is the text centered
-    Colour m_colour;    // colour of text
-    float m_spacing;    // character spacing
+    const char *m_text;        // text to display
+    float m_fontSize;          // font size to use
+    bool m_centered;           // is the text centered
+    Colour m_unselectedColour; // colour when text is not selected
+    Colour m_selectedColour;   // colour when text is selected
+    float m_spacing;           // character spacing
 
-    bool m_flashing;
-    int m_framesCounter;
+    bool m_flashing;     // text is flashing
+    int m_framesCounter; // time between flashes
 };
 
 #endif

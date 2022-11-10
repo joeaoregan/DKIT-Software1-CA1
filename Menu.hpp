@@ -21,8 +21,11 @@ public:
 
     virtual int getStateID() const { return s_menuID; } // identifies current state
 
+    std::vector<GameObject *> selectableObjects; // list of selectable objects (buttons / options)
+
 private:
     static const int s_menuID; // id for current state
+    int m_menuOption;          // current selected menu option
 };
 
 #endif

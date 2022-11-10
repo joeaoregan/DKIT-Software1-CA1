@@ -28,9 +28,16 @@ public:
     bool isKeyDown(int key);
     bool isKeyDownDelay(int key); // delay for menu 200ms items
 
+    bool left(bool delay = false);  // move left
+    bool right(bool delay = false); // move right
+    bool up(bool delay = false);    // move up
+    bool down(bool delay = false);  // move down
+
 private:
     InputHandler() {} // constructor, private for singleton pattern
 
     static InputHandler *s_pInstance; // Singleton instance of input handler
 };
 #endif
+
+typedef InputHandler Input; // Just can't be bothered typing InputHandler every time
