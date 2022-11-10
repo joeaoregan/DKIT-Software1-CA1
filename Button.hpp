@@ -25,6 +25,8 @@ public:
         m_unselectedLineColour = BLACK;
         m_selectedLineColour = WHITE;
         m_labelColour = m_unselectedLineColour;
+
+        // init();
     }
 
     ~Button(){}; // deconstructor

@@ -23,19 +23,21 @@ public:
     // constructor
     Text(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool centered = true, Colour unselectedColour = BLACK, Colour selectedColour = WHITE) : GameObject(TEXT)
     {
-        m_text = text;
-        m_centered = centered;
+        m_text = text; // text to display
         if (fontSize == 0)
             m_fontSize = GetFontDefault().baseSize; // use default font size
         else
             m_fontSize = fontSize;             // use specified font size
+        m_centered = centered;                 // center the text on screen width
         setPosition(pos);                      // position of text (overridden by centered)
         m_unselectedColour = unselectedColour; // colour of text when not selected
         m_selectedColour = selectedColour;     // colour of text when selected
         m_spacing = 1.0f;                      // spacing 1 by default
 
-        m_flashing = false;
-        m_framesCounter = 0;
+        m_flashing = false;  // text flashes
+        m_framesCounter = 0; // frame count for flashing text
+
+        init();
     }
 
     Text(const char *text, int fontSize) : Text(text)
@@ -50,6 +52,7 @@ public:
     void draw();         // render objects
     void destroy(){};    // clear objects from memory
 
+    bool getFlashing() { return m_flashing; }            // is the text flashing
     void setFlashing(bool flash) { m_flashing = flash; } // flash the text
 
 private:
@@ -63,5 +66,4 @@ private:
     bool m_flashing;     // text is flashing
     int m_framesCounter; // time between flashes
 };
-
 #endif

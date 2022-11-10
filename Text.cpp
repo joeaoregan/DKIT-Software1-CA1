@@ -24,15 +24,23 @@ void Text::move()
 
 void Text::draw()
 {
-    if (m_flashing)
+    // DrawRectangle(0, 600, 1280, 120, BLACK); // need to clear screen for draw in main to flash properly
+    if (getActive())
     {
-        if ((m_framesCounter / 30) % 2 == 0)
-            DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_unselectedColour);
+        if (m_flashing)
+        {
+            if ((m_framesCounter / 30) % 2 == 0)
+            {
+                //
+                DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, m_unselectedColour);
+            }
+            // else
+            //     (DrawRectangle(0, 600, 1280, 120, BLACK)); // need to clear screen for draw in main to flash properly
+        }
         else
-            (DrawRectangle(0, 600, 1280, 120, BLACK)); // need to clear screen for draw in main to flash properly
-    }
-    else
-    {
-        DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, (isSelected()) ? m_selectedColour : m_unselectedColour);
+        {
+            // DrawRectangle(0, 600, 1280, 120, BLACK); // need to clear screen for draw in main to flash properly
+            DrawTextEx(Game::Instance()->getFont(), m_text, getPosition(), m_fontSize, m_spacing, (isSelected()) ? m_selectedColour : m_unselectedColour);
+        }
     }
 }
