@@ -60,10 +60,8 @@ bool HighScores::init()
     return true; // successfully initialised -- to do -- check this, or make void function
 }
 
-void HighScores::update(float deltaTime)
+void HighScores::handleInput()
 {
-    // std::cout << "menu update" << std::endl;
-
     // action button
     if (Input::Instance()->select(DELAY))
     {
@@ -89,6 +87,11 @@ void HighScores::update(float deltaTime)
         menuOptionChange(m_menuOption, INCREMENT);
         std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
+}
+
+void HighScores::update(float deltaTime)
+{
+    // std::cout << "menu update" << std::endl;
 
     GameState::update(deltaTime); // update the menu objects
 }

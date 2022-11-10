@@ -17,6 +17,7 @@ public:
     bool checkCollision(Rectangle *a, Rectangle *b);
 
     virtual bool init();                  // initialise level objects
+    virtual void handleInput() {}         // handle user input NOT NEEDED HERE
     virtual void update(float deltaTime); // update level objects
     virtual void draw();                  // render level objects
     virtual bool close();                 // clear level objects from memory

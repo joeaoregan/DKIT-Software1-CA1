@@ -23,10 +23,10 @@ class Pause : public GameState
 {
 public:
     virtual bool init();                  // initialise level objects
+    virtual void handleInput();           // handle user input
     virtual void update(float deltaTime); // update level objects
     virtual void draw();                  // render level objects
     virtual bool close();                 // clear level objects from memory
-    void handleInput();
 
     virtual int getStateID() const { return s_pauseID; } // current state ID (int using enum)
 

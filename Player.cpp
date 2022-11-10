@@ -154,26 +154,21 @@ void Player::destroy()
 
 void Player::handleInput()
 {
-    if (InputHandler::Instance()->isKeyDown(KEY_RIGHT) ||
-        InputHandler::Instance()->isKeyDown(KEY_D))
+    if (Input::Instance()->right())
     {
         setX(getX() + getSpeed());
     }
-    else if (InputHandler::Instance()->isKeyDown(KEY_LEFT) ||
-             InputHandler::Instance()->isKeyDown(KEY_A))
+    else if (Input::Instance()->left())
     {
         setX(getX() - getSpeed());
     }
 
-    if (InputHandler::Instance()->isKeyDown(KEY_UP) ||
-        InputHandler::Instance()->isKeyDown(KEY_W))
+    if (Input::Instance()->up())
     {
         setY(getY() - getSpeed());
     }
-    else if (InputHandler::Instance()->isKeyDown(KEY_DOWN) ||
-             InputHandler::Instance()->isKeyDown(KEY_S))
+    else if (Input::Instance()->down())
     {
-
         setY(getY() + getSpeed());
     }
 
@@ -181,7 +176,7 @@ void Player::handleInput()
         m_laserFireCount++;                  // increment laser count each frame
 
     // attack
-    if (InputHandler::Instance()->isKeyDown(KEY_SPACE))
+    if (Input::Instance()->isKeyDown(KEY_SPACE))
     {
         // if (DEBUG_MODE)
         // {

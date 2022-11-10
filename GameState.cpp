@@ -42,6 +42,8 @@ bool GameState::init()
     return true; // return true if no errors (possibly no need if no raylib functions causing errors)
 }
 
+void GameState::handleInput() {}
+
 void GameState::update(float deltaTime)
 {
     // regular objects

@@ -20,6 +20,14 @@
 //     }
 // }
 
+void StateMachine::handleInput()
+{
+    if (!m_gameStates.empty())
+    {
+        m_gameStates.back()->handleInput(); // handle user input
+    }
+}
+
 void StateMachine::update(float deltaTime)
 {
     if (!m_gameStates.empty())

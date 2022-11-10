@@ -18,6 +18,7 @@ public:
     void pop();                     // pop the last state (e.g. switching from menu back to level)
     void change(GameState *pState); // change the current state
 
+    void handleInput();           // handle user input
     void update(float deltaTime); // update the objects for the current state
     void draw();                  // render the objects for the current state
 

@@ -17,6 +17,7 @@ public:
     bool checkCollision(Rectangle *a, Rectangle *b);
 
     virtual bool init();                  // initialise objects
+    virtual void handleInput();           // handle user input
     virtual void update(float deltaTime); // update objects
     virtual void draw();                  // render objects
     virtual bool close();                 // clear objects from memory

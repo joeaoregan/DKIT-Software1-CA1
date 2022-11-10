@@ -37,12 +37,14 @@ void Game::update(float deltaTime)
 
 void Game::handleEvents()
 {
-    InputHandler::Instance()->update();
+    // Input::Instance()->update(); // does nothing
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
         changePauseState();
     }
+
+    m_pStateMachine->handleInput();
 }
 
 void Game::changePauseState()
@@ -65,7 +67,7 @@ void Game::draw()
 void Game::close()
 {
     std::cout << "cleaning game" << std::endl;
-    InputHandler::Instance()->close();
+    Input::Instance()->close();
 }
 
 void Game::reset(int level)

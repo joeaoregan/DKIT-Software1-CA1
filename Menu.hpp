@@ -15,6 +15,7 @@ class Menu : public GameState // Menu inherits from GameState base class
 {
 public:
     virtual bool init();                  // initialise menu objects
+    virtual void handleInput();           // handle user input
     virtual void update(float deltaTime); // update menu objects
     virtual void draw();                  // render menu objects
     virtual bool close();                 // clear menu objects from memory

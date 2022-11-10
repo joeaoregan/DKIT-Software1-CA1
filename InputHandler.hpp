@@ -25,8 +25,8 @@ public:
         return s_pInstance; // otherwise return the existing one
     }
 
-    void update();
-    void close();
+    void update() {} // todo
+    void close() {}  // todo
     bool isKeyDown(int key);
     bool isKeyDownDelay(int key); // delay for menu 200ms items
 

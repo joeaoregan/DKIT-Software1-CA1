@@ -68,23 +68,9 @@ bool Pause::init()
     return true;
 }
 
-void Pause::update(float deltaTime)
-{
-    // std::cout << "pause - update" << std::endl;
-    GameState::update(deltaTime);
-    // audioBar->setPercent(0.5f);
-    handleInput();
-
-    StatusBar *sb = static_cast<StatusBar *>(audioBar);
-    sb->setPercent(Audio::Instance()->timePlayed());
-
-    // std::cout << "pause update - time played: " << Audio::Instance()->timePlayed() << std::endl;
-    // std::cout << "pause delta time: " << deltaTime << std::endl;
-}
-
 void Pause::handleInput()
 {
-    if (InputHandler::Instance()->isKeyDown(KEY_ENTER))
+    if (Input::Instance()->isKeyDown(KEY_ENTER))
     {
         switch (menuOption)
         {
@@ -145,6 +131,20 @@ void Pause::handleInput()
             break;
         }
     }
+}
+
+void Pause::update(float deltaTime)
+{
+    // std::cout << "pause - update" << std::endl;
+    GameState::update(deltaTime);
+    // audioBar->setPercent(0.5f);
+    handleInput();
+
+    StatusBar *sb = static_cast<StatusBar *>(audioBar);
+    sb->setPercent(Audio::Instance()->timePlayed());
+
+    // std::cout << "pause update - time played: " << Audio::Instance()->timePlayed() << std::endl;
+    // std::cout << "pause delta time: " << deltaTime << std::endl;
 }
 
 void Pause::draw()

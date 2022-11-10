@@ -15,17 +15,6 @@ InputHandler *InputHandler::s_pInstance = 0;
 double timeSinceLastKeyPress = 0.0f;
 const float KEY_PRESS_DELAY = 0.2f;
 
-void InputHandler::update()
-{
-    // to do
-    // std::cout << "Time InputHandler: " << GetTime() << " last key press " << timeSinceLastKeyPress << std::endl;
-}
-
-void InputHandler::close()
-{
-    // to do
-}
-
 bool InputHandler::isKeyDown(int key)
 {
     return IsKeyDown(key); // return current key press
