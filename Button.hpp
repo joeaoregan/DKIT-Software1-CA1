@@ -15,7 +15,7 @@ class Button : public GameObject
 {
 public:
     // constructor
-    Button(Rectangle rect, const char *label = "btnLabel", Colour colour = MAROON) : GameObject(rect)
+    Button(Rectangle rect, const char *label = "btnLabel", bool centered = true, Colour colour = MAROON) : GameObject(rect)
     {
         m_label = label;
         m_roundness = 0.15f;
@@ -25,6 +25,7 @@ public:
         m_unselectedLineColour = BLACK;
         m_selectedLineColour = WHITE;
         m_labelColour = m_unselectedLineColour;
+        m_centered = centered;
 
         // init();
     }
@@ -47,6 +48,9 @@ private:
     Colour m_selectedLineColour;   // line colour when button is selected
     Colour m_labelColour;          // label colour
     GameObject *text;              // Text label
+    bool m_centered;               // center button on position.x
+
+    float labelX; // label x position
 };
 
 #endif

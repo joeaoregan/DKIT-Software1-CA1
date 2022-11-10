@@ -10,7 +10,6 @@
 #include "Menu.hpp"
 #include "InputHandler.hpp"
 #include "Player.hpp"
-#include "Level.hpp"
 #include "Pause.hpp"
 
 Game *Game::s_pGame = 0;
@@ -39,11 +38,6 @@ void Game::update(float deltaTime)
 void Game::handleEvents()
 {
     InputHandler::Instance()->update();
-
-    if ((m_pStateMachine->getID() == MENU) && (IsKeyDown(KEY_ENTER))) // pressing enter
-    {
-        m_pStateMachine->change(new Level());
-    }
 
     if (IsKeyPressed(KEY_ESCAPE))
     {

@@ -1,55 +1,63 @@
 /*
-    Menu.cpp
-    20/10/2022
+    HighScores.cpp
+    10/11/2022
 
-    Menu state class
+    High score class
+    Display the high scores
 */
 
-#include "Menu.hpp"
+#include "HighScores.hpp"
 #include "Background.hpp"
 #include "FlashingText.hpp"
 #include "Button.hpp"
 #include "InputHandler.hpp"
-#include "Game.hpp"
-#include "Level.hpp"
-#include "HighScores.hpp"
+#include "Game.hpp" // change states
+#include "Menu.hpp"
+#include <string>
 
-const int Menu::s_menuID = MENU; // identify current state
+const int HighScores::s_highScoresID = HIGH_SCORES; // identify current state
 
 enum menu_options
 {
-    MENU_START = 0,
-    MENU_HIGH_SCORE = 1,
-    MENU_QUIT = 2
+    SCORES_BACK = 0,
+    SCORES_CLEAR = 1,
 };
 
-bool Menu::init()
-{
-    // std::cout << "entering menu state" << std::endl;
+// Text *scores[4];
+const int SCORE_START_POSITION = 80;
+std::string score;
 
-    GameObject *bg = new Background(); // use different background for menu -- to do -- change from game background
+const char *scores[10] = {"1. Joe 10,000", "2. Derp 9,000", "3. Mark 8,000", "4. Jimmy 7,000", "5. Paul 6,000", "6. Jamie 5,000", "7. Emily 4,000", "8. Clara 3,000", "9. Katie 2,000", "10. Ava 1,000"};
+
+bool HighScores::init()
+{
+    GameObject *bg = new Background(); // scrolling background
     objects.push_back(bg);             // add background to state objects list
 
-    GameObject *txt1 = new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE);
-    objects.push_back(txt1);
+    objects.push_back((GameObject *)new Text("CA1 Raylib Application - High Scores", {0, 0}, HEADING, true, WHITE));
     objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE)));
 
+    // for (unsigned int i = 0; i < sizeof(scores); i++)
+    for (unsigned int i = 0; i < 10; i++)
+    {
+        // std::string newStr = std::to_string(i + 1) + ". " + score + std::to_string(10000 - (100 * i));
+        // std::string newStr = "derp";
+        // score = std::to_string(i + 1) + ". " + score + std::to_string(10000 - (100 * i));
+        // const char *scoreStr = score.c_str();
+        objects.push_back((GameObject *)new Text(scores[i], {50, (float)(SCORE_START_POSITION + (40 * i))}, SUB_HEADING, true, WHITE));
+    }
+
     // Flashing text
-    flashingTextObjs.push_back(new FlashText("Press Enter to Start", {100, 635}, HEADING, true, WHITE)); // Push to menu objects list as GameObject
-    flashingTextObjs.push_back(new FlashText("View High Scores", {100, 635}, HEADING, true, WHITE));
-    flashingTextObjs.push_back(new FlashText("Press Enter to Quit", {100, 635}, HEADING, true, WHITE));
+    flashingTextObjs.push_back(new FlashText("Return To Main Menu", {100, 635}, HEADING, true, WHITE));
+    flashingTextObjs.push_back(new FlashText("Clear High Scores List", {100, 635}, HEADING, true, WHITE));
 
     GameState::init(); // initialise objects in object list
 
     // add buttons
     m_menuOption = 0; // 1st button in list of selectable objects is selected by default
 
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 120, SCREEN_WIDTH * 0.6f, 50}, "High Scores")));
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 180, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 120, SCREEN_WIDTH * 0.6f, 50}, "High Scores")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 180, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
+    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.75f, 500, SCREEN_WIDTH * 0.2f, 50}, "Back")));
+    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.25f, 500, SCREEN_WIDTH * 0.2f, 50}, "Clear")));
 
     m_totalMenuItems = selectableObjects.size();    // calculate once
     m_totalFlashingItems = flashingTextObjs.size(); // calculate once
@@ -65,7 +73,7 @@ bool Menu::init()
     return true; // successfully initialised -- to do -- check this, or make void function
 }
 
-void Menu::update(float deltaTime)
+void HighScores::update(float deltaTime)
 {
     // std::cout << "menu update" << std::endl;
     GameState::update(deltaTime); // update the menu objects
@@ -75,36 +83,23 @@ void Menu::update(float deltaTime)
     {
         switch (m_menuOption)
         {
-        case MENU_START:
-            // std::cout << "start game" << std::endl;
-            Game::Instance()->m_pStateMachine->change(new Level());
+        case SCORES_BACK:
+            Game::Instance()->m_pStateMachine->change(new Menu());
             break;
-        case MENU_HIGH_SCORE:
-            // std::cout << "high scores" << std::endl;
-            Game::Instance()->m_pStateMachine->change(new HighScores());
-            break;
-        case MENU_QUIT:
-            std::cout << "quit game" << std::endl;
+        case SCORES_CLEAR:
+            std::cout << "high scores cleared" << std::endl;
             break;
         }
     }
-    // x axis input
-    if (Input::Instance()->left(DELAY))
-    {
-        std::cout << "left key pressed" << std::endl;
-    }
-    else if (Input::Instance()->right(DELAY))
-    {
-        std::cout << "right key pressed" << std::endl;
-    }
-    // y axis input
-    if (Input::Instance()->up(DELAY))
+
+    // switch menu options
+    if (Input::Instance()->up(DELAY) || Input::Instance()->left(DELAY))
     {
         // m_menuOption--;
         menuOptionChange(m_menuOption, DECREMENT);
         std::cout << "up key pressed - option: " << m_menuOption << std::endl;
     }
-    else if (Input::Instance()->down(DELAY))
+    else if (Input::Instance()->down(DELAY) || Input::Instance()->right(DELAY))
     {
         // m_menuOption++;
         menuOptionChange(m_menuOption, INCREMENT);
@@ -117,7 +112,7 @@ void Menu::update(float deltaTime)
     }
 }
 
-void Menu::draw()
+void HighScores::draw()
 {
     ClearBackground(RED); // clear the screen before rendering the next frame
     // DrawRectangle(0, 600, 1280, 120, BLACK); // background for flashing text
@@ -141,10 +136,8 @@ void Menu::draw()
     }
 }
 
-bool Menu::close()
+bool HighScores::close()
 {
-    // std::cout << "exiting menu state" << std::endl;
-
     GameState::close(); // clear menu objects from memory
 
     return true; // successfully exited -- to do -- check this, or make void function

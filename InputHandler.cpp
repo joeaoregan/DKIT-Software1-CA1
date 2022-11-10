@@ -42,6 +42,22 @@ bool InputHandler::isKeyDownDelay(int key)
     return false;
 }
 
+bool InputHandler::select(bool delay)
+{
+    if (delay)
+    {
+        if (isKeyDownDelay(KEY_ENTER))
+        {
+            return true;
+        }
+    }
+    else if (IsKeyDown(KEY_ENTER))
+    {
+        return true;
+    }
+    return false;
+}
+
 bool InputHandler::left(bool delay)
 {
     if (delay)

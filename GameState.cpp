@@ -5,10 +5,14 @@
     Game State class
     Base class for game state classes
 */
+
 #include "GameState.hpp"
 
 bool GameState::init()
 {
+    m_totalMenuItems = 0;
+    m_totalFlashingItems = 0;
+
     for (GameObject *obj : objects) // for every object in this state
     {
         (*obj).init(); // initialise the object
@@ -41,4 +45,18 @@ bool GameState::close()
     }
 
     return true;
+}
+
+void GameState::menuOptionChange(int &option, int amount)
+{
+    option += amount;
+
+    if (option > m_totalMenuItems - 1)
+    {
+        option = 0;
+    }
+    else if (option < 0)
+    {
+        option = m_totalMenuItems - 1;
+    }
 }
