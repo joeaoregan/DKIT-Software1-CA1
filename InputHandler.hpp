@@ -8,6 +8,8 @@
 #ifndef INPUT_HANDLER_HPP
 #define INPUT_HANDLER_HPP
 
+const bool DELAY = true; // use delay between button presses
+
 class InputHandler
 {
 public:

@@ -14,14 +14,7 @@
 const int Menu::s_menuID = MENU; // identify current state
 const int INCREMENT = 1;         // for readabiity using function to change selected item up
 const int DECREMENT = -1;        // for readability using function to change selected item down
-
-// struct Button
-// {
-//     Rectangle rect;
-// };
-
-const bool DELAY = true;
-const int MENU_ITEMS = 2;
+const int MENU_ITEMS = 2;        // number of buttons in menu
 
 int selectableObjectsTotal = 0;
 

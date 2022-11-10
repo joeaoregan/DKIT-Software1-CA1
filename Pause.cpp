@@ -95,7 +95,7 @@ void Pause::handleInput()
     }
 
     // move up and down menu items
-    if (InputHandler::Instance()->isKeyDownDelay(KEY_W) || InputHandler::Instance()->isKeyDownDelay(KEY_UP))
+    if (Input::Instance()->up(DELAY))
     {
         menuOption--;
         if (menuOption < 0)
@@ -104,7 +104,7 @@ void Pause::handleInput()
         }
         std::cout << "menu option down: " << menuOption << std::endl;
     }
-    else if (InputHandler::Instance()->isKeyDownDelay(KEY_S) || InputHandler::Instance()->isKeyDownDelay(KEY_DOWN))
+    else if (Input::Instance()->down(DELAY))
     {
         menuOption++;
         if (menuOption >= menuOptionsTotal)
@@ -115,7 +115,7 @@ void Pause::handleInput()
     }
 
     // adjust volumes
-    if (InputHandler::Instance()->isKeyDownDelay(KEY_A) || InputHandler::Instance()->isKeyDownDelay(KEY_LEFT))
+    if (Input::Instance()->left(DELAY))
     {
         switch (menuOption)
         {
@@ -130,7 +130,7 @@ void Pause::handleInput()
             break;
         }
     }
-    else if (InputHandler::Instance()->isKeyDownDelay(KEY_D) || InputHandler::Instance()->isKeyDownDelay(KEY_RIGHT))
+    else if (Input::Instance()->left(DELAY))
     {
         switch (menuOption)
         {
