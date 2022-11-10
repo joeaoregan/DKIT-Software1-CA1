@@ -27,40 +27,26 @@ bool Menu::init()
 {
     // std::cout << "entering menu state" << std::endl;
 
+    // add background
     GameObject *bg = new Background(); // use different background for menu -- to do -- change from game background
     objects.push_back(bg);             // add background to state objects list
 
+    // add title
     GameObject *txt1 = new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE);
     objects.push_back(txt1);
     objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE)));
 
-    // Flashing text
+    // add button descriptor flashing text
     flashingTextObjs.push_back(new FlashText("Press Enter to Start", {100, 635}, HEADING)); // Push to menu objects list as GameObject
     flashingTextObjs.push_back(new FlashText("View High Scores", {100, 635}, HEADING));
     flashingTextObjs.push_back(new FlashText("Press Enter to Quit", {100, 635}, HEADING));
 
-    GameState::init(); // initialise objects in object list
-
     // add buttons
-    m_menuOption = 0; // 1st button in list of selectable objects is selected by default
-
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 120, SCREEN_WIDTH * 0.6f, 50}, "High Scores")));
-    // selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.2f, 180, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
     selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
     selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 120, SCREEN_WIDTH * 0.6f, 50}, "High Scores")));
     selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 180, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
 
-    m_totalMenuItems = selectableObjects.size();    // calculate once
-    m_totalFlashingItems = flashingTextObjs.size(); // calculate once
-
-    // initialise buttons
-    for (GameObject *obj : selectableObjects)
-    {
-        obj->init(); // initialise the selectable objects
-    }
-
-    menuOptionChange(m_menuOption, 0); // don't change, set flashing text
+    GameState::init(); // initialise objects in object list
 
     return true; // successfully initialised -- to do -- check this, or make void function
 }
@@ -68,7 +54,6 @@ bool Menu::init()
 void Menu::update(float deltaTime)
 {
     // std::cout << "menu update" << std::endl;
-    GameState::update(deltaTime); // update the menu objects
 
     // action button
     if (Input::Instance()->select(DELAY))
@@ -88,6 +73,7 @@ void Menu::update(float deltaTime)
             break;
         }
     }
+
     // x axis input
     if (Input::Instance()->left(DELAY))
     {
@@ -102,19 +88,16 @@ void Menu::update(float deltaTime)
     {
         // m_menuOption--;
         menuOptionChange(m_menuOption, DECREMENT);
-        std::cout << "up key pressed - option: " << m_menuOption << std::endl;
+        // std::cout << "up key pressed - option: " << m_menuOption << std::endl;
     }
     else if (Input::Instance()->down(DELAY))
     {
         // m_menuOption++;
         menuOptionChange(m_menuOption, INCREMENT);
-        std::cout << "down key pressed - option: " << m_menuOption << std::endl;
+        // std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
 
-    for (GameObject *obj : flashingTextObjs)
-    {
-        obj->move();
-    }
+    GameState::update(deltaTime); // update the menu objects
 }
 
 void Menu::draw()
@@ -122,23 +105,6 @@ void Menu::draw()
     ClearBackground(RED); // clear the screen before rendering the next frame
     // DrawRectangle(0, 600, 1280, 120, BLACK); // background for flashing text
     GameState::draw(); // render the menu objects
-
-    // for (GameObject *obj : selectableObjects) // for every object in this state
-    for (int i = 0; i < m_totalMenuItems; i++) // for every object in this state
-    {
-        if (i == m_menuOption)
-            (*selectableObjects[i]).setSelected(true);
-        else
-            (*selectableObjects[i]).setSelected(false);
-        (*selectableObjects[i]).draw(); // render the object
-    }
-
-    for (int i = 0; i < m_totalFlashingItems; i++)
-    {
-        (*flashingTextObjs[i]).setActive(i == m_menuOption);
-        flashingTextObjs[i]->setFlashing(true);
-        flashingTextObjs[i]->draw();
-    }
 }
 
 bool Menu::close()
