@@ -62,6 +62,8 @@ bool HighScores::init()
 
 void HighScores::handleInput()
 {
+    GameState::handleInput(); // navigate menu items
+
     // action button
     if (Input::Instance()->select(DELAY))
     {
@@ -74,18 +76,6 @@ void HighScores::handleInput()
             std::cout << "high scores cleared" << std::endl;
             break;
         }
-    }
-
-    // switch menu options
-    if (Input::Instance()->up(DELAY) || Input::Instance()->left(DELAY))
-    {
-        menuOptionChange(m_menuOption, DECREMENT);
-        std::cout << "up key pressed - option: " << m_menuOption << std::endl;
-    }
-    else if (Input::Instance()->down(DELAY) || Input::Instance()->right(DELAY))
-    {
-        menuOptionChange(m_menuOption, INCREMENT);
-        std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
 }
 

@@ -53,6 +53,8 @@ bool Menu::init()
 
 void Menu::handleInput()
 {
+    GameState::handleInput(); // navigate menu items
+
     // action button
     if (Input::Instance()->select(DELAY))
     {
@@ -70,29 +72,6 @@ void Menu::handleInput()
             std::cout << "quit game" << std::endl;
             break;
         }
-    }
-
-    // x axis input
-    if (Input::Instance()->left(DELAY))
-    {
-        std::cout << "left key pressed" << std::endl;
-    }
-    else if (Input::Instance()->right(DELAY))
-    {
-        std::cout << "right key pressed" << std::endl;
-    }
-    // y axis input
-    if (Input::Instance()->up(DELAY))
-    {
-        // m_menuOption--;
-        menuOptionChange(m_menuOption, DECREMENT);
-        // std::cout << "up key pressed - option: " << m_menuOption << std::endl;
-    }
-    else if (Input::Instance()->down(DELAY))
-    {
-        // m_menuOption++;
-        menuOptionChange(m_menuOption, INCREMENT);
-        // std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
 }
 

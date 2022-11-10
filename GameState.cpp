@@ -7,6 +7,7 @@
 */
 
 #include "GameState.hpp"
+#include "InputHandler.hpp"
 
 bool GameState::init()
 {
@@ -42,7 +43,20 @@ bool GameState::init()
     return true; // return true if no errors (possibly no need if no raylib functions causing errors)
 }
 
-void GameState::handleInput() {}
+void GameState::handleInput()
+{
+    // switch menu options
+    if (Input::Instance()->up(DELAY) || Input::Instance()->left(DELAY))
+    {
+        menuOptionChange(m_menuOption, DECREMENT);
+        std::cout << "up key pressed - option: " << m_menuOption << std::endl;
+    }
+    else if (Input::Instance()->down(DELAY) || Input::Instance()->right(DELAY))
+    {
+        menuOptionChange(m_menuOption, INCREMENT);
+        std::cout << "down key pressed - option: " << m_menuOption << std::endl;
+    }
+}
 
 void GameState::update(float deltaTime)
 {
