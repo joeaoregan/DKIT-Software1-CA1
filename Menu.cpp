@@ -146,8 +146,6 @@ void Menu::draw()
         (*flashingTextObjs[i]).setActive(i == m_menuOption);
         flashingTextObjs[i]->setFlashing(true);
         flashingTextObjs[i]->draw();
-        // if (flashingTextObjs[i]->getFlashing())
-        //     std::cout << "derp" << std::endl;
     }
 }
 

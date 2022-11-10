@@ -46,7 +46,6 @@ void Player::init()
 
 void Player::move()
 {
-    m_healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
 
     // Player flashes if collision with obstacle / enemy
     if (getCollision() && !isFlashing())
@@ -93,6 +92,7 @@ void Player::move()
     }
 
     handleInput();
+    m_healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
 
     for (GameObject *b : getSubObjects()) // move objects
     {
