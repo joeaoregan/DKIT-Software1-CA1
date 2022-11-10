@@ -10,22 +10,54 @@
 
 bool GameState::init()
 {
-    m_totalMenuItems = 0;
-    m_totalFlashingItems = 0;
+    m_totalMenuItems = 0;     // clear loop totals
+    m_totalFlashingItems = 0; // clear loop totals
+
+    m_menuOption = 0; // first selectable object is highlighted by default
 
     for (GameObject *obj : objects) // for every object in this state
     {
-        (*obj).init(); // initialise the object
+        (*obj).init(); // initialise the objects
     }
+
+    // selectable objects
+    for (GameObject *btn : selectableObjects) // for every object in this state
+    {
+        (*btn).init(); // initialise the objects
+    }
+    m_totalMenuItems = selectableObjects.size(); // calculate once
+
+    // flashing text
+    for (FlashText *ft : flashingTextObjs) // for every object in this state
+    {
+        (*ft).init(); // initialise the objects
+    }
+    m_totalFlashingItems = flashingTextObjs.size(); // calculate once
+
+    // std::cout << "total flashing text objects: " << m_totalFlashingItems << std::endl;
+    // std::cout << "total selectable objects: " << m_totalMenuItems << std::endl;
+
+    menuOptionChange(m_menuOption, 0); // don't change, highlights first button as selected
 
     return true; // return true if no errors (possibly no need if no raylib functions causing errors)
 }
 
 void GameState::update(float deltaTime)
 {
+    // regular objects
     for (GameObject *obj : objects) // for every object in this state
     {
-        (*obj).move(); // update the object
+        (*obj).move(); // update the objects
+    }
+    // selectable objects
+    for (GameObject *btn : selectableObjects) // for every object in this state
+    {
+        (*btn).move(); // update the selectable objects
+    }
+    // flashing text
+    for (FlashText *ft : flashingTextObjs) // for every object in this state
+    {
+        (*ft).move(); // update the flashing text objects
     }
 }
 
@@ -33,16 +65,52 @@ void GameState::draw()
 {
     for (GameObject *obj : objects) // for every object in this state
     {
-        (*obj).draw(); // render the object
+        (*obj).draw(); // render the objects
+    }
+
+    // selectable objects / buttons etc
+    for (int i = 0; i < m_totalMenuItems; i++) // for every object in this state
+    {
+        if (i == m_menuOption)
+            (*selectableObjects[i]).setSelected(true);
+        else
+            (*selectableObjects[i]).setSelected(false);
+        (*selectableObjects[i]).draw(); // render the object
+    }
+
+    // flashing text
+    for (int i = 0; i < m_totalFlashingItems; i++)
+    {
+        if ((*flashingTextObjs[i]).canHide())
+        {
+            (*flashingTextObjs[i]).setActive(i == m_menuOption);
+        }
+        flashingTextObjs[i]->setFlashing(true);
+        flashingTextObjs[i]->draw();
     }
 }
 
 bool GameState::close()
 {
+    // Regular objects
     for (GameObject *obj : objects) // for every object in this state
     {
         (*obj).destroy(); // clear object from memory
     }
+    // flashing text
+    for (FlashText *ft : flashingTextObjs) // for every object in this state
+    {
+        (*ft).destroy(); // clear object from memory
+    }
+    // selectable objects
+    for (GameObject *btn : selectableObjects) // for every object in this state
+    {
+        (*btn).destroy(); // clear object from memory
+    }
+
+    objects.clear();
+    flashingTextObjs.clear();
+    selectableObjects.clear();
 
     return true;
 }

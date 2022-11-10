@@ -14,15 +14,16 @@
 class FlashingText : public Text
 {
 public:
-    FlashingText(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool centered = true, Colour unselectedColour = BLACK, Colour selectedColour = WHITE) : Text(text, pos, fontSize, centered, unselectedColour, selectedColour)
+    FlashingText(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool canHide = true, bool centered = true, Colour unselectedColour = WHITE, Colour selectedColour = BLACK) : Text(text, pos, fontSize, centered, unselectedColour, selectedColour)
     {
-        setFlashing(true); // does this one thing
+        setFlashing(true);   // does this one thing
+        m_canHide = canHide; // ok, 2 things, need this for flashing text used outside of button descriptions
     }
 
-    void draw()
-    {
-        Text::draw();
-    }
+    bool canHide() { return m_canHide; } // check if flashing text can be hidden
+
+private:
+    bool m_canHide; // text is used to describe a button action etc, so only displays when needed
 };
 #endif
 

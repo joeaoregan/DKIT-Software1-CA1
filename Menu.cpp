@@ -35,9 +35,9 @@ bool Menu::init()
     objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE)));
 
     // Flashing text
-    flashingTextObjs.push_back(new FlashText("Press Enter to Start", {100, 635}, HEADING, true, WHITE)); // Push to menu objects list as GameObject
-    flashingTextObjs.push_back(new FlashText("View High Scores", {100, 635}, HEADING, true, WHITE));
-    flashingTextObjs.push_back(new FlashText("Press Enter to Quit", {100, 635}, HEADING, true, WHITE));
+    flashingTextObjs.push_back(new FlashText("Press Enter to Start", {100, 635}, HEADING)); // Push to menu objects list as GameObject
+    flashingTextObjs.push_back(new FlashText("View High Scores", {100, 635}, HEADING));
+    flashingTextObjs.push_back(new FlashText("Press Enter to Quit", {100, 635}, HEADING));
 
     GameState::init(); // initialise objects in object list
 
