@@ -37,7 +37,7 @@ public:
         m_id = id;
     }
 
-    ~GameObject(){}; // deconstructor
+    virtual ~GameObject(){}; // deconstructor
 
     // pure virtual functions
     virtual void init() = 0; // init each object
@@ -65,7 +65,8 @@ public:
 
     Texture2D getTexture() { return m_sprite; }
     void setSprite(const char *textureSRC) { m_sprite = LoadTexture(textureSRC); }
-    void setTexture(Image image) { m_sprite = LoadTextureFromImage(image); }
+    // void setTexture(Image image) { m_sprite = LoadTextureFromImage(image); }
+    void setTexture(Texture2D &texture) { m_sprite = texture; }
 
     bool getActive() { return isActive; }
     void setActive(bool active) { isActive = active; }

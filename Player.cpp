@@ -11,6 +11,10 @@
 #include <iostream>
 #include "InputHandler.hpp"
 #include "StatusBar.hpp"
+#include "Particle.hpp"
+
+const int PARTICLE_OFFSET_X = 75;
+const int PARTICLE_OFFSET_Y = 10;
 
 Player::Player() : GameObject({50.0f, 320.0f, 50.0f, 50.0f}, "sprites/Player1Ship", true)
 {
@@ -41,6 +45,16 @@ void Player::init()
         // {
         //     std::cout << "bullet " << i << " added";
         // }
+    }
+
+    red = LoadTexture("resources/particles/red.png");
+    green = LoadTexture("resources/particles/green.png");
+    blue = LoadTexture("resources/particles/blue.png");
+    shimmer = LoadTexture("resources/particles/shimmer.png");
+
+    for (int i = 0; i < PLAYER_PARTICLES; ++i)
+    {
+        particles[i] = new Particle({getPosition().x - PARTICLE_OFFSET_X, getPosition().y - PARTICLE_OFFSET_Y, 20, 15}, red, green, blue, shimmer);
     }
 }
 
@@ -132,6 +146,23 @@ void Player::collisions()
     }
 }
 
+void Player::drawParticles()
+{
+    for (int i = 0; i < PLAYER_PARTICLES; ++i)
+    {
+        if (!particles[i]->getActive())
+        {
+            delete particles[i];
+            particles[i] = new Particle({getPosition().x - PARTICLE_OFFSET_X, getPosition().y - PARTICLE_OFFSET_Y, 20, 15}, red, green, blue, shimmer);
+        }
+    }
+
+    for (int i = 0; i < PLAYER_PARTICLES; ++i)
+    {
+        particles[i]->draw();
+    }
+}
+
 void Player::draw()
 {
     DrawCircleV(getPosition(), getHeight(), MAROON);
@@ -145,11 +176,7 @@ void Player::draw()
         // Bounding box to check collisions
         DrawRectangleLines(getX() - 50, getY() - 25, 100, 47, WHITE);
     }
-}
-
-void Player::destroy()
-{
-    UnloadSound(m_fxFire);
+    drawParticles();
 }
 
 void Player::handleInput()
@@ -199,6 +226,15 @@ void Player::handleInput()
                     break;
                 }
         }
+    }
+}
+
+void Player::destroy()
+{
+    UnloadSound(m_fxFire);
+    for (GameObject *g : particles)
+    {
+        g->destroy();
     }
 }
 

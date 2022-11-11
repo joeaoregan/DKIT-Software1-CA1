@@ -20,6 +20,8 @@ const int NUM_BULLETS = 5;      // The player currently has 5 bullets -- to do -
 const int FLASH_SPEED = 20; // increment flashing by this amount each frame
 const int FLASH_TIMES = 5;  // number of times to flash player
 
+const int PLAYER_PARTICLES = 15;
+
 class Player : public GameObject // Player inherits directly from the GameObject base class
 {
 public:
@@ -38,7 +40,8 @@ public:
     void setHealth(int health);
 
 private:
-    void handleInput(); // handle input for player
+    void handleInput();   // handle input for player
+    void drawParticles(); // draw ship engine particles
 
     int m_laserFireCount; // current time until next laser fire
     Sound m_fxFire;       // sound to play when bullet fires
@@ -48,7 +51,13 @@ private:
     int m_flashCount;       // number of times player has flashed
     int m_flashColourValue; // Start with green and blue values as 255
 
+    Texture2D red;
+    Texture2D green;
+    Texture2D blue;
+    Texture2D shimmer;
+
     GameObject *m_healthBar; // Status bar for player health
+    GameObject *particles[PLAYER_PARTICLES];
 };
 
 #endif

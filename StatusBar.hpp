@@ -15,7 +15,7 @@ public:
     StatusBar(Rectangle rect);
     StatusBar(Rectangle rect, float percent);
     StatusBar(Rectangle rect, Colour bg, Colour fg, Colour o);
-    ~StatusBar();
+    ~StatusBar(){}; // destructor
 
     void init(){};       // heavy lifting done in constructor
     void move();         // update the object

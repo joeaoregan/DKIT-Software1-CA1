@@ -62,6 +62,7 @@ void StatusBar::draw()
     DrawRectangle(fgRect.x, fgRect.y, fgRect.width * m_percent, fgRect.height, m_colourFG); // foreground
     DrawRectangleLines(bgRect.x, bgRect.y, bgRect.width, bgRect.height, m_colourOutline);   // outline
 }
+
 void StatusBar::destroy()
 {
     GameObject::destroy();
