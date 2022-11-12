@@ -56,6 +56,25 @@ void GameState::handleInput()
         menuOptionChange(m_menuOption, INCREMENT);
         std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
+
+    // mouse button pressed
+    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    {
+        std::cout << "mouse right-click" << std::endl;
+    }
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        std::cout << "mouse left-click" << std::endl;
+    }
+
+    // mouse over buttons
+    for (unsigned int i = 0; i < selectableObjects.size(); i++)
+    {
+        if (Input::Instance()->mouseOver((*selectableObjects[i]).getRect(), GetMousePosition()))
+        {
+            std::cout << "mouse over button : " << i << std::endl;
+        }
+    }
 }
 
 void GameState::update(float deltaTime)

@@ -107,3 +107,30 @@ bool InputHandler::down(bool delay)
     }
     return false;
 }
+
+/*
+    Check is the mouse pointer over the rectangle
+*/
+bool InputHandler::mouseOver(Rectangle *a, Vector2 cursor)
+{
+    // Calculate the sides of button
+    float rectLeft = (*a).x;                 // left side
+    float rectRight = (*a).x + (*a).width;   // right side
+    float rectTop = (*a).y;                  // top
+    float rectBottom = (*a).y + (*a).height; // bottom
+
+    int x = (cursor).x; // cursor x
+    int y = (cursor).y; // cursor y
+
+    // check if mouse x/y outside of object rect
+    if (y < rectTop)
+        return false; // cursor over button
+    else if (y > rectBottom)
+        return false; // cursor under button
+    else if (x < rectLeft)
+        return false; // cursor to left of button
+    else if (x > rectRight)
+        return false; // cursor to right of button
+
+    return true; // If cursor x/y not outside the rect -> Hovering!
+}

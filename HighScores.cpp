@@ -23,6 +23,11 @@ enum menu_options
     SCORES_CLEAR = 1,
 };
 
+const int BUTTON_Y = SCREEN_HEIGHT * 0.7f;       // place the buttons 70% of the screen height
+const float BUTTON_HEIGHT = 50.0f;               // button height
+const float BUTTON_WIDTH = SCREEN_WIDTH * 0.2f;  // button width 20% of screen width
+const float BUTTON_OFFSET = BUTTON_WIDTH / 2.0f; // offset the buttons to center on width
+
 // Text *scores[4];
 const int SCORE_START_POSITION = 80; // where to put first line of high scores text
 std::string score;
@@ -52,8 +57,8 @@ bool HighScores::init()
     flashingTextObjs.push_back(new FlashText(scores[0], {50, 65}, HEADING, false)); // Flash top score (needs to be added after buttons, so flashing info text at bottom works)
 
     // add buttons
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.75f, 500, SCREEN_WIDTH * 0.2f, 50}, "Back")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.25f, 500, SCREEN_WIDTH * 0.2f, 50}, "Clear")));
+    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.75f - BUTTON_OFFSET, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Back")));  // Back to menu option - center on 3/4s of screen width
+    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH * 0.25f - BUTTON_OFFSET, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Clear"))); // Clear scores option - center on 1/4 of screen width
 
     GameState::init(); // initialise objects in object list
 

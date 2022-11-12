@@ -41,10 +41,12 @@ bool Menu::init()
     flashingTextObjs.push_back(new FlashText("View High Scores", {100, 635}, HEADING));
     flashingTextObjs.push_back(new FlashText("Press Enter to Quit", {100, 635}, HEADING));
 
-    // add buttons
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 60, SCREEN_WIDTH * 0.6f, 50}, "Start Game")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 120, SCREEN_WIDTH * 0.6f, 50}, "High Scores")));
-    selectableObjects.push_back((GameObject *)(new Button({SCREEN_WIDTH / 2.0f, 180, SCREEN_WIDTH * 0.6f, 50}, "Exit")));
+    float btnX = SCREEN_WIDTH * 0.2f;     // button padding is 20% of screen on sides
+    float btnWidth = SCREEN_WIDTH * 0.6f; // button width is 60% of screen
+    float btnHeight = 50;
+    selectableObjects.push_back((GameObject *)(new Button({btnX, 60, btnWidth, btnHeight}, "Start Game")));
+    selectableObjects.push_back((GameObject *)(new Button({btnX, 120, btnWidth, btnHeight}, "High Scores")));
+    selectableObjects.push_back((GameObject *)(new Button({btnX, 180, btnWidth, btnHeight}, "Exit")));
 
     GameState::init(); // initialise objects in object list
 

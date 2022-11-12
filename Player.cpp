@@ -28,7 +28,8 @@ Player::Player() : GameObject({50.0f, 320.0f, 50.0f, 50.0f}, "sprites/Player1Shi
     m_flashCount = 0;
     m_flashColourValue = 255; // start green and blue values at max, only red flashes
     m_flashDirection = 1;     // colour values change positive / minus to flash the player
-    setID(PLAYER);
+    setID(PLAYER);            // id to check collisions with other objects etc.
+    setOffset({50, 25});      // collision offset
 }
 
 void Player::init()
@@ -105,7 +106,10 @@ void Player::move()
         }
     }
 
-    handleInput();
+    handleInput(); // handle input
+    collisions();  // check collisions
+
+    // set sub object positions (needs to be after collision checking as they still move when the game area edges are touched)
     m_healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)});
 
     for (GameObject *b : getSubObjects()) // move objects
@@ -115,18 +119,11 @@ void Player::move()
             (*b).move();
         }
     }
-
-    collisions();
 }
 
 void Player::collisions()
 {
-    // test collision
-    // if (getX() > 200 && !getCollision()) // if the player moves over 200 px, and the player is not already after colliding with an object
-    // {
-    //     setCollision(true); // the player is after colliding
-    // }
-
+    // check collisions with game area
     if (getX() < getWidth())
     {
         setX(getWidth());
@@ -136,14 +133,16 @@ void Player::collisions()
         setX(SCREEN_WIDTH - getWidth());
     }
 
-    if ((getY() - getHeight()) < 0)
+    if ((getY() - getHeight()) < 40) // offset by 40 for top of game area
     {
-        setY(getHeight());
+        setY(getHeight() + 40);
     }
-    else if ((getY() + getHeight()) > SCREEN_HEIGHT)
+    else if ((getY() + getHeight()) > SCREEN_HEIGHT - 120) // offset by 120 for bottom of game area
     {
-        setY(SCREEN_HEIGHT - getHeight());
+        setY(SCREEN_HEIGHT - getHeight() - 120);
     }
+
+    setCollisionRect({getX(), getY(), 100, 47}); // update collision rect position (after movement checked or box drags behind player), after collisions() stops bounding box moving when edge touched
 }
 
 void Player::drawParticles()
@@ -166,16 +165,8 @@ void Player::drawParticles()
 void Player::draw()
 {
     DrawCircleV(getPosition(), getHeight(), MAROON);
-    // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, WHITE);
-    // DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, RED);
     DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)m_flashColourValue, (unsigned char)m_flashColourValue, 255});
-    // Color(255, 255, 255);
-
-    if (TEST_PLAYER)
-    {
-        // Bounding box to check collisions
-        DrawRectangleLines(getX() - 50, getY() - 25, 100, 47, WHITE);
-    }
+    drawCollisionRect(DEBUG_PLAYER); // Bounding box to check collisions
     drawParticles();
 }
 
@@ -205,24 +196,21 @@ void Player::handleInput()
     // attack
     if (Input::Instance()->isKeyDown(KEY_SPACE))
     {
-        // if (DEBUG_MODE)
-        // {
-        //     std::cout << "Player fire" << std::endl;
-        // }
+        debug("player fire", (DEBUG_MODE || DEBUG_PLAYER));
 
         for (GameObject *b : getSubObjects()) // spawn bullets
         {
             if (m_laserFireCount >= LASER_FIRE_RATE)
-                if (!(*b).getActive() && (*b).getID() == BULLET)
+                if (!(*b).getActive() && (*b).getID() == PLAYER_BULLET)
                 {
                     PlaySound(m_fxFire); // play laser sound effect
 
-                    (*b).setX(getX());
-                    (*b).setY(getY());
+                    (*b).setPosition(getPosition());
                     (*b).toggleActive();
                     m_laserFireCount = 0; // reset wait until next bullet
 
-                    std::cout << "bullet active: " << (*b).getActive() << " x: " << (*b).getX() << " y: " << (*b).getY() << std::endl;
+                    // std::cout << "bullet active: " << (*b).getActive() << " x: " << (*b).getX() << " y: " << (*b).getY() << std::endl;
+                    debug(std::string("bullet active: ") + std::to_string((*b).getActive()) + " x: " + std::to_string((*b).getX()) + " y: " + std::to_string((*b).getY()), DEBUG_PLAYER);
                     break;
                 }
         }

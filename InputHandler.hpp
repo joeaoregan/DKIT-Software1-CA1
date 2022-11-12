@@ -36,6 +36,8 @@ public:
     bool up(bool delay = false);     // move up
     bool down(bool delay = false);   // move down
 
+    bool mouseOver(Rectangle *a, Vector2 cursor); // check mouse pointer over an object
+
 private:
     InputHandler() {} // constructor, private for singleton pattern
 

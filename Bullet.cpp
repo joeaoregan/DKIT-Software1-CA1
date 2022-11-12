@@ -9,13 +9,12 @@
 #include "Bullet.hpp"
 #include <iostream>
 
-const int BULLET_SPEED{10};
+const int BULLET_SPEED{10}; // bullet speed
 
-Bullet::Bullet() : GameObject({-50.0f, 360.0f, 50.0f, 5.0f}, "sprites/LaserGreen", true)
+Bullet::Bullet() : GameObject({-50.0f, 360.0f, 50.0f, 5.0f}, "sprites/LaserGreen", true, PLAYER_BULLET)
 {
     setSpeed(BULLET_SPEED);
     setActive(false);
-    setID(BULLET);
 }
 
 void Bullet::move()
@@ -37,18 +36,17 @@ void Bullet::collisions()
         setX(-getWidth());
         setCollision(false);
     }
+    if (getActive())
+    {
+        setCollisionRect((*getRect())); // update collision rect position if the bullet is active
+    }
 }
 
 void Bullet::draw()
 {
     if (getActive())
     {
-        DrawTexturePro(getTexture(), {0, 0, (float)getWidth(), (float)getHeight()}, {getX(), getY(), (float)getWidth(), (float)getHeight()}, {0.0f, 0.0f}, 0.0f, WHITE);
-
-        if (TEST_BULLET)
-        {
-            // Bounding box to check collisions
-            DrawRectangleLines(getX(), getY(), getWidth(), getHeight(), WHITE);
-        }
+        DrawTexturePro(getTexture(), {0, 0, getWidth(), getHeight()}, (*getRect()), {0.0f, 0.0f}, 0.0f, WHITE);
+        drawCollisionRect(DEBUG_BULLET);
     }
 }

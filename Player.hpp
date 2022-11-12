@@ -11,7 +11,8 @@
 
 #include "GameObject.hpp"
 
-const bool TEST_PLAYER = true;
+const bool DEBUG_PLAYER = true; // show messages, bounding boxes etc
+
 const float HEALTH_TOTAL = 100.0f;
 
 const int LASER_FIRE_RATE = 20; // time until next laser blast

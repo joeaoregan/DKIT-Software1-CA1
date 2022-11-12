@@ -11,7 +11,7 @@
 
 #include "GameObject.hpp"
 
-const bool TEST_BLOODCELL = true;
+const bool DEBUG_BLOODCELL = true;
 
 class BloodCell : public GameObject
 {
@@ -25,6 +25,11 @@ public:
     void draw();       // render objects
     void destroy() {}  // clear objects from memory
 
+    Vector2 getOrigin() { return {getWidth() / 2.0f, getHeight() / 2.0f}; } // origin point to rotate on (center of rect)
+
+    void updateCollisionRects(); // update collision rect size depending on rotation of blood cell
+
+private:
     void setRotateClockwise(bool clockwise)
     {
         rotateClockwise = clockwise;
@@ -40,6 +45,8 @@ public:
     }
     float m_degrees;
     bool rotateClockwise = true;
+
+    Rectangle cRect1, cRect2, cRect3; // Dynamic collision rect states
 };
 
 #endif

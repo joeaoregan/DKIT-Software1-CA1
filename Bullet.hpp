@@ -11,7 +11,7 @@
 
 #include "GameObject.hpp"
 
-const bool TEST_BULLET = true;
+const bool DEBUG_BULLET = true;
 
 class Bullet : public GameObject // child of GameObject base class
 {

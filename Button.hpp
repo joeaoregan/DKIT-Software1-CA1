@@ -11,12 +11,15 @@
 
 #include "GameObject.hpp"
 
+const bool DEBUG_BUTTON = true; // debug button clicks
+
 class Button : public GameObject
 {
 public:
     // constructor
-    Button(Rectangle rect, const char *label = "btnLabel", bool centered = true, Colour colour = MAROON) : GameObject(rect)
+    Button(Rectangle rect, const char *label = "btnLabel", Colour colour = MAROON) : GameObject(rect)
     {
+        setID(BUTTON);
         m_label = label;
         m_roundness = 0.15f;
         m_segments = 12;
@@ -25,9 +28,6 @@ public:
         m_unselectedLineColour = BLACK;
         m_selectedLineColour = WHITE;
         m_labelColour = m_unselectedLineColour;
-        m_centered = centered;
-
-        // init();
     }
 
     ~Button(){}; // deconstructor

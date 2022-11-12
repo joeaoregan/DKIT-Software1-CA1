@@ -11,6 +11,8 @@
 
 #include "GameObject.hpp"
 
+const bool DEBUG_EXPLOSION = true;
+
 class Explosion : public GameObject // Explosion inherits directly from the GameObject base class
 {
 public:

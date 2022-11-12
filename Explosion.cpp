@@ -13,8 +13,10 @@ const int NUM_FRAMES{16};
 
 Explosion::Explosion(Vector2 position) : GameObject({position.x, position.y, 128.0f, 128.0f}, "ExplosionBlood")
 {
-    setTotalFrames(NUM_FRAMES);
-    setID(EXPLOSION);
+    setTotalFrames(NUM_FRAMES);                         // number of animation frames
+    setID(EXPLOSION);                                   // id is explosion - todo add more later
+    setOffset({getWidth() / 2.0f, getHeight() / 2.0f}); // set offset for collision
+    setCollisionRect((*getRect()));                     // init collision rect, offsetting it
 }
 
 Explosion::~Explosion()
@@ -41,7 +43,10 @@ void Explosion::move()
 void Explosion::draw()
 {
     if (getActive())
-        DrawTextureRec(getTexture(), {(getFrame() * 128.0f), 0.0f, 128.0f, 128.0f}, {getX() - (getWidth() / 4), getY() - (getHeight() / 4)}, WHITE);
+    {
+        DrawTextureRec(getTexture(), {(getFrame() * 128.0f), 0.0f, 128.0f, 128.0f}, {getX() - (getWidth() / 2), getY() - (getHeight() / 2)}, WHITE);
+        drawCollisionRect(DEBUG_EXPLOSION);
+    }
 }
 
 void Explosion::destroy()

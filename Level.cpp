@@ -20,43 +20,44 @@ int txtScoreWidthCenter; // center the score at top of screen
 
 bool Level::checkCollision(Rectangle *a, Rectangle *b)
 {
-    // The sides of each rectangle (A & B).
-    int leftA, leftB, rightA, rightB;
-    int topA, topB, bottomA, bottomB;
 
     // Calculate the sides of rect A
-    leftA = (*a).x;
-    rightA = (*a).x + (*a).width;
-    topA = (*a).y;
-    bottomA = (*a).y + (*a).height;
+    float aLeft = (*a).x;
+    float aRight = (*a).x + (*a).width;
+    float aTop = (*a).y;
+    float aBottom = (*a).y + (*a).height;
 
     // Calculate the sides of rect B
-    leftB = (*b).x;
-    rightB = (*b).x + (*b).width;
-    topB = (*b).y;
-    bottomB = (*b).y + (*b).height;
+    float bLeft = (*b).x;
+    float bRight = (*b).x + (*b).width;
+    float bTop = (*b).y;
+    float bBottom = (*b).y + (*b).height;
+
+    if (aLeft > SCREEN_WIDTH || aRight > SCREEN_WIDTH)
+    {
+        return false; // object is off screen
+    }
 
     // If any of the sides from A are outside of B
-    if (bottomA <= topB)
+    if (aBottom < bTop)
     {
-        return false;
+        return false; // A is over B
     }
-    else if (topA >= bottomB)
+    else if (aTop >= bBottom)
     {
-        return false;
+        return false; // A is under B
     }
-    else if (rightA <= leftB)
+    else if (aRight <= bLeft)
     {
-        return false;
+        return false; // A is left of B
     }
-    else if (leftA >= rightB)
+    else if (aLeft >= bRight)
     {
-        return false;
+        return false; // A is right of B
     }
 
-    // If none of the sides from A are outside B
-    // Collision!
-    return true;
+    std::cout << "collision" << std::endl;
+    return true; // If none of the sides from A are outside B -> Collision!
 }
 
 bool Level::init()
@@ -96,6 +97,7 @@ bool collision = false;
 void Level::update(float deltaTime)
 {
     GameState::update(deltaTime); // update the game objects, functionality inherited from GameState
+
     for (unsigned int i = 0; i < niceList.size(); i++)
     {
         (*niceList[i]).move(); // update the object
