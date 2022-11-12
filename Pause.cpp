@@ -11,201 +11,140 @@
 #include "StatusBar.hpp"
 #include "Audio.hpp"
 #include "InputHandler.hpp"
+#include "Button.hpp"
+#include "Exit.hpp"
 
-const int Pause::s_pauseID = PAUSE;
-const int PAUSE_FONT_SIZE = 80;
+const game_state Pause::s_pauseID = PAUSE; // state id
 
-const int MENU_ITEM_HEIGHT_DISTANCE = 50;
-const int BUTTON_WIDTH = 350;
-const int BUTTON_HEIGHT = 40;
+enum menu_options
+{
+    RESUME = 0,    // resume the game
+    MUSIC_VOLUME,  // adjust music volume
+    FX_VOLUME,     // adjust fx volume
+    MASTER_VOLUME, // adjust master volume
+    EXIT           // exit the game
+};
 
-GameObject *audioBar;
-float timePlayed = 0.0f; // normalized time played
+const Rectangle menuButton = {50, 50, 350, 40}; // button dimensions
+const Color volumeColour = {190, 33, 55, 100};  // colour for adjustable volume bar
 
-int txtSongTitleCenter;
-const char *txtSongTitle;
-// float volumeMusic = 1.0f;
-// float volumeFX = 1.0f;
-// float volumeMaster = 1.0f;
-int menuOption = 0;
-int menuOptionsTotal = 5; // number of enum values
-
-const char *lbl1Resume = "Resume Game";
-const char *lbl2MusicVol = "Music Volume";
-const char *lbl3FXVol = "Sound FX Volume";
-const char *lbl4MasterVol = "Master Audio";
-const char *lbl5Exit = "Exit Game";
-int lblCenter1{0};
-int lblCenter2{0};
-int lblCenter3{0};
-int lblCenter4{0};
-int lblCenter5{0};
-int btnFontSize{0};
-
+/*
+    Initialise the current state
+*/
 bool Pause::init()
 {
-    GameState::init();
-    // std::cout << "Init pause state" << std::endl;
-    btnFontSize = BUTTON_HEIGHT * 0.75f;
+    setNoBackground(); // No background used for this state
 
-    lblCenter1 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl1Resume, btnFontSize, 1).x / 2);
-    lblCenter2 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl2MusicVol, btnFontSize, 1).x / 2);
-    lblCenter3 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl3FXVol, btnFontSize, 1).x / 2);
-    lblCenter4 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl4MasterVol, btnFontSize, 1).x / 2);
-    lblCenter5 = (BUTTON_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), lbl5Exit, btnFontSize, 1).x / 2);
+    objects.push_back((GameObject *)(new Text("Paused!!", {0, SCREEN_HEIGHT / 2}, 80, true, BLACK))); // game paused text
 
-    txtPause = "Paused!!";
-    txtPauseCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtPause, PAUSE_FONT_SIZE, 1).x / 2);
-
-    txtSongTitle = Audio::Instance()->currentTrackName();
-    txtSongTitleCenter = (SCREEN_WIDTH / 2) - (MeasureTextEx(Game::Instance()->getFont(), txtSongTitle, 20, 1).x / 2);
-
-    // audioBar = new StatusBar({40, SCREEN_HEIGHT - 100, 1200, 20}, DARKGRAY, GRAY, WHITE);
-    // audioBar = new StatusBar({40, SCREEN_HEIGHT - 100, 1200, 20});
     audioBar = new StatusBar({40, SCREEN_HEIGHT - 100, 1200, 40}, RED, MAROON, BLACK);
     objects.push_back(audioBar);
 
-    return true;
+    txtSongTitle = Audio::Instance()->currentTrackName();
+    objects.push_back((GameObject *)(new Text(txtSongTitle, {0, SCREEN_HEIGHT - 90}, 20, true, WHITE))); // game paused text
+
+    selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 50, menuButton.width, menuButton.height}, "Resume Game")));                 // Option 1. Resume game
+    selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 100, menuButton.width, menuButton.height}, "Music Volume", LIGHTGRAY)));    // Option 2. Music volume slider
+    selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 150, menuButton.width, menuButton.height}, "Sound FX Volume", LIGHTGRAY))); // Option 3. FX volume slider
+    selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 200, menuButton.width, menuButton.height}, "Master Audio", LIGHTGRAY)));    // Option 4. Master Audio slider
+    selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 250, menuButton.width, menuButton.height}, "Exit Game")));                  // Option 5. Exit game
+
+    GameState::init(); // initialise the state
+    return true;       // todo -- add confirmation of objects loaded etc.
 }
 
+/*
+    Handle user input
+*/
 void Pause::handleInput()
 {
-    if (Input::Instance()->isKeyDown(KEY_ENTER))
+    GameState::handleInput(); // Base class input handling
+
+    if (Input::Instance()->isKeyDown(KEY_ENTER)) // If enter key is pressed
     {
-        switch (menuOption)
+        switch (m_menuOption) // switch on the current selected menu option
         {
         case RESUME:
-            Game::Instance()->changePauseState(); // resume the game
+            Game::Instance()->setPaused(false);       // unpause
+            Game::Instance()->m_pStateMachine->pop(); // resume the game
             break;
+        case EXIT:
+            Game::Instance()->m_pStateMachine->push(new Exit()); // show confirm exit
         }
     }
 
-    // move up and down menu items
-    if (Input::Instance()->up(DELAY))
+    if (Input::Instance()->left(DELAY)) // left pressed on keyboard, gamepad or whatever is setup to control the game
     {
-        menuOption--;
-        if (menuOption < 0)
-        {
-            menuOption = menuOptionsTotal - 1;
-        }
-        std::cout << "menu option down: " << menuOption << std::endl;
-    }
-    else if (Input::Instance()->down(DELAY))
-    {
-        menuOption++;
-        if (menuOption >= menuOptionsTotal)
-        {
-            menuOption = 0;
-        }
-        std::cout << "menu option up: " << menuOption << std::endl;
-    }
+        std::cout << "left key pressed - option: " << m_menuOption << std::endl; // todo -- sort debug comments
 
-    // adjust volumes
-    if (Input::Instance()->left(DELAY))
-    {
-        switch (menuOption)
+        switch (m_menuOption) // action depends on current highlighted button
         {
         case MUSIC_VOLUME:
-            Audio::Instance()->setMusicVolume(VOLUME_DOWN);
+            Audio::Instance()->setMusicVolume(VOLUME_DOWN); // music volume down
             break;
         case FX_VOLUME:
-            Audio::Instance()->setFXVolume(VOLUME_DOWN);
+            Audio::Instance()->setFXVolume(VOLUME_DOWN); // fx volume down
             break;
         case MASTER_VOLUME:
-            Audio::Instance()->setMasterVolume(VOLUME_DOWN);
+            Audio::Instance()->setMasterVolume(VOLUME_DOWN); // master volume down
             break;
         }
     }
-    else if (Input::Instance()->left(DELAY))
+    else if (Input::Instance()->right(DELAY)) // right pressed on keyboard, gamepad or whatever is setup to control the game
     {
-        switch (menuOption)
+        std::cout << "right key pressed - option: " << m_menuOption << std::endl;
+
+        switch (m_menuOption) // action depends on current highlighted button
         {
         case MUSIC_VOLUME:
-            Audio::Instance()->setMusicVolume(VOLUME_UP);
+            Audio::Instance()->setMusicVolume(VOLUME_UP); // music volume down
             break;
         case FX_VOLUME:
-            Audio::Instance()->setFXVolume(VOLUME_UP);
+            Audio::Instance()->setFXVolume(VOLUME_UP); // fx volume down
             break;
         case MASTER_VOLUME:
-            Audio::Instance()->setMasterVolume(VOLUME_UP);
+            Audio::Instance()->setMasterVolume(VOLUME_UP); // master volume down
             break;
         }
     }
 }
 
+/*
+    Update the current state
+*/
 void Pause::update(float deltaTime)
 {
-    // std::cout << "pause - update" << std::endl;
-    GameState::update(deltaTime);
-    // audioBar->setPercent(0.5f);
-    handleInput();
+    // std::cout << "menu update" << std::endl;
+    GameState::update(deltaTime); // update the menu objects
 
-    StatusBar *sb = static_cast<StatusBar *>(audioBar);
-    sb->setPercent(Audio::Instance()->timePlayed());
-
-    // std::cout << "pause update - time played: " << Audio::Instance()->timePlayed() << std::endl;
-    // std::cout << "pause delta time: " << deltaTime << std::endl;
+    StatusBar *sb = static_cast<StatusBar *>(audioBar); // cast audiobar from GameObject to set percentage
+    sb->setPercent(Audio::Instance()->timePlayed());    // show current song time
 }
 
+/*
+    Render the current state
+*/
 void Pause::draw()
 {
-    Rectangle menuButton = {50, 50, BUTTON_WIDTH, BUTTON_HEIGHT};
+    DrawRectangle(0, SCREEN_HEIGHT - 160, 1280, 160, LIGHTGRAY); // clear bottom hud background before drawing other objects
+    GameState::draw();                                           // render the menu objects
 
-    for (int i = 0; i < menuOptionsTotal; i++)
-    {
-        // draw background for menu items
-        menuButton.y += MENU_ITEM_HEIGHT_DISTANCE; // space 50 pixels apart
-        DrawRectangleRec(menuButton, LIGHTGRAY);
+    musicWidth = menuButton.width * Audio::Instance()->getMusicVolume();   // get music volume
+    fxWidth = menuButton.width * Audio::Instance()->getFXVolume();         // get fx volume
+    masterWidth = menuButton.width * Audio::Instance()->getMasterVolume(); // get master volume
 
-        // draw status bars for volume levels, and label buttons
-        if (i == RESUME)
-        {
-            DrawTextEx(Game::Instance()->getFont(), lbl1Resume, {menuButton.x + (float)lblCenter1, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
-        }
-        if (i == MUSIC_VOLUME)
-        {
-            float musicWidth = BUTTON_WIDTH * Audio::Instance()->getMusicVolume();
-            DrawRectangleRec({menuButton.x, menuButton.y, musicWidth, menuButton.height}, MAROON);
-            DrawTextEx(Game::Instance()->getFont(), lbl2MusicVol, {menuButton.x + (float)lblCenter2, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
-        }
-        if (i == FX_VOLUME)
-        {
-            float fxWidth = BUTTON_WIDTH * Audio::Instance()->getFXVolume();
-            DrawRectangleRec({menuButton.x, menuButton.y, fxWidth, menuButton.height}, MAROON);
-            DrawTextEx(Game::Instance()->getFont(), lbl3FXVol, {menuButton.x + (float)lblCenter3, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
-        }
-        if (i == MASTER_VOLUME)
-        {
-            float masterWidth = BUTTON_WIDTH * Audio::Instance()->getMasterVolume();
-            DrawRectangleRec({menuButton.x, menuButton.y, masterWidth, menuButton.height}, MAROON);
-            DrawTextEx(Game::Instance()->getFont(), lbl4MasterVol, {menuButton.x + (float)lblCenter4, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
-        }
-        if (i == EXIT)
-        {
-            DrawTextEx(Game::Instance()->getFont(), lbl5Exit, {menuButton.x + (float)lblCenter5, menuButton.y + ((menuButton.height - btnFontSize) / 2)}, btnFontSize, 1, (i == menuOption) ? BLACK : WHITE);
-        }
-
-        // highlight selected menu option
-        if (i == menuOption) // only highlight selected option
-        {
-            DrawRectangleLinesEx(menuButton, 1.5f, BLACK);
-        }
-    }
-
-    DrawRectangle(0, SCREEN_HEIGHT - 160, 1280, 160, LIGHTGRAY); // bottom hud background
-
-    GameState::draw();
-
-    // DrawText("Paused!!!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 40, WHITE);
-    // DrawText(txtPause, txtPauseCenter, SCREEN_HEIGHT / 2 - (PAUSE_FONT_SIZE / 2), PAUSE_FONT_SIZE, BLACK);
-    DrawTextEx(Game::Instance()->getFont(), txtPause, {(float)txtPauseCenter, SCREEN_HEIGHT / 2 - (PAUSE_FONT_SIZE / 2)}, PAUSE_FONT_SIZE, 1, BLACK); // game paused text
-    DrawTextEx(Game::Instance()->getFont(), txtSongTitle, {(float)txtSongTitleCenter, SCREEN_HEIGHT - 90}, 20, 1, WHITE);                             // song title text
+    DrawRectangleRec({menuButton.x, 100, musicWidth, menuButton.height}, volumeColour);  // draw adjustable music volume bar
+    DrawRectangleRec({menuButton.x, 150, fxWidth, menuButton.height}, volumeColour);     // draw adjustable fx volume bar
+    DrawRectangleRec({menuButton.x, 200, masterWidth, menuButton.height}, volumeColour); // draw adjustable master volume bar
 }
 
+/*
+    Exit the current state
+*/
 bool Pause::close()
 {
-    GameState::close();
-    std::cout << "Close pause state" << std::endl;
+    std::cout << "pause state - close" << std::endl;
+    // GameState::close();
 
     return true;
 }

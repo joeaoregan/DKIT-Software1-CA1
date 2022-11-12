@@ -20,10 +20,10 @@ public:
     virtual void draw();                  // render menu objects
     virtual bool close();                 // clear menu objects from memory
 
-    virtual int getStateID() const { return s_menuID; } // identifies current state
+    virtual game_state getStateID() const { return s_menuID; } // identifies current state
 
 private:
-    static const int s_menuID; // id for current state
+    static const game_state s_menuID; // id for current state
 };
 
 #endif

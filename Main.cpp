@@ -16,28 +16,23 @@ int main()
     SetWindowIcon(icon);                                               // set the window icon image
     SetExitKey(KEY_NULL);                                              // esc no longer exits game
 
-    Game::Instance()->init(); // initialise game objects (starts in menu state) -- to do -- add splash screen
-
     Audio::Instance()->init(); // initialise audio device and objects
+    Game::Instance()->init();  // initialise game objects (starts in menu state) -- to do -- add splash screen
 
     SetRandomSeed(GetTime()); // seed for random numbers
 
     SetTargetFPS(60); // frame rate - 60 frames per second
 
-    // while(Game::Instance->isRunning())
-
-    while (!WindowShouldClose())
+    while (!Game::Instance()->exitWindowRequested)
     {
         const float deltaTime{GetFrameTime()};
         Audio::Instance()->handleEvents(); // handle input events etc.
         Audio::Instance()->update();       // update music buffer with new stream data
 
         Game::Instance()->handleEvents();    // handle input events etc.
-                                             // if (!Game::Instance()->isPaused())
         Game::Instance()->update(deltaTime); // update game objects
 
-        BeginDrawing(); // start rendering
-        // ClearBackground(WHITE);   // clear the screen before rendering the next frame
+        BeginDrawing();           // start rendering -- ClearBackground(WHITE);   // clear the screen before rendering the next frame (not needed for transparent state overlay stuff)
         Game::Instance()->draw(); // render game objects
         EndDrawing();             // finish rendering
     }

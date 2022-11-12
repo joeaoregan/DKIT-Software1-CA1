@@ -33,17 +33,18 @@ public:
     void close();                 // remove objects from memory
     void reset(int level);        // reset the current level
 
-    void changePauseState(); // pause / unpause
-
     StateMachine *m_pStateMachine; // state handler (finite state machine (FSM))
 
-    bool isRunning() { return m_bRunning; } // getter: game running?
-    int getScore() { return m_Score; }      // getter: score
-    int getLevel() { return m_Level; }      // getter: level
-    Font getFont() { return m_fontRetro; }  // getter: font
-    bool isPaused() { return m_paused; }    // getter: game paused
+    bool isRunning() { return m_bRunning; }            // getter: game running?
+    int getScore() { return m_Score; }                 // getter: score
+    int getLevel() { return m_Level; }                 // getter: level
+    Font getFont() { return m_fontRetro; }             // getter: font
+    bool isPaused() { return m_paused; }               // getter: game paused
+    void setPaused(bool paused) { m_paused = paused; } // setter: pause the game
 
     int m_currentGameState; // current game state
+
+    bool exitWindowRequested{false};
 
 private:
     int m_Score;      // game current score

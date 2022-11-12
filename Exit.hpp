@@ -1,17 +1,17 @@
 /*
-    HighScores.hpp
-    10/11/2022
+    Exit.hpp
+    12/11/2022
 
-    High score class
-    Display the high scores
+    Exit confirmation state
+    display 2 buttons asking to confirm quitting game
 */
 
-#ifndef HIGH_SCORES_HPP
-#define HIGH_SCORES_HPP
+#ifndef EXIT_HPP
+#define EXIT_HPP
 
 #include "GameState.hpp"
 
-class HighScores : public GameState
+class Exit : public GameState
 {
 public:
     virtual bool init();                  // initialise objects
@@ -20,10 +20,10 @@ public:
     virtual void draw();                  // render objects
     virtual bool close();                 // clear objects from memory
 
-    virtual game_state getStateID() const { return s_highScoresID; } // current state ID (int using enum)
+    virtual game_state getStateID() const { return s_exitID; } // current state ID (int using enum)
 
 private:
-    static const game_state s_highScoresID; // identify current state
+    static const game_state s_exitID; // identify current state
 };
 
 #endif

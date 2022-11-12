@@ -8,9 +8,28 @@
 
 #include "GameState.hpp"
 #include "InputHandler.hpp"
+#include "Game.hpp"
+#include "Menu.hpp"
+#include "Pause.hpp"
+#include "Exit.hpp"
+#include "Background.hpp"
 
 bool GameState::init()
 {
+    // add scrolling background if not pushed state
+    if (!m_noBackground)
+    {
+        GameObject *bg = new Background(); // scrolling background
+        objects.push_back(bg);             // add background to state objects list
+    }
+
+    objects.push_back(new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE)); // Add heading
+
+    if (!(getStateID() != LEVEL_1 || getStateID() != LEVEL_2 || getStateID() != LEVEL_3)) // using this space to display the score
+    {
+        objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE))); // Add Subheading
+    }
+
     m_totalMenuItems = 0;     // clear loop totals
     m_totalFlashingItems = 0; // clear loop totals
 
@@ -45,16 +64,72 @@ bool GameState::init()
 
 void GameState::handleInput()
 {
+    if (WindowShouldClose())
+    {
+        Game::Instance()->m_pStateMachine->push(new Exit());
+    }
+
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        switch (getStateID())
+        {
+        case PAUSE:
+            // std::cout << "change to level state" << std::endl;
+            // if (Game::Instance()->isPaused())
+            // {
+            //     Game::Instance()->setPaused(false);
+            // Game::Instance()->m_pStateMachine->pop(); // back to game
+            // }
+            break;
+        case MENU:
+            Game::Instance()->m_pStateMachine->push(new Exit()); // show exit screen
+            break;
+        case LEVEL_1:
+        case LEVEL_2:
+        case LEVEL_3:
+            std::cout << "change to pause state" << std::endl;
+            if (!Game::Instance()->isPaused())
+            {
+                Game::Instance()->setPaused(true);
+                Game::Instance()->m_pStateMachine->push(new Pause()); // pause
+            }
+            break;
+        case HIGH_SCORES:
+            Game::Instance()->m_pStateMachine->change(new Menu()); // Menu
+            break;
+        case EXIT_GAME:
+            Game::Instance()->exitWindowRequested = true;
+            break;
+        default:
+            break;
+        }
+    }
+
     // switch menu options
-    if (Input::Instance()->up(DELAY) || Input::Instance()->left(DELAY))
+    if (Input::Instance()->up(DELAY))
     {
         menuOptionChange(m_menuOption, DECREMENT);
         std::cout << "up key pressed - option: " << m_menuOption << std::endl;
     }
-    else if (Input::Instance()->down(DELAY) || Input::Instance()->right(DELAY))
+    else if (Input::Instance()->down(DELAY))
     {
         menuOptionChange(m_menuOption, INCREMENT);
         std::cout << "down key pressed - option: " << m_menuOption << std::endl;
+    }
+
+    // Pause state uses left and right to change volume level
+    if (getStateID() != PAUSE)
+    {
+        if (Input::Instance()->left(DELAY))
+        {
+            menuOptionChange(m_menuOption, DECREMENT);
+            std::cout << "left key pressed - option: " << m_menuOption << std::endl;
+        }
+        else if (Input::Instance()->right(DELAY))
+        {
+            menuOptionChange(m_menuOption, INCREMENT);
+            std::cout << "right key pressed - option: " << m_menuOption << std::endl;
+        }
     }
 
     // mouse button pressed
@@ -107,10 +182,10 @@ void GameState::draw()
     for (int i = 0; i < m_totalMenuItems; i++) // for every object in this state
     {
         if (i == m_menuOption)
-            (*selectableObjects[i]).setSelected(true);
+            (*selectableObjects[i]).setSelected(true); // highlight the current selected object
         else
-            (*selectableObjects[i]).setSelected(false);
-        (*selectableObjects[i]).draw(); // render the object
+            (*selectableObjects[i]).setSelected(false); // unselected object rendered differently
+        (*selectableObjects[i]).draw();                 // render the object
     }
 
     // flashing text

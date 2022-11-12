@@ -11,14 +11,6 @@
 
 #include "GameState.hpp"
 
-enum pause_states
-{
-    RESUME = 0,
-    MUSIC_VOLUME = 1,
-    FX_VOLUME = 2,
-    MASTER_VOLUME = 3,
-    EXIT = 4
-};
 class Pause : public GameState
 {
 public:
@@ -28,14 +20,16 @@ public:
     virtual void draw();                  // render level objects
     virtual bool close();                 // clear level objects from memory
 
-    virtual int getStateID() const { return s_pauseID; } // current state ID (int using enum)
+    virtual game_state getStateID() const { return s_pauseID; } // current state ID (int using enum)
 
 private:
-    static const int s_pauseID; // identify current state
+    static const game_state s_pauseID; // identify current state
 
-    const char *txtPause;
-
-    int txtPauseCenter;
+    GameObject *audioBar;     // Status bar for song current time
+    const char *txtSongTitle; // title of current song -- todo dynamically change when song changes
+    float musicWidth{0};      // music volume % for status bar
+    float fxWidth{0};         // fx volume % for status bar
+    float masterWidth{0};     // master volume % for status bar
 };
 
 #endif

@@ -16,15 +16,16 @@
 #include "FlashingText.hpp"
 
 // enum to track current state, int more efficient than string, provides readability
-enum game_states
+enum game_state
 {
-    MENU = 0,
-    LEVEL_1 = 1,
-    LEVEL_2 = 2,
-    LEVEL_3 = 3,
-    GAME_OVER = 4,
-    PAUSE = 5,
-    HIGH_SCORES = 6
+    MENU = 0,    // start menu state
+    LEVEL_1,     // Level 1
+    LEVEL_2,     // todo -- implement level 2
+    LEVEL_3,     // todo -- implement level 3
+    GAME_OVER,   // todo -- implement game over state
+    PAUSE,       // pause state
+    HIGH_SCORES, // high score state
+    EXIT_GAME    // confirm exit state
 };
 
 const int INCREMENT = 1;  // for readabiity using function to change selected item up
@@ -41,12 +42,15 @@ public:
 
     virtual void resume() {} // restart current state -- to do -- necessary?
 
-    virtual int getStateID() const = 0; // id of current state (was string, now int using enum)
+    virtual game_state getStateID() const = 0; // id of current state (was string, now int using enum)
 
     void menuOptionChange(int &option, int amount); // change the selected menu option
 
+    void setNoBackground(bool bg = true) { m_noBackground = bg; } // set the state having no background
+    // bool hasNoBackground() { return m_noBackground; }             // check if the state uses a background -- todo - check is this even needed
+
 protected:
-    GameState() : m_loadingComplete(false), m_exiting(false) {} // constructor, initialising variables
+    GameState() : m_loadingComplete(false), m_exiting(false), m_noBackground{false} {} // constructor, initialising variables
 
     bool m_loadingComplete; // game objects fully loaded
     bool m_exiting;         // leaving the current state
@@ -59,6 +63,8 @@ protected:
     int m_menuOption;         // current selected item for menu options in state
     int m_totalMenuItems;     // number of buttons in menu
     int m_totalFlashingItems; // number of flashing text;
+
+    bool m_noBackground; // state is pushed over another state
 };
 
 #endif

@@ -10,7 +10,6 @@
 #include "Menu.hpp"
 #include "InputHandler.hpp"
 #include "Player.hpp"
-#include "Pause.hpp"
 
 Game *Game::s_pGame = 0;
 GameObject *player;
@@ -37,25 +36,7 @@ void Game::update(float deltaTime)
 
 void Game::handleEvents()
 {
-    // Input::Instance()->update(); // does nothing
-
-    if (IsKeyPressed(KEY_ESCAPE))
-    {
-        changePauseState();
-    }
-
     m_pStateMachine->handleInput();
-}
-
-void Game::changePauseState()
-{
-    if (!m_paused)
-        m_pStateMachine->push(new Pause());
-    else
-        m_pStateMachine->pop();
-
-    m_paused = !m_paused;
-    std::cout << "game paused: " << m_paused << std::endl;
 }
 
 void Game::draw()
