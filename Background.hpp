@@ -14,8 +14,8 @@
 class Background : public GameObject
 {
 public:
-    Background();    // constructor
-    ~Background() {} // deconstructor
+    Background(Vector2 position = {0.0f, 0.0f}); // constructor - default position argurment
+    ~Background() {}                             // deconstructor
 
     void init() {}       // initialise the object
     void move();         // update the object
