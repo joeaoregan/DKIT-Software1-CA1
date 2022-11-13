@@ -60,7 +60,7 @@ void Pause::handleInput()
 {
     GameState::handleInput(); // Base class input handling
 
-    if (Input::Instance()->isKeyDown(KEY_ENTER)) // If enter key is pressed
+    if (Input::Instance()->select()) // If enter key is pressed
     {
         switch (m_menuOption) // switch on the current selected menu option
         {

@@ -132,24 +132,31 @@ void GameState::handleInput()
         }
     }
 
-    // mouse button pressed
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-    {
-        std::cout << "mouse right-click" << std::endl;
-    }
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-    {
-        std::cout << "mouse left-click" << std::endl;
-    }
+    Input::Instance()->mouseSelect = false; // reset mouse select
 
     // mouse over buttons
     for (unsigned int i = 0; i < selectableObjects.size(); i++)
     {
         if (Input::Instance()->mouseOver((*selectableObjects[i]).getRect(), GetMousePosition()))
         {
-            std::cout << "mouse over button : " << i << std::endl;
+            m_menuOption = i; // set this selectable object as highlighted
+            // targetAcquired = true;
+            // std::cout << "mouse over option: " << i << std::endl;
+            Input::Instance()->mouseSelect = true; // button can be selected
+            break;
         }
     }
+    /*
+        // mouse button pressed
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+        {
+            // std::cout << "mouse right-click option: " << i << std::endl;
+        }
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            std::cout << "mouse left-click option: " << m_menuOption << std::endl;
+        }
+        */
 }
 
 void GameState::update(float deltaTime)

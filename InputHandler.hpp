@@ -38,6 +38,8 @@ public:
 
     bool mouseOver(Rectangle *a, Vector2 cursor); // check mouse pointer over an object
 
+    bool mouseSelect{false}; // mouse can select
+
 private:
     InputHandler() {} // constructor, private for singleton pattern
 

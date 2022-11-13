@@ -64,7 +64,8 @@ protected:
     int m_totalMenuItems;     // number of buttons in menu
     int m_totalFlashingItems; // number of flashing text;
 
-    bool m_noBackground; // state is pushed over another state
+    bool m_noBackground;        // state is pushed over another state
+    bool targetAcquired{false}; // selectable item availabled
 };
 
 #endif

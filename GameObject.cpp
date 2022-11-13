@@ -20,9 +20,10 @@ GameObject::GameObject(Rectangle rect, std::string src, bool collidable, int id)
     m_rect = rect;          // x, y, width, height
     m_collisionRect = rect; // rectangle used for collisions ...edited for funny shapes etc.
 
-    m_collidable = collidable;                                     // some objects don't need to check for collisions
-    m_sprite = LoadTexture(("resources/" + src + ".png").c_str()); // load the object texture
-    m_id = id;                                                     // identify object for checking collisions etc.
+    m_collidable = collidable; // some objects don't need to check for collisions
+    if (src != "")
+        m_sprite = LoadTexture(("resources/" + src + ".png").c_str()); // load the object texture
+    m_id = id;                                                         // identify object for checking collisions etc.
 }
 
 void GameObject::destroy()

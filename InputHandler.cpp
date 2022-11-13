@@ -44,6 +44,12 @@ bool InputHandler::select(bool delay)
     {
         return true;
     }
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouseSelect)
+    {
+        std::cout << "input handler - mouse select" << std::endl;
+        return true;
+    }
     return false;
 }
 
