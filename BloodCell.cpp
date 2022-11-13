@@ -29,63 +29,59 @@ BloodCell::BloodCell() : GameObject({0.0f, 0.0f, 100.0f, 55.0f}, "sprites/BloodC
 {
     setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
     int randomYPosition = (GetRandomValue(0, 7) * 55) + 90;
-    // setY((GetRandomValue(1, 10) * getHeight()) + 20);
-    // setY((GetRandomValue(0, 7) * getHeight()) + 90);
-    // setY((getHeight() * GetRandomValue(0, 7)) + 90);
-    setY(randomYPosition);
-
-    setSpeed((GetRandomValue(1, 5) / 5.0f) + 0.6f);
-    setRotateClockwise((GetRandomValue(0, 10) % 2 == 0) ? true : false);
-    dRotate = (GetRandomValue(1, 10) / 10 * 0.5f) + 0.5f;
-    setDegrees(GetRandomValue(0, 360));
-    setDamage(5); // amount of damage to inflict on the player
-    setID(BLOOD_CELL);
-    updateCollisionRects();
+    setY(randomYPosition);                                               // random y position
+    setSpeed((GetRandomValue(1, 5) / 5.0f) + 0.6f);                      // speed to move
+    setRotateClockwise((GetRandomValue(0, 10) % 2 == 0) ? true : false); // direction to rotate
+    dRotate = (GetRandomValue(1, 10) / 10 * 0.5f) + 0.5f;                // amount to rotate each frame
+    setDegrees(GetRandomValue(0, 360));                                  // start the blood cell rotating at a random degree
+    setDamage(5);                                                        // amount of damage to inflict on the player
+    setID(BLOOD_CELL);                                                   // ID to check collisions etc and distinguish from other objects
+    updateCollisionRects();                                              // use to initialise the collision rectangle
+    setActive(true);                                                     // The blood cell is active once created
 }
 
 void BloodCell::updateCollisionRects()
 {
-    if (getActive())
+    if (getActive()) // if the blood cell is active update the rectangle used for collisions
     {
-        cRect1 = {(*getRect()).x - originOffsetX, (*getRect()).y - originOffsetY, width, height};
-        cRect2 = {(*getRect()).x - originOffsetX + rect2Offset, (*getRect()).y - originOffsetY - rect2Offset, height, width};
-        cRect3 = {(*getRect()).x - originOffsetX + rect3Offset, (*getRect()).y - originOffsetY - rect3Offset, width - rect2Offset, height + rect2Offset};
+        cRect1 = {(*getRect()).x - originOffsetX, (*getRect()).y - originOffsetY, width, height};                                                         // blood cell starting rectangle
+        cRect2 = {(*getRect()).x - originOffsetX + rect2Offset, (*getRect()).y - originOffsetY - rect2Offset, height, width};                             // in between angle
+        cRect3 = {(*getRect()).x - originOffsetX + rect3Offset, (*getRect()).y - originOffsetY - rect3Offset, width - rect2Offset, height + rect2Offset}; // upright, basically rotated 90 degrees
     }
 }
 
 void BloodCell::move()
 {
-    setX(getX() - getSpeed());
-    setDegrees(getDegrees() + dRotate);
+    setX(getX() - getSpeed());          // move left to right
+    setDegrees(getDegrees() + dRotate); // update the rotation
 
     if (getDegrees() >= 360)
-        setDegrees(0);
+        setDegrees(0); // reset degrees to 0 once it hits 360
 
-    if (movingUp)
-        dy++;
+    if (movingUp) // if its moving up dy increases -- todo check am I adding or subtracting this because it should decrease for up
+        dy++;     // difference to increase y position
     else
-        dy--;
+        dy--; // if moving down decrease y value
 
-    if (dy > MOVEMENT)
-        movingUp = false;
-    else if (dy <= 0)
-        movingUp = true;
+    if (dy > MOVEMENT)    // if the blood cell has reached the peak of its upward movement start moving down again
+        movingUp = false; // commence moving down
+    else if (dy <= 0)     // if the blood cell has reached the peak of its downward movement, need to start moving up
+        movingUp = true;  // keep moving up
 
-    // setY(getY() + (dy / upDownSpeed));
+    // setY(getY() + (dy / upDownSpeed)); // todo - try and remember what I was attempting here
 
-    collisions();
+    collisions(); // check collisions -- todo make this a funcion in gameobject, as most objects have collisions anyway
 }
 
 void BloodCell::collisions()
 {
+
     if ((getX() < -getWidth()) || getCollision()) // if moved off screen, or collided with
     {
-        setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
         // std::cout << "bloodcell off screen" << std::endl;
-        setCollision(false);
+        setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10))); // move a random distance to the right of the screen to start all over again
+        setCollision(false);                                                // reset the collision flag
     }
-
-    updateCollisionRects();
 
     // dynamically change the collision rect
     if (getDegrees() < 30 || getDegrees() >= 330 || (getDegrees() >= 150 && getDegrees() < 210))
@@ -100,8 +96,13 @@ void BloodCell::collisions()
     {
         setCollisionRect(cRect3); // in between 0 and 90 degree rotation, more like a square
     }
+
+    updateCollisionRects(); // Dynamically update the collision rectangle shape as the blood cell rotates
 }
 
+/*
+    render the blood cell
+*/
 void BloodCell::draw()
 {
     DrawTexturePro(getTexture(), {0, 0, getWidth(), getHeight()}, (*getRect()), getOrigin(), ((rotateClockwise) ? getDegrees() : getDegrees() * -1), WHITE);

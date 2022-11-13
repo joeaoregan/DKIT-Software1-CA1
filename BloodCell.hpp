@@ -27,26 +27,15 @@ public:
 
     Vector2 getOrigin() { return {getWidth() / 2.0f, getHeight() / 2.0f}; } // origin point to rotate on (center of rect)
 
-    void updateCollisionRects(); // update collision rect size depending on rotation of blood cell
+    void updateCollisionRects(); // update collision rect size and position depending on rotation of blood cell
 
 private:
-    void setRotateClockwise(bool clockwise)
-    {
-        rotateClockwise = clockwise;
-    }
-
-    float getDegrees()
-    {
-        return m_degrees;
-    }
-    void setDegrees(float degrees)
-    {
-        m_degrees = degrees;
-    }
-    float m_degrees;
-    bool rotateClockwise = true;
-
-    Rectangle cRect1, cRect2, cRect3; // Dynamic collision rect states
+    void setRotateClockwise(bool clockwise) { rotateClockwise = clockwise; } // which direction to rotate the blood cell
+    float getDegrees() { return m_degrees; }                                 // get the degrees to rotate by
+    void setDegrees(float degrees) { m_degrees = degrees; }                  // set the degrees to rotate by
+    float m_degrees;                                                         // degrees to rotate by
+    bool rotateClockwise = true;                                             // direction to rotate (clockwise if true)
+    Rectangle cRect1, cRect2, cRect3;                                        // Dynamic collision rect states
 };
 
 #endif

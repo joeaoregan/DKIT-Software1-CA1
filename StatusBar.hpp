@@ -9,6 +9,8 @@
 
 #include "GameObject.hpp"
 
+const bool DEBUG_STATUSBAR = true; // debug messages for status bar displayed
+
 class StatusBar : public GameObject // StatusBar inherits directly from the GameObject base class
 {
 public:

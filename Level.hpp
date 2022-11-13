@@ -31,6 +31,9 @@ public:
 
 private:
     static const game_state s_levelID; // identify current state
+
+    void handleCollisions(); // handle object collisions
+    int splat{255};          // fade into level
 };
 
 #endif

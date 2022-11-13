@@ -47,7 +47,7 @@ private:
     int m_laserFireCount; // current time until next laser fire
     Sound m_fxFire;       // sound to play when bullet fires
 
-    bool m_flashing;
+    bool m_flashing;        // player is flashing after collision
     int m_flashDirection;   // change colour up and down by making this postive / negative value and multiplying
     int m_flashCount;       // number of times player has flashed
     int m_flashColourValue; // Start with green and blue values as 255

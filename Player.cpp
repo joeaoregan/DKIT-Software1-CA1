@@ -30,6 +30,7 @@ Player::Player() : GameObject({50.0f, 320.0f, 50.0f, 50.0f}, "sprites/Player1Shi
     m_flashDirection = 1;     // colour values change positive / minus to flash the player
     setID(PLAYER);            // id to check collisions with other objects etc.
     setOffset({50, 25});      // collision offset
+    setActive(true);          // object is active straight away
 }
 
 void Player::init()
@@ -42,10 +43,7 @@ void Player::init()
     for (int i = 0; i < NUM_BULLETS; i++)
     {
         addSubObject(new Bullet());
-        // if (DEBUG_MODE)
-        // {
-        //     std::cout << "bullet " << i << " added";
-        // }
+        debug("bullet" + std::to_string(i), DEBUG_MODE || DEBUG_PLAYER || DEBUG_BULLET); // only show if debugging players
     }
 
     red = LoadTexture("resources/particles/red.png");
@@ -65,14 +63,13 @@ void Player::move()
     // Player flashes if collision with obstacle / enemy
     if (getCollision() && !isFlashing())
     {
-        setFlashing(true);
-        // std::cout << "player has started flashing" << std::endl;
-        setCollision(false);
+        setCollision(false); // cancel collision flag
+        setFlashing(true);   // set player flashing
     }
-    else
-    {
-        setCollision(false);
-    }
+    // else
+    // {
+    //     setCollision(false); // todo -- check this
+    // }
 
     if (isFlashing())
     {
@@ -164,30 +161,32 @@ void Player::drawParticles()
 
 void Player::draw()
 {
-    DrawCircleV(getPosition(), getHeight(), MAROON);
-    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)m_flashColourValue, (unsigned char)m_flashColourValue, 255});
-    drawCollisionRect(DEBUG_PLAYER); // Bounding box to check collisions
-    drawParticles();
+    DrawCircleV(getPosition(), getHeight(), MAROON);                                                                                                                                          // todo -- remember why you were using this
+    DrawTexturePro(getTexture(), {0, 0, 100, 47}, {getX() - 50, getY() - 25, 100, 47}, {0.0f, 0.0f}, 0.0f, {255, (unsigned char)m_flashColourValue, (unsigned char)m_flashColourValue, 255}); // render player texture
+    drawCollisionRect(DEBUG_PLAYER);                                                                                                                                                          // Bounding box to check collisions
+    drawParticles();                                                                                                                                                                          // draw particles for player engine
 }
 
 void Player::handleInput()
 {
-    if (Input::Instance()->right())
+    // x-axis movement
+    if (Input::Instance()->right()) // right key, button pressed
     {
-        setX(getX() + getSpeed());
+        setX(getX() + getSpeed()); // move right
     }
-    else if (Input::Instance()->left())
+    else if (Input::Instance()->left()) // left key, button pressed
     {
-        setX(getX() - getSpeed());
+        setX(getX() - getSpeed()); // move left
     }
 
-    if (Input::Instance()->up())
+    // y-axis movement
+    if (Input::Instance()->up()) // up key, button pressed
     {
-        setY(getY() - getSpeed());
+        setY(getY() - getSpeed()); // move up
     }
-    else if (Input::Instance()->down())
+    else if (Input::Instance()->down()) // down key, button pressed
     {
-        setY(getY() + getSpeed());
+        setY(getY() + getSpeed()); // move down
     }
 
     if (m_laserFireCount <= LASER_FIRE_RATE) // Only count if needs to
@@ -200,7 +199,7 @@ void Player::handleInput()
 
         for (GameObject *b : getSubObjects()) // spawn bullets
         {
-            if (m_laserFireCount >= LASER_FIRE_RATE)
+            if (m_laserFireCount >= LASER_FIRE_RATE) // time to fire another bullet
                 if (!(*b).getActive() && (*b).getID() == PLAYER_BULLET)
                 {
                     PlaySound(m_fxFire); // play laser sound effect
@@ -209,8 +208,7 @@ void Player::handleInput()
                     (*b).toggleActive();
                     m_laserFireCount = 0; // reset wait until next bullet
 
-                    // std::cout << "bullet active: " << (*b).getActive() << " x: " << (*b).getX() << " y: " << (*b).getY() << std::endl;
-                    debug(std::string("bullet active: ") + std::to_string((*b).getActive()) + " x: " + std::to_string((*b).getX()) + " y: " + std::to_string((*b).getY()), DEBUG_PLAYER);
+                    debug(std::string("bullet active: ") + std::to_string((*b).getActive()) + " x: " + std::to_string((*b).getX()) + " y: " + std::to_string((*b).getY()), DEBUG_PLAYER || DEBUG_BULLET);
                     break;
                 }
         }
@@ -219,18 +217,18 @@ void Player::handleInput()
 
 void Player::destroy()
 {
-    UnloadSound(m_fxFire);
-    for (GameObject *g : particles)
+    UnloadSound(m_fxFire);          // unload fire effect
+    for (GameObject *g : particles) // get all particles
     {
-        g->destroy();
+        g->destroy(); // destroy them
     }
 }
 
 void Player::setHealth(int health)
 {
-    GameObject::setHealth(health);
+    GameObject::setHealth(health); // Set player health
 
-    StatusBar *hb = static_cast<StatusBar *>(m_healthBar);
-    hb->setPercent((float)getHealth() / 100.0f);
-    // std::cout << "healthbar should update - percent: " << hb->getPercent() << std::endl;
+    StatusBar *hb = static_cast<StatusBar *>(m_healthBar); // status bar cast from GameObject base class
+    hb->setPercent((float)getHealth() / 100.0f);           // Set health status bar percentage
+    debug("healthbar should update - percent: " + std::to_string(hb->getPercent()), DEBUG_PLAYER || DEBUG_STATUSBAR);
 }
