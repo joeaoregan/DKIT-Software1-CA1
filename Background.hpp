@@ -9,7 +9,7 @@
 #ifndef BACKGROUND_HPP
 #define BACKGROUND_HPP
 
-#include "GameObject.hpp"
+#include "GameObject.hpp" // GameObject base class header file
 
 class Background : public GameObject
 {

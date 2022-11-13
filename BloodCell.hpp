@@ -9,11 +9,11 @@
 #ifndef BLOOD_CELL_HPP
 #define BLOOD_CELL_HPP
 
-#include "GameObject.hpp"
+#include "GameObject.hpp" // GameObject base class header file
 
-const bool DEBUG_BLOODCELL = true;
+const bool DEBUG_BLOODCELL = true; // debug the blood cell class
 
-class BloodCell : public GameObject
+class BloodCell : public GameObject // BloodCell is a child of GameObject
 {
 public:
     BloodCell();    // constructor

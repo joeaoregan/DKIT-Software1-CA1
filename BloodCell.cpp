@@ -25,11 +25,14 @@ bool movingUp = (GetRandomValue(0, 10) % 2 == 0) ? true : false;
 float dRotate = 0.0f;
 int upDownSpeed = GetRandomValue(10, 15);
 
-BloodCell::BloodCell() : GameObject({0.0f, 0.0f, 100.0f, 55.0f}, "sprites/BloodCell", true)
+/*
+    Blood Cell object constructor
+*/
+BloodCell::BloodCell() : GameObject({0.0f, 0.0f, 100.0f, 55.0f}, "sprites/BloodCell", true) // BloodCell uses GameObject parent class constructor to initialise
 {
-    setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));
-    int randomYPosition = (GetRandomValue(0, 7) * 55) + 90;
-    setY(randomYPosition);                                               // random y position
+    setX(SCREEN_WIDTH + (SPACE_BETWEEN_CELLS * GetRandomValue(0, 10)));  // random x starting position off screen to the right
+    int randomYPosition = (GetRandomValue(0, 7) * 55) + 90;              // calculate random y starting position starting at 90 pixels, then every 55 pixels up to 7 times
+    setY(randomYPosition);                                               // set random y position
     setSpeed((GetRandomValue(1, 5) / 5.0f) + 0.6f);                      // speed to move
     setRotateClockwise((GetRandomValue(0, 10) % 2 == 0) ? true : false); // direction to rotate
     dRotate = (GetRandomValue(1, 10) / 10 * 0.5f) + 0.5f;                // amount to rotate each frame
@@ -40,6 +43,9 @@ BloodCell::BloodCell() : GameObject({0.0f, 0.0f, 100.0f, 55.0f}, "sprites/BloodC
     setActive(true);                                                     // The blood cell is active once created
 }
 
+/*
+    update the 3 different sized collision rects
+*/
 void BloodCell::updateCollisionRects()
 {
     if (getActive()) // if the blood cell is active update the rectangle used for collisions
@@ -50,6 +56,9 @@ void BloodCell::updateCollisionRects()
     }
 }
 
+/*
+    update the BloodCell movement and other actions
+*/
 void BloodCell::move()
 {
     setX(getX() - getSpeed());          // move left to right
@@ -73,6 +82,9 @@ void BloodCell::move()
     collisions(); // check collisions -- todo make this a funcion in gameobject, as most objects have collisions anyway
 }
 
+/*
+    what to do when a BloodCell collides with another object
+*/
 void BloodCell::collisions()
 {
 
@@ -88,11 +100,11 @@ void BloodCell::collisions()
     {
         setCollisionRect(cRect1); // wide rectangle
     }
-    else if ((getDegrees() >= 60 && getDegrees() < 120) || (getDegrees() >= 240 && getDegrees() < 300))
+    else if ((getDegrees() >= 60 && getDegrees() < 120) || (getDegrees() >= 240 && getDegrees() < 300)) // if degrees is between 60 and 120, or 240 and 300 use rotated 90 degrees bounding box
     {
         setCollisionRect(cRect2); // rectangle rotated 90
     }
-    else
+    else // if it's in any other position, use the square type
     {
         setCollisionRect(cRect3); // in between 0 and 90 degree rotation, more like a square
     }
@@ -106,5 +118,5 @@ void BloodCell::collisions()
 void BloodCell::draw()
 {
     DrawTexturePro(getTexture(), {0, 0, getWidth(), getHeight()}, (*getRect()), getOrigin(), ((rotateClockwise) ? getDegrees() : getDegrees() * -1), WHITE);
-    drawCollisionRect(DEBUG_BLOODCELL);
+    drawCollisionRect(DEBUG_BLOODCELL); // if debugging render the collisions rectangle bounding box
 }
