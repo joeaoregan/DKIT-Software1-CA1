@@ -6,29 +6,31 @@
     Base class for game state classes
 */
 
-#include "GameState.hpp"
-#include "InputHandler.hpp"
-#include "Game.hpp"
-#include "Menu.hpp"
-#include "Pause.hpp"
-#include "Exit.hpp"
-#include "Background.hpp"
+#include "GameState.hpp"    // header file for this class
+#include "InputHandler.hpp" // handle user input
+#include "Game.hpp"         // access game state machine
+#include "Menu.hpp"         // Menu state
+#include "Pause.hpp"        // Pause state
+#include "Exit.hpp"         // confirm Exit state
+#include "Background.hpp"   // Background -- common to almost all states, except transparent background states such as Pause
 
+/*
+    initialise game state
+*/
 bool GameState::init()
 {
     // add scrolling background if not pushed state
-    if (!m_noBackground)
+    if (!m_noBackground) // if no background needed (such as Pause state)
     {
         GameObject *bg = new Background(); // scrolling background
         objects.push_back(bg);             // add background to state objects list
     }
 
-    objects.push_back(new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE)); // Add heading
-
     if (!(getStateID() != LEVEL_1 || getStateID() != LEVEL_2 || getStateID() != LEVEL_3)) // using this space to display the score
     {
-        objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE))); // Add Subheading
+        objects.push_back(new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE)); // Add heading
     }
+    objects.push_back((GameObject *)(new Text("by Joe O'Regan (D00262717)", {0, 570}, SUB_HEADING, true, WHITE))); // Add Subheading -- todo if adding messages to game put back in if statement above
 
     m_totalMenuItems = 0;     // clear loop totals
     m_totalFlashingItems = 0; // clear loop totals
@@ -62,18 +64,21 @@ bool GameState::init()
     return true; // return true if no errors (possibly no need if no raylib functions causing errors)
 }
 
+/*
+    handle game state user input defaults
+*/
 void GameState::handleInput()
 {
-    if (WindowShouldClose())
+    if (WindowShouldClose()) // if the window exit button was pressed
     {
-        Game::Instance()->m_pStateMachine->push(new Exit());
+        Game::Instance()->m_pStateMachine->push(new Exit()); // push the confirm exit state
     }
 
-    if (IsKeyPressed(KEY_ESCAPE))
+    if (IsKeyPressed(KEY_ESCAPE)) // if the escape key is pressed
     {
-        switch (getStateID())
+        switch (getStateID()) // switch on state id
         {
-        case PAUSE:
+        case PAUSE: // if in the Pause state -- todo push back to Pause state as button pushes are moving between states
             // std::cout << "change to level state" << std::endl;
             // if (Game::Instance()->isPaused())
             // {
@@ -81,24 +86,24 @@ void GameState::handleInput()
             // Game::Instance()->m_pStateMachine->pop(); // back to game
             // }
             break;
-        case MENU:
+        case MENU:                                               // if in the Menu state
             Game::Instance()->m_pStateMachine->push(new Exit()); // show exit screen
             break;
-        case LEVEL_1:
-        case LEVEL_2:
-        case LEVEL_3:
-            std::cout << "change to pause state" << std::endl;
-            if (!Game::Instance()->isPaused())
+        case LEVEL_1:                                          // if in the level 1 state
+        case LEVEL_2:                                          // if in the level 2 state
+        case LEVEL_3:                                          // if in the level 3 state
+            std::cout << "change to pause state" << std::endl; // todo -- figure out why button presses continuing through states
+            if (!Game::Instance()->isPaused())                 // if the game is not paused
             {
-                Game::Instance()->setPaused(true);
-                Game::Instance()->m_pStateMachine->push(new Pause()); // pause
+                Game::Instance()->setPaused(true);                    // set the game paused
+                Game::Instance()->m_pStateMachine->push(new Pause()); // push a new pause state
             }
             break;
-        case HIGH_SCORES:
-            Game::Instance()->m_pStateMachine->change(new Menu()); // Menu
+        case HIGH_SCORES:                                          // if in the high scores state
+            Game::Instance()->m_pStateMachine->change(new Menu()); // change to menu state
             break;
-        case EXIT_GAME:
-            Game::Instance()->exitWindowRequested = true;
+        case EXIT_GAME:                                   // if in the confirm exit state
+            Game::Instance()->exitWindowRequested = true; // exit the game
             break;
         default:
             break;
@@ -106,28 +111,28 @@ void GameState::handleInput()
     }
 
     // switch menu options
-    if (Input::Instance()->up(DELAY))
+    if (Input::Instance()->up(DELAY)) // if the up key / button is pressed
     {
-        menuOptionChange(m_menuOption, DECREMENT);
+        menuOptionChange(m_menuOption, DECREMENT); // decrease the selected option index
         std::cout << "up key pressed - option: " << m_menuOption << std::endl;
     }
-    else if (Input::Instance()->down(DELAY))
+    else if (Input::Instance()->down(DELAY)) // if down key / button is pressed
     {
-        menuOptionChange(m_menuOption, INCREMENT);
+        menuOptionChange(m_menuOption, INCREMENT); // increase the selected option index
         std::cout << "down key pressed - option: " << m_menuOption << std::endl;
     }
 
     // Pause state uses left and right to change volume level
-    if (getStateID() != PAUSE)
+    if (getStateID() != PAUSE) // if not in the pause state
     {
-        if (Input::Instance()->left(DELAY))
+        if (Input::Instance()->left(DELAY)) // if left key / button pressed
         {
-            menuOptionChange(m_menuOption, DECREMENT);
+            menuOptionChange(m_menuOption, DECREMENT); // change menu option down
             std::cout << "left key pressed - option: " << m_menuOption << std::endl;
         }
-        else if (Input::Instance()->right(DELAY))
+        else if (Input::Instance()->right(DELAY)) // if right key / button pressed
         {
-            menuOptionChange(m_menuOption, INCREMENT);
+            menuOptionChange(m_menuOption, INCREMENT); // change menu item up
             std::cout << "right key pressed - option: " << m_menuOption << std::endl;
         }
     }
@@ -135,9 +140,9 @@ void GameState::handleInput()
     Input::Instance()->mouseSelect = false; // reset mouse select
 
     // mouse over buttons
-    for (unsigned int i = 0; i < selectableObjects.size(); i++)
+    for (unsigned int i = 0; i < selectableObjects.size(); i++) // for each selectable object
     {
-        if (Input::Instance()->mouseOver((*selectableObjects[i]).getRect(), GetMousePosition()))
+        if (Input::Instance()->mouseOver((*selectableObjects[i]).getRect(), GetMousePosition())) // if the mouse cursor is over a button
         {
             m_menuOption = i; // set this selectable object as highlighted
             // targetAcquired = true;
@@ -159,6 +164,9 @@ void GameState::handleInput()
         */
 }
 
+/*
+    update the game state
+*/
 void GameState::update(float deltaTime)
 {
     // regular objects
@@ -178,6 +186,9 @@ void GameState::update(float deltaTime)
     }
 }
 
+/*
+    render the game state
+*/
 void GameState::draw()
 {
     for (GameObject *obj : objects) // for every object in this state
@@ -188,25 +199,28 @@ void GameState::draw()
     // selectable objects / buttons etc
     for (int i = 0; i < m_totalMenuItems; i++) // for every object in this state
     {
-        if (i == m_menuOption)
-            (*selectableObjects[i]).setSelected(true); // highlight the current selected object
-        else
+        if (i == m_menuOption)                          // if the button is the current menu option
+            (*selectableObjects[i]).setSelected(true);  // highlight the current selected object
+        else                                            // otherwise
             (*selectableObjects[i]).setSelected(false); // unselected object rendered differently
         (*selectableObjects[i]).draw();                 // render the object
     }
 
     // flashing text
-    for (int i = 0; i < m_totalFlashingItems; i++)
+    for (int i = 0; i < m_totalFlashingItems; i++) // for every flashing text object
     {
-        if ((*flashingTextObjs[i]).canHide())
+        if ((*flashingTextObjs[i]).canHide()) // if the flashing text object is hidden
         {
-            (*flashingTextObjs[i]).setActive(i == m_menuOption);
+            (*flashingTextObjs[i]).setActive(i == m_menuOption); // set active if it is the current menu option
         }
-        flashingTextObjs[i]->setFlashing(true);
-        flashingTextObjs[i]->draw();
+        flashingTextObjs[i]->setFlashing(true); // set flashing true
+        flashingTextObjs[i]->draw();            // render the flashing text object
     }
 }
 
+/*
+    exit game state
+*/
 bool GameState::close()
 {
     // Regular objects
@@ -225,23 +239,26 @@ bool GameState::close()
         (*btn).destroy(); // clear object from memory
     }
 
-    objects.clear();
-    flashingTextObjs.clear();
-    selectableObjects.clear();
+    objects.clear();           // clear the lists of regular objects
+    flashingTextObjs.clear();  // clear the lists of flashing text objects
+    selectableObjects.clear(); // clear the lists of menu item / selectable objects
 
-    return true;
+    return true; // todo - only necessary if a check is rejected, and no checks
 }
 
-void GameState::menuOptionChange(int &option, int amount)
+/*
+    change the menu option
+*/
+void GameState::menuOptionChange(int &option, int amount) // the option index, and amount increments / decrements
 {
-    option += amount;
+    option += amount; // add the value of amount to the option
 
-    if (option > m_totalMenuItems - 1)
+    if (option > m_totalMenuItems - 1) // if the end of the selectable objects list is reached
     {
-        option = 0;
+        option = 0; // return to the first option
     }
-    else if (option < 0)
+    else if (option < 0) // if option decreases and the first option was selected
     {
-        option = m_totalMenuItems - 1;
+        option = m_totalMenuItems - 1; // select the last button / item in the list
     }
 }

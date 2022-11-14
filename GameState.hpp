@@ -47,7 +47,7 @@ public:
 
     void menuOptionChange(int &option, int amount); // change the selected menu option
 
-    void setNoBackground(bool bg = true) { m_noBackground = bg; } // set the state having no background
+    inline void setNoBackground(bool bg = true) { m_noBackground = bg; } // set the state having no background
     // bool hasNoBackground() { return m_noBackground; }             // check if the state uses a background -- todo - check is this even needed
 
 protected:
