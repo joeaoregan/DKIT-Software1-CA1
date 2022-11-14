@@ -2,6 +2,7 @@
     FlashingText.hpp
     10/11/2022
 
+    AKA: FlashText
     Flashing text class
     Draw flashing text on screen
     Some flashing text is hidden / shown depending on a menu item being selected in menus

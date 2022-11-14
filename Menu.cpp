@@ -9,7 +9,7 @@
 #include "FlashingText.hpp" // flashing text for menu options description
 #include "Button.hpp"       // button UI objects
 #include "InputHandler.hpp" // handle user input
-#include "Game.hpp"         // get state machine to change states
+#include "StateMachine.hpp" // FSM - get state machine to change states
 #include "Level.hpp"        // progress to level state
 #include "HighScores.hpp"   // progress to high score state
 #include "Exit.hpp"         // load exit state
@@ -55,22 +55,19 @@ void Menu::handleInput()
     GameState::handleInput(); // navigate menu items
 
     // action button
-    if (Input::Instance()->select(DELAY))
+    if (Input::Instance()->select(DELAY)) // if the select button is pressed (with delay)
     {
-        switch (m_menuOption)
+        switch (m_menuOption) // switch on selected menu option
         {
-        case MENU_START:
-            // std::cout << "start game" << std::endl;
-            Game::Instance()->getFSM()->change(new Level()); // Change to Level state
-            break;
-        case MENU_HIGH_SCORE:
-            // std::cout << "high scores" << std::endl;
-            Game::Instance()->getFSM()->change(new HighScores()); // Change to high score state
-            break;
-        case MENU_QUIT:
-            // std::cout << "quit game" << std::endl;
-            Game::Instance()->getFSM()->push(new Exit()); // Show confirm exit state
-            break;
+        case MENU_START:                               // option 1. play game
+            FSM::Instance()->change(new Level());      // Change to Level state
+            break;                                     // exit switch statement
+        case MENU_HIGH_SCORE:                          // option 2. view high scores
+            FSM::Instance()->change(new HighScores()); // Change to high score state
+            break;                                     // exit switch statement
+        case MENU_QUIT:                                // option 3. quit the game
+            FSM::Instance()->push(new Exit());         // Show confirm exit state
+            break;                                     // exit switch statement
         }
     }
 }

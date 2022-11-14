@@ -8,7 +8,8 @@
 
 #include "GameState.hpp"    // header file for this class
 #include "InputHandler.hpp" // handle user input
-#include "Game.hpp"         // access game state machine
+#include "Game.hpp"         // pause game
+#include "StateMachine.hpp" // FSM - access game state machine
 #include "Menu.hpp"         // Menu state
 #include "Pause.hpp"        // Pause state
 #include "Exit.hpp"         // confirm Exit state
@@ -71,7 +72,7 @@ void GameState::handleInput()
 {
     if (WindowShouldClose()) // if the window exit button was pressed
     {
-        Game::Instance()->getFSM()->push(new Exit()); // push the confirm exit state
+        FSM::Instance()->push(new Exit()); // push the confirm exit state
     }
 
     if (IsKeyPressed(KEY_ESCAPE)) // if the escape key is pressed
@@ -86,27 +87,27 @@ void GameState::handleInput()
             // Game::Instance()->getFSM()->pop(); // back to game
             // }
             break;
-        case MENU:                                        // if in the Menu state
-            Game::Instance()->getFSM()->push(new Exit()); // show exit screen
-            break;
+        case MENU:                                             // if in the Menu state
+            FSM::Instance()->push(new Exit());                 // show exit screen
+            break;                                             // exit switch
         case LEVEL_1:                                          // if in the level 1 state
         case LEVEL_2:                                          // if in the level 2 state
         case LEVEL_3:                                          // if in the level 3 state
             std::cout << "change to pause state" << std::endl; // todo -- figure out why button presses continuing through states
             if (!Game::Instance()->isPaused())                 // if the game is not paused
             {
-                Game::Instance()->setPaused(true);             // set the game paused
-                Game::Instance()->getFSM()->push(new Pause()); // push a new pause state
+                Game::Instance()->setPaused(true);  // set the game paused
+                FSM::Instance()->push(new Pause()); // push a new pause state
             }
-            break;
-        case HIGH_SCORES:                                   // if in the high scores state
-            Game::Instance()->getFSM()->change(new Menu()); // change to menu state
-            break;
+            break;                                        // exit switch
+        case HIGH_SCORES:                                 // if in the high scores state
+            FSM::Instance()->change(new Menu());          // change to menu state
+            break;                                        // exit switch
         case EXIT_GAME:                                   // if in the confirm exit state
             Game::Instance()->exitWindowRequested = true; // exit the game
-            break;
+            break;                                        // exit switch
         default:
-            break;
+            break; // exit switch
         }
     }
 

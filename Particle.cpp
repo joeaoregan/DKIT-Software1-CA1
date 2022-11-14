@@ -23,15 +23,15 @@ Particle::Particle(Rectangle rect, Texture2D &red, Texture2D &green, Texture2D &
 
     switch (rand() % 3) // with a random number of 0 to 2
     {
-    case 0:              // if the random number is 0
-        setTexture(red); // use the red texture, sets m_sprite in game object base class
-        break;
-    case 1:                // if the random number is 1
+    case 0:                // if the random number is 0
+        setTexture(red);   // use the red texture, sets m_sprite in game object base class
+        break;             // exit switch statement
+    case 1:                // else if the random number is 1
         setTexture(green); // use the green texture, sets m_sprite in game object base class
-        break;
-    case 2:               // if the random number is 2
-        setTexture(blue); // use the blue texture, sets m_sprite in game object base class
-        break;
+        break;             // exit switch statement
+    case 2:                // else if the random number is 2
+        setTexture(blue);  // use the blue texture, sets m_sprite in game object base class
+        break;             // exit switch statement
     }
 }
 

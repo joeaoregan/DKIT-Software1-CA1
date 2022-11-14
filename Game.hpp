@@ -42,7 +42,6 @@ public:        // public members
     inline Font getFont() const { return m_fontRetro; }       // getter: font
     inline bool isPaused() const { return m_paused; }         // getter: game paused
     inline void setPaused(bool paused) { m_paused = paused; } // setter: pause the game
-    StateMachine *getFSM() { return m_pStateMachine; }        // getter: state machine
 
     int m_currentGameState;          // current game state
     bool exitWindowRequested{false}; // the window exit button was pressed
@@ -56,8 +55,6 @@ private:                                                                        
     int m_Level;      // game current level
     bool m_paused;    // the game is paused -- todo - is this needed if the state machine resumes where level left off by popping / pushing instead of changing statess
     Font m_fontRetro; // font for text
-
-    StateMachine *m_pStateMachine; // state handler (finite state machine (FSM))
 
     static Game *s_pGame; // singleton instance of game
 };

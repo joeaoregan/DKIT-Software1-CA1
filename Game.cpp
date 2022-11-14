@@ -10,6 +10,7 @@
 #include "Menu.hpp"         // State machine starts game in menu state
 #include "InputHandler.hpp" // handle user input
 #include "Player.hpp"       // Player in Game class, then pass through levels -- todo - implement more than one level -- array of players for multiplayer
+#include "StateMachine.hpp" // FSM - manage states
 
 Game *Game::s_pGame = 0; // one instance of Game exists using singleton pattern
 
@@ -25,8 +26,7 @@ bool Game::init()
 
     m_currentGameState = MENU; // the game starts in Menu state
 
-    m_pStateMachine = new StateMachine(); // manages state transitions
-    m_pStateMachine->change(new Menu());  // start game in menu state
+    FSM::Instance()->change(new Menu()); // start game in menu state
 
     return success; // not needed as no checks carried out -- todo - remove or perform initialisation checks
 }
@@ -36,7 +36,7 @@ bool Game::init()
 */
 void Game::update(float deltaTime)
 {
-    m_pStateMachine->update(deltaTime); // update the current state
+    FSM::Instance()->update(deltaTime); // update the current state
 }
 
 /*
@@ -44,7 +44,7 @@ void Game::update(float deltaTime)
 */
 void Game::handleEvents()
 {
-    m_pStateMachine->handleInput(); // handle user input for current state
+    FSM::Instance()->handleInput(); // handle user input for current state
 }
 
 /*
@@ -52,7 +52,7 @@ void Game::handleEvents()
 */
 void Game::draw()
 {
-    m_pStateMachine->draw(); // render the current state
+    FSM::Instance()->draw(); // render the current state
 }
 
 /*

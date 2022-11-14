@@ -10,7 +10,7 @@
 #include "FlashingText.hpp" // flash top score
 #include "Button.hpp"       // option 1. back to menu, option 2. clear scores -- todo - implement clear scores button
 #include "InputHandler.hpp" // handle user input
-#include "Game.hpp"         // change states
+#include "StateMachine.hpp" // FSM - change states
 #include "Menu.hpp"         // return to menu state
 #include <string>           // use strings to display scores
 
@@ -70,12 +70,12 @@ void HighScores::handleInput()
     {
         switch (m_menuOption) // switch on current menu option
         {
-        case SCORES_BACK:                                   // if option 1. return to menu option selected
-            Game::Instance()->getFSM()->change(new Menu()); // change to a new menu state
-            break;
+        case SCORES_BACK:                                    // if option 1. return to menu option selected
+            FSM::Instance()->change(new Menu());             // change to a new menu state
+            break;                                           // exit switch
         case SCORES_CLEAR:                                   // if option 2. clear scores selected
             std::cout << "high scores cleared" << std::endl; // todo - actually clear scores
-            break;
+            break;                                           // exit switch
         }
     }
 }

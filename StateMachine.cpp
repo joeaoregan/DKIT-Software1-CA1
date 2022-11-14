@@ -8,6 +8,7 @@
 
 #include "StateMachine.hpp"
 
+StateMachine *StateMachine::s_pStateMachine = 0;
 // void StateMachine::clean()
 // {
 //     if (!m_gameStates.empty())
@@ -20,26 +21,35 @@
 //     }
 // }
 
+/*
+handle input for state
+*/
 void StateMachine::handleInput()
 {
-    if (!m_gameStates.empty())
+    if (!m_gameStates.empty()) // if the list of states isn't empty
     {
-        m_gameStates.back()->handleInput(); // handle user input
+        m_gameStates.back()->handleInput(); // handle user input for first state in list
     }
 }
 
+/*
+update state
+*/
 void StateMachine::update(float deltaTime)
 {
-    if (!m_gameStates.empty())
+    if (!m_gameStates.empty()) // if the state list isn't empty
     {
         m_gameStates.back()->update(deltaTime); // If there is a state update it
     }
 }
 
+/*
+render state
+*/
 void StateMachine::draw()
 {
-    if (!m_gameStates.empty())
-    {                                // Check if there is any state in the states list
+    if (!m_gameStates.empty()) // Check if there is any state in the states list
+    {
         m_gameStates.back()->draw(); // Render existing states
     }
 }
@@ -94,7 +104,7 @@ void StateMachine::change(GameState *pState)
 }
 
 // get the id of the current state
-int StateMachine::getID()
+int StateMachine::getID() const
 {
-    return m_gameStates.back()->getStateID();
+    return m_gameStates.back()->getStateID(); // return the current state id
 }

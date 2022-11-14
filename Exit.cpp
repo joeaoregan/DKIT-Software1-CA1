@@ -11,7 +11,8 @@
 #include "FlashingText.hpp" // flashing text use to display selected button information
 #include "Button.hpp"       // button UI element
 #include "InputHandler.hpp" // handle user input
-#include "Game.hpp"         // change states
+#include "Game.hpp"         // exit window request - close window
+#include "StateMachine.hpp" // change states
 // #include "Menu.hpp" // test returning to menu, or creating new menu
 
 const game_state Exit::s_exitID = EXIT_GAME; // identify current state
@@ -66,12 +67,12 @@ void Exit::handleInput()
     {
         switch (m_menuOption) // switch on current menu option
         {
-        case QUIT_NO:                          // option 1. no
-            Game::Instance()->getFSM()->pop(); // return to game / menu or whatever previous state is
-            break;
+        case QUIT_NO:                                     // option 1. no
+            FSM::Instance()->pop();                       // return to game / menu or whatever previous state is
+            break;                                        // exit switch
         case QUIT_YES:                                    // option 2. yes
             Game::Instance()->exitWindowRequested = true; // close the window
-            break;
+            break;                                        // exit switch
         }
     }
 }

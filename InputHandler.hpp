@@ -2,6 +2,7 @@
     Input handler
     20/10/2022
 
+    AKA: Input
     Using singleton pattern so it only exists once in the program
 */
 
