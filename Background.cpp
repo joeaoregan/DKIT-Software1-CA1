@@ -13,7 +13,7 @@ const int SCROLL_SPEED = 2; // speed to scroll the background across the screen
 
 // Background bg2 = new Background({SCREEN_WIDTH, 0.0f});
 
-Background::Background(Vector2 pos) : GameObject({pos.x, pos.y, SCREEN_WIDTH, SCREEN_HEIGHT}, "Background720") // background uses GameObject base class to initialise
+Background::Background(Vector2 pos) : GameObject({pos.x, pos.y, SCREEN_WIDTH, SCREEN_HEIGHT}, "Background720b") // background uses GameObject base class to initialise
 {
     bg2X = getX() + SCREEN_WIDTH; // x coordinate of background 2
 }

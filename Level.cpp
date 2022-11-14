@@ -39,25 +39,25 @@ bool Level::checkCollision(Rectangle *a, Rectangle *b)
     float bTop = (*b).y;                  // top of rectangle b
     float bBottom = (*b).y + (*b).height; // bottom of rectangle b
 
-    if (aLeft > SCREEN_WIDTH || aRight > SCREEN_WIDTH)
+    if (aLeft > SCREEN_WIDTH || aRight < 0.0f || bLeft > SCREEN_WIDTH || bRight < 0.0f) // if A or B is off the screen on either side
     {
-        return false; // object is off screen can't score points or lose health
+        return false; // An object is off screen can't score points or lose health
     }
 
     // If any of the sides from A are outside of B
-    if (aBottom < bTop)
+    if (aBottom < bTop) // if the bottom of A is higher up the screen than the top of B
     {
         return false; // A is over B
     }
-    else if (aTop >= bBottom)
+    else if (aTop >= bBottom) // if the top of A is lower down the screen than the bottom of B
     {
         return false; // A is under B
     }
-    else if (aRight <= bLeft)
+    else if (aRight <= bLeft) // if the right side of A is to the left of the left side of B
     {
         return false; // A is left of B
     }
-    else if (aLeft >= bRight)
+    else if (aLeft >= bRight) // if the left side of A is to the right side of B
     {
         return false; // A is right of B
     }
