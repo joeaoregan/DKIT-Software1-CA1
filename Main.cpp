@@ -3,11 +3,17 @@
     01/10/2022
 
     Main program entry point
+    initialises window, audio and game class
+    game loop
+    close window, game, and audio
 */
 
-#include "Game.hpp"
-#include "Audio.hpp"
+#include "Game.hpp"  // game class header, singleton
+#include "Audio.hpp" // audio class header, singleton
 
+/*
+main game entry point and game loop
+*/
 int main()
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Antibody - Joe O'Regan"); // initialise the game window
@@ -43,5 +49,5 @@ int main()
     CloseAudioDevice(); // close the audio device
     CloseWindow();      // close the game window
 
-    return 0;
+    return 0; // function returns nothing
 }
