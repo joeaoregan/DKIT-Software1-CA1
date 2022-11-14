@@ -5,6 +5,7 @@
 
     Particle game object
     Add particles to player ship
+    Credit: LazyFoo tutorial
 */
 
 #include "Particle.hpp" // this class header file

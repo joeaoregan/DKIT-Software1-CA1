@@ -4,6 +4,7 @@
     11/11/2022
 
     Add particles to player ship
+    Credit: LazyFoo tutorial
 */
 
 #include "GameObject.hpp" // parent game object class header file
