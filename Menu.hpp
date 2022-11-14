@@ -6,14 +6,14 @@
     Inherits from GameState
 */
 
-#ifndef MENU_HPP
-#define MENU_HPP
+#ifndef MENU_HPP // if the menu class isn't defined already
+#define MENU_HPP // ensure header file only processed once
 
-#include "GameState.hpp"
+#include "GameState.hpp" // parent class header
 
 class Menu : public GameState // Menu inherits from GameState base class
 {
-public:
+public:                                   // public variables accessible everywhere
     virtual bool init();                  // initialise menu objects
     virtual void handleInput();           // handle user input
     virtual void update(float deltaTime); // update menu objects
@@ -22,8 +22,8 @@ public:
 
     virtual game_state getStateID() const { return s_menuID; } // identifies current state
 
-private:
+private:                              // private variables accessible only from this class
     static const game_state s_menuID; // id for current state
-};
+};                                    // end of class
 
-#endif
+#endif // end of class definition

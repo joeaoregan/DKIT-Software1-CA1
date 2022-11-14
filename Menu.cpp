@@ -5,25 +5,27 @@
     Menu state class
 */
 
-#include "Menu.hpp"
-#include "Background.hpp"
-#include "FlashingText.hpp"
-#include "Button.hpp"
-#include "InputHandler.hpp"
-#include "Game.hpp"
-#include "Level.hpp"
-#include "HighScores.hpp"
-#include "Exit.hpp"
+#include "Menu.hpp"         // this class header
+#include "FlashingText.hpp" // flashing text for menu options description
+#include "Button.hpp"       // button UI objects
+#include "InputHandler.hpp" // handle user input
+#include "Game.hpp"         // get state machine to change states
+#include "Level.hpp"        // progress to level state
+#include "HighScores.hpp"   // progress to high score state
+#include "Exit.hpp"         // load exit state
 
 const game_state Menu::s_menuID = MENU; // identify current state
 
-enum menu_options
+enum menu_options // option button ids
 {
     MENU_START = 0,  // Option 1. Start the game
     MENU_HIGH_SCORE, // Option 2. View high scores
     MENU_QUIT        // Option 3. Quit the game
 };
 
+/*
+init menu state
+*/
 bool Menu::init()
 {
     // std::cout << "entering menu state" << std::endl;
@@ -45,6 +47,9 @@ bool Menu::init()
     return true; // successfully initialised -- to do -- check this, or make void function
 }
 
+/*
+handle menu state user input
+*/
 void Menu::handleInput()
 {
     GameState::handleInput(); // navigate menu items
@@ -70,23 +75,32 @@ void Menu::handleInput()
     }
 }
 
+/*
+update menu state
+*/
 void Menu::update(float deltaTime)
 {
     // std::cout << "menu update" << std::endl;
-    GameState::update(deltaTime); // update the menu objects
+    GameState::update(deltaTime); // update the menu objects from parent class update function
 }
 
+/*
+render menu state
+*/
 void Menu::draw()
 {
     ClearBackground(RED); // clear the screen before rendering the next frame
     // DrawRectangle(0, 600, 1280, 120, BLACK); // background for flashing text
-    GameState::draw(); // render the menu objects
+    GameState::draw(); // render the menu objects using base class default function
 }
 
+/*
+exit menu state
+*/
 bool Menu::close()
 {
     // std::cout << "exiting menu state" << std::endl;
-    GameState::close(); // clear menu objects from memory
+    GameState::close(); // clear menu objects from memory in parent class
 
     return true; // successfully exited -- to do -- check this, or make void function
 }
