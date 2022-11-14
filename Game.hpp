@@ -17,8 +17,8 @@
 
 class Game
 {
-public:
-    ~Game() {} // deconstructor
+public:        // public members
+    ~Game() {} // destructor -- todo - implement destructors
 
     static Game *Instance()
     {
@@ -37,37 +37,29 @@ public:
     void close();                 // remove objects from memory
     void reset(int level);        // reset the current level
 
-    StateMachine *m_pStateMachine; // state handler (finite state machine (FSM))
-
-    bool isRunning() { return m_bRunning; }            // getter: game running?
-    int getScore() { return m_Score; }                 // getter: score
-    int getLevel() { return m_Level; }                 // getter: level
-    Font getFont() { return m_fontRetro; }             // getter: font
-    bool isPaused() { return m_paused; }               // getter: game paused
-    void setPaused(bool paused) { m_paused = paused; } // setter: pause the game
+    inline int getScore() const { return m_Score; }           // getter: score
+    inline int getLevel() const { return m_Level; }           // getter: level
+    inline Font getFont() const { return m_fontRetro; }       // getter: font
+    inline bool isPaused() const { return m_paused; }         // getter: game paused
+    inline void setPaused(bool paused) { m_paused = paused; } // setter: pause the game
+    StateMachine *getFSM() { return m_pStateMachine; }        // getter: state machine
 
     int m_currentGameState;          // current game state
     bool exitWindowRequested{false}; // the window exit button was pressed
 
-private:              // todo - maybe I should make some of these protected
+private:                                                                                                 // todo - maybe I should make some of these protected
+    Game() : m_Score(0), m_Level(1), m_paused{false}, m_fontRetro(LoadFont("resources/fonts/Retro.ttf")) // private constructor - constructor private in singleton pattern, default values for score, level, paused, and font
+    {
+    }
+
     int m_Score;      // game current score
     int m_Level;      // game current level
+    bool m_paused;    // the game is paused -- todo - is this needed if the state machine resumes where level left off by popping / pushing instead of changing statess
     Font m_fontRetro; // font for text
 
+    StateMachine *m_pStateMachine; // state handler (finite state machine (FSM))
+
     static Game *s_pGame; // singleton instance of game
-    bool m_bRunning;      // is the game running
-
-    bool m_paused; // the game is paused -- todo - is this needed if the state machine resumes where level left off by popping / pushing instead of changing statess
-
-    GameObject *player; // The player game object
-
-    /*
-    private constructor - constructor private in singleton pattern
-    */
-    Game() : m_Score(0), m_Level(1), m_fontRetro(LoadFont("resources/fonts/Retro.ttf"))
-    {
-        m_paused = false; // game is not paused by default
-    }
 };
 
 #endif

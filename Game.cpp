@@ -18,10 +18,10 @@ Game *Game::s_pGame = 0; // one instance of Game exists using singleton pattern
 */
 bool Game::init()
 {
-    m_bRunning = true;   // is the game running
+    // m_bRunning = true;   // is the game running
     bool success = true; // in sdl you get boolean confirmation of textures loading etc. -- todo take this out it's not needed, make init void
 
-    player = new Player(); // player game object
+    // player = new Player(); // player game object
 
     m_currentGameState = MENU; // the game starts in Menu state
 

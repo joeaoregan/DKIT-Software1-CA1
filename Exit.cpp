@@ -66,8 +66,8 @@ void Exit::handleInput()
     {
         switch (m_menuOption) // switch on current menu option
         {
-        case QUIT_NO:                                 // option 1. no
-            Game::Instance()->m_pStateMachine->pop(); // return to game / menu or whatever previous state is
+        case QUIT_NO:                          // option 1. no
+            Game::Instance()->getFSM()->pop(); // return to game / menu or whatever previous state is
             break;
         case QUIT_YES:                                    // option 2. yes
             Game::Instance()->exitWindowRequested = true; // close the window

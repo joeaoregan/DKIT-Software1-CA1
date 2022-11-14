@@ -61,15 +61,15 @@ void Menu::handleInput()
         {
         case MENU_START:
             // std::cout << "start game" << std::endl;
-            Game::Instance()->m_pStateMachine->change(new Level()); // Change to Level state
+            Game::Instance()->getFSM()->change(new Level()); // Change to Level state
             break;
         case MENU_HIGH_SCORE:
             // std::cout << "high scores" << std::endl;
-            Game::Instance()->m_pStateMachine->change(new HighScores()); // Change to high score state
+            Game::Instance()->getFSM()->change(new HighScores()); // Change to high score state
             break;
         case MENU_QUIT:
             // std::cout << "quit game" << std::endl;
-            Game::Instance()->m_pStateMachine->push(new Exit()); // Show confirm exit state
+            Game::Instance()->getFSM()->push(new Exit()); // Show confirm exit state
             break;
         }
     }
@@ -80,7 +80,6 @@ update menu state
 */
 void Menu::update(float deltaTime)
 {
-    // std::cout << "menu update" << std::endl;
     GameState::update(deltaTime); // update the menu objects from parent class update function
 }
 
@@ -90,8 +89,7 @@ render menu state
 void Menu::draw()
 {
     ClearBackground(RED); // clear the screen before rendering the next frame
-    // DrawRectangle(0, 600, 1280, 120, BLACK); // background for flashing text
-    GameState::draw(); // render the menu objects using base class default function
+    GameState::draw();    // render the menu objects using base class default function
 }
 
 /*

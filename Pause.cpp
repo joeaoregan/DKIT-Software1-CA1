@@ -68,12 +68,13 @@ void Pause::handleInput()
     {
         switch (m_menuOption) // switch on the current selected menu option
         {
-        case RESUME:                                  // if resume option selected
-            Game::Instance()->setPaused(false);       // unpause
-            Game::Instance()->m_pStateMachine->pop(); // resume the game
-            break;
-        case EXIT:                                               // if exit optoin selected
-            Game::Instance()->m_pStateMachine->push(new Exit()); // show confirm exit
+        case RESUME:                                      // if resume option selected
+            Game::Instance()->setPaused(false);           // unpause
+            Game::Instance()->getFSM()->pop();            // resume the game
+            break;                                        // exit switch
+        case EXIT:                                        // if exit optoin selected
+            Game::Instance()->getFSM()->push(new Exit()); // show confirm exit
+            break;                                        // exit switch -- todo - check if this missing was the reason for input carrying over
         }
     }
 

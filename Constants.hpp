@@ -19,6 +19,10 @@ const bool DEBUG_WEAPONS = true;    // test weaposn are working
 const int SCREEN_WIDTH{1280}; // window width
 const int SCREEN_HEIGHT{720}; // window height
 
+// Play area
+const int GAME_AREA_TOP{40};                     // top of game area
+const int GAME_AREA_BOTTOM{SCREEN_HEIGHT - 160}; // bottom of game area
+
 // Text
 const int fontSizeHeading{28};    // font size for headings
 const int fontSizeSubheading{24}; // font size for sub headings

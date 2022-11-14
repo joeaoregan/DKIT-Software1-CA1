@@ -70,8 +70,8 @@ void HighScores::handleInput()
     {
         switch (m_menuOption) // switch on current menu option
         {
-        case SCORES_BACK:                                          // if option 1. return to menu option selected
-            Game::Instance()->m_pStateMachine->change(new Menu()); // change to a new menu state
+        case SCORES_BACK:                                   // if option 1. return to menu option selected
+            Game::Instance()->getFSM()->change(new Menu()); // change to a new menu state
             break;
         case SCORES_CLEAR:                                   // if option 2. clear scores selected
             std::cout << "high scores cleared" << std::endl; // todo - actually clear scores

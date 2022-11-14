@@ -71,7 +71,7 @@ void GameState::handleInput()
 {
     if (WindowShouldClose()) // if the window exit button was pressed
     {
-        Game::Instance()->m_pStateMachine->push(new Exit()); // push the confirm exit state
+        Game::Instance()->getFSM()->push(new Exit()); // push the confirm exit state
     }
 
     if (IsKeyPressed(KEY_ESCAPE)) // if the escape key is pressed
@@ -83,11 +83,11 @@ void GameState::handleInput()
             // if (Game::Instance()->isPaused())
             // {
             //     Game::Instance()->setPaused(false);
-            // Game::Instance()->m_pStateMachine->pop(); // back to game
+            // Game::Instance()->getFSM()->pop(); // back to game
             // }
             break;
-        case MENU:                                               // if in the Menu state
-            Game::Instance()->m_pStateMachine->push(new Exit()); // show exit screen
+        case MENU:                                        // if in the Menu state
+            Game::Instance()->getFSM()->push(new Exit()); // show exit screen
             break;
         case LEVEL_1:                                          // if in the level 1 state
         case LEVEL_2:                                          // if in the level 2 state
@@ -95,12 +95,12 @@ void GameState::handleInput()
             std::cout << "change to pause state" << std::endl; // todo -- figure out why button presses continuing through states
             if (!Game::Instance()->isPaused())                 // if the game is not paused
             {
-                Game::Instance()->setPaused(true);                    // set the game paused
-                Game::Instance()->m_pStateMachine->push(new Pause()); // push a new pause state
+                Game::Instance()->setPaused(true);             // set the game paused
+                Game::Instance()->getFSM()->push(new Pause()); // push a new pause state
             }
             break;
-        case HIGH_SCORES:                                          // if in the high scores state
-            Game::Instance()->m_pStateMachine->change(new Menu()); // change to menu state
+        case HIGH_SCORES:                                   // if in the high scores state
+            Game::Instance()->getFSM()->change(new Menu()); // change to menu state
             break;
         case EXIT_GAME:                                   // if in the confirm exit state
             Game::Instance()->exitWindowRequested = true; // exit the game

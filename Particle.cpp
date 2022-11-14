@@ -52,10 +52,13 @@ render particles
 */
 void Particle::draw()
 {
-    DrawTexture(getTexture(), getPosition().x, getPosition().y, WHITE); // render the randomly selected colour particle
-    if (mFrame % 2 == 0)                                                // ever 2nd frame
+    if (getActive())
     {
-        DrawTexture(m_shimmer, getPosition().x, getPosition().y, WHITE); // render the constant shimmer particle flashing over coloured particle
+        DrawTexture(getTexture(), getPosition().x, getPosition().y, WHITE); // render the randomly selected colour particle
+        if (mFrame % 2 == 0)                                                // ever 2nd frame
+        {
+            DrawTexture(m_shimmer, getPosition().x, getPosition().y, WHITE); // render the constant shimmer particle flashing over coloured particle
+        }
     }
 }
 
