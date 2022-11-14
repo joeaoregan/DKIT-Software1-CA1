@@ -9,9 +9,9 @@
 #ifndef HIGH_SCORES_HPP
 #define HIGH_SCORES_HPP
 
-#include "GameState.hpp"
+#include "GameState.hpp" // base class header
 
-class HighScores : public GameState
+class HighScores : public GameState // high scores is a child of GameState
 {
 public:
     virtual bool init();                  // initialise objects
