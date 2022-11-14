@@ -41,7 +41,7 @@ initialise player
 */
 void Player::init()
 {
-    m_healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}, 1.0f); // offset position to center under player
+    m_healthBar = new StatusBar({getX() - 50, getY() + (getHeight() / 2), 100.0f, 10.0f}); // offset position to center under player
 
     m_laserFireCount = 0;                 // counter - time betwen lasers firing
     for (int i = 0; i < NUM_BULLETS; i++) // for up to the number of bullets specified
@@ -110,7 +110,7 @@ void Player::move()
 
     // set sub object positions (needs to be after collision checking as they still move when the game area edges are touched)
     m_healthBar->setPosition({getX() - 50, getY() + (getHeight() / 2)}); // set the health status bar to follow player movement
-    m_healthBar->move();                                                 // update the health status bar position
+    // m_healthBar->move();                                                 // update the health status bar position
 
     for (GameObject *b : getSubObjects()) // update sub objects
     {

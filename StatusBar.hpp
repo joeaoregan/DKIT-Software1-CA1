@@ -4,41 +4,31 @@
     01/11/2022
 */
 
-#ifndef STATUS_BAR_HPP
-#define STATUS_BAR_HPP
+#ifndef STATUS_BAR_HPP // if status bar class not defined
+#define STATUS_BAR_HPP // ok to define
 
-#include "GameObject.hpp"
+#include "GameObject.hpp" // base class header file
 
 const bool DEBUG_STATUSBAR = true; // debug messages for status bar displayed
 
 class StatusBar : public GameObject // StatusBar inherits directly from the GameObject base class
 {
-public:
-    StatusBar(Rectangle rect);
-    StatusBar(Rectangle rect, float percent);
-    StatusBar(Rectangle rect, Colour bg, Colour fg, Colour o);
-    ~StatusBar(){}; // destructor
+public:                                                                                                    // public members
+    StatusBar(Rectangle rect, Colour bg = RED, Colour fg = GREEN, Colour o = BLACK, float percent = 1.0f); // constructor
+    ~StatusBar(){};                                                                                        // destructor
 
     void init(){};       // heavy lifting done in constructor
-    void move();         // update the object
+    void move(){};       // update the object -- updated where called
     void collisions(){}; // not needed here
     void draw();         // render the object
     void destroy();      // clear the object
 
-    Rectangle bgRect, fgRect;
+    inline float getPercent() const { return m_percent; }          // getter: percent of foreground rect to draw -- todo - use getter and setter in game object - maybe for health
+    inline void setPercent(float percent) { m_percent = percent; } // setter: percent of foreground rect to draw
 
-    float getPercent() { return m_percent; }
-    void setPercent(float percent) { m_percent = percent; }
-
-    void setForegroundColour(Colour c) { m_colourFG = c; }
-    void setBackgroundColour(Colour c) { m_colourBG = c; }
-    void setOutlineColour(Colour c) { m_colourOutline = c; }
-
-private:
-    float m_percent;
-
-    Colour m_colourBG;
-    Colour m_colourFG;
-    Colour m_colourOutline;
-};
-#endif
+private:                                            // private members
+    Rectangle bgRect, fgRect;                       // background and foreground rectangles
+    float m_percent;                                // percentage to display of foreground rectangle
+    Colour m_colourBG, m_colourFG, m_colourOutline; // foreground, background, and line colours
+};                                                  // end of class
+#endif                                              // end of definition
