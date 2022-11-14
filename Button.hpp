@@ -9,9 +9,9 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-#include "GameObject.hpp"
+#include "GameObject.hpp" // game object base class
 
-const bool DEBUG_BUTTON = true; // debug button clicks
+const bool DEBUG_BUTTON = false; // debug button clicks
 
 class Button : public GameObject
 {
