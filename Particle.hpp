@@ -6,19 +6,18 @@
     Add particles to player ship
 */
 
-#include "GameObject.hpp"
-#include <iostream>
+#include "GameObject.hpp" // parent game object class header file
 
-#ifndef PARTICLE_HPP
-#define PARTICLE_HPP
+#ifndef PARTICLE_HPP // if particle class not defined already, checking it's not used twice
+#define PARTICLE_HPP // ok to define this class
 
-class Particle : public GameObject
+class Particle : public GameObject // Particle is a direct child of GameObject class
 {
-public:
+public:                                                                                              // public members accessible from anywhere
     Particle(Rectangle rect, Texture2D &red, Texture2D &green, Texture2D &blue, Texture2D &shimmer); // Constructor: Initialize position and animation
     ~Particle()
     {
-        // std::cout << "particle destroyed" << std::endl;
+        // std::cout << "particle destroyed" << std::endl; // todo -- implement destructors
     }
 
     void init() {}       // initialise textures
@@ -27,10 +26,9 @@ public:
     void draw();         // render the particle
     void destroy();      // clear the textures
 
-private:
-    int mFrame; // Current frame of animation
-    Texture2D *m_texture;
-    Texture2D m_shimmer;
-};
+private:                 // private members only accessible from this clas
+    int mFrame;          // Current frame of animation
+    Texture2D m_shimmer; // shimmer texture for particle
+};                       // end of class
 
-#endif
+#endif // end of definition
