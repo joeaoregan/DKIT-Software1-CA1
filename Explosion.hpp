@@ -9,9 +9,9 @@
 #ifndef EXPLOSION_HPP
 #define EXPLOSION_HPP
 
-#include "GameObject.hpp"
+#include "GameObject.hpp" // Game Object parent class header file
 
-const bool DEBUG_EXPLOSION = true;
+const bool DEBUG_EXPLOSION = true; // debug flag for explosion objects
 
 class Explosion : public GameObject // Explosion inherits directly from the GameObject base class
 {

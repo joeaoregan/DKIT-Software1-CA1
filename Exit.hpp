@@ -9,9 +9,9 @@
 #ifndef EXIT_HPP
 #define EXIT_HPP
 
-#include "GameState.hpp"
+#include "GameState.hpp" // Game State parent class
 
-class Exit : public GameState
+class Exit : public GameState // Exit is a child class of GameState
 {
 public:
     virtual bool init();                  // initialise objects

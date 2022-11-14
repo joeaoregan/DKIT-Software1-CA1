@@ -8,23 +8,32 @@
 #include "Explosion.hpp"
 #include <iostream>
 
-const float updateTime(1.0f / 20);
-const int NUM_FRAMES{16};
+const float updateTime(1.0f / 20); // update every 1/20th of a frame
+const int NUM_FRAMES{16};          // number of animation frames -- todo not every animation will have 16 frames
 
-Explosion::Explosion(Vector2 position) : GameObject({position.x, position.y, 128.0f, 128.0f}, "ExplosionBlood", true)
+/*
+    Explosion constructor
+*/
+Explosion::Explosion(Vector2 position) : GameObject({position.x, position.y, 128.0f, 128.0f}, "ExplosionBlood", true) // Game object base class constructor used to initialise object
 {
     setTotalFrames(NUM_FRAMES);                         // number of animation frames
     setID(EXPLOSION);                                   // id is explosion - todo add more later
     setOffset({getWidth() / 2.0f, getHeight() / 2.0f}); // set offset for collision
     setCollisionRect((*getRect()));                     // init collision rect, offsetting it
-    setActive(true);
+    setActive(true);                                    // explosion active straight away -- todo - change to use same amount of blood explosions as blood cells, and resuse as not being deleted
 }
 
+/*
+    Explosion destructor
+*/
 Explosion::~Explosion()
 {
-    std::cout << "Explosion destroyed" << std::endl;
+    debug("explosion destroyed", DEBUG_EXPLOSION); // show when debugging
 }
 
+/*
+    update explosion animation
+*/
 void Explosion::move()
 {
     if (getActive()) // if it's not active skip all this
@@ -45,6 +54,9 @@ void Explosion::move()
     }
 }
 
+/*
+    render Explosion
+*/
 void Explosion::draw()
 {
     if (getActive()) // if the Explosion is active
@@ -54,6 +66,9 @@ void Explosion::draw()
     }
 }
 
+/*
+    destroy explosion object -- todo check if this does anything between levels, 1st implement 1 level
+*/
 void Explosion::destroy()
 {
     GameObject::destroy(); // call destroy in base class
