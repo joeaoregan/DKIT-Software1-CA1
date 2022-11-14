@@ -4,16 +4,20 @@
 
     Pause state class
     Handle the Pause state
+    display buttons to resume or exit game
+    displays sliders for adjusting audio volumes
+    displays status bar with current song track length
+    can enter Exit state or resume Play state from here
 */
 
-#ifndef PAUSE_HPP
-#define PAUSE_HPP
+#ifndef PAUSE_HPP // if Pause class not defined already
+#define PAUSE_HPP // ok to define Pause class
 
-#include "GameState.hpp"
+#include "GameState.hpp" // base class header file
 
-class Pause : public GameState
+class Pause : public GameState // Pause is a sub class of GameState
 {
-public:
+public:                                   // publicly accessible members
     virtual bool init();                  // initialise level objects
     virtual void handleInput();           // handle user input
     virtual void update(float deltaTime); // update level objects
@@ -22,7 +26,7 @@ public:
 
     virtual game_state getStateID() const { return s_pauseID; } // current state ID (int using enum)
 
-private:
+private:                               // private members accessible only this class
     static const game_state s_pauseID; // identify current state
 
     GameObject *audioBar;     // Status bar for song current time
@@ -30,6 +34,6 @@ private:
     float musicWidth{0};      // music volume % for status bar
     float fxWidth{0};         // fx volume % for status bar
     float masterWidth{0};     // master volume % for status bar
-};
+};                            // end of class
 
-#endif
+#endif // end of class definition

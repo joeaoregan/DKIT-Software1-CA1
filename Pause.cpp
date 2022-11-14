@@ -4,19 +4,23 @@
 
     Pause state class
     Handle the Pause state
+    display buttons to resume or exit game
+    displays sliders for adjusting audio volumes
+    displays status bar with current song track length
+    can enter Exit state or resume Play state from here
 */
 
-#include "Pause.hpp"
-#include "Game.hpp"
-#include "StatusBar.hpp"
-#include "Audio.hpp"
-#include "InputHandler.hpp"
-#include "Button.hpp"
-#include "Exit.hpp"
+#include "Pause.hpp"        // this class header file
+#include "Game.hpp"         // access pause, game state machine
+#include "StatusBar.hpp"    // song time status bar
+#include "Audio.hpp"        // audio volumes
+#include "InputHandler.hpp" // handle user input
+#include "Button.hpp"       // ui buttons
+#include "Exit.hpp"         // exit state
 
 const game_state Pause::s_pauseID = PAUSE; // state id
 
-enum menu_options
+enum menu_options // ui menu options
 {
     RESUME = 0,    // resume the game
     MUSIC_VOLUME,  // adjust music volume
@@ -37,10 +41,10 @@ bool Pause::init()
 
     objects.push_back((GameObject *)(new Text("Paused!!", {0, SCREEN_HEIGHT / 2}, 80, true, BLACK))); // game paused text
 
-    audioBar = new StatusBar({40, SCREEN_HEIGHT - 100, 1200, 40}, RED, MAROON, BLACK);
-    objects.push_back(audioBar);
+    audioBar = new StatusBar({40, SCREEN_HEIGHT - 100, 1200, 40}, RED, MAROON, BLACK); // create status bar to show song current play time
+    objects.push_back(audioBar);                                                       // add to list of game objects
 
-    txtSongTitle = Audio::Instance()->currentTrackName();
+    txtSongTitle = Audio::Instance()->currentTrackName();                                                // get the title of the current playing song -- todo - update the title of current song
     objects.push_back((GameObject *)(new Text(txtSongTitle, {0, SCREEN_HEIGHT - 90}, 20, true, WHITE))); // game paused text
 
     selectableObjects.push_back((GameObject *)(new Button({menuButton.x, 50, menuButton.width, menuButton.height}, "Resume Game")));                 // Option 1. Resume game
@@ -64,11 +68,11 @@ void Pause::handleInput()
     {
         switch (m_menuOption) // switch on the current selected menu option
         {
-        case RESUME:
+        case RESUME:                                  // if resume option selected
             Game::Instance()->setPaused(false);       // unpause
             Game::Instance()->m_pStateMachine->pop(); // resume the game
             break;
-        case EXIT:
+        case EXIT:                                               // if exit optoin selected
             Game::Instance()->m_pStateMachine->push(new Exit()); // show confirm exit
         }
     }
@@ -79,15 +83,15 @@ void Pause::handleInput()
 
         switch (m_menuOption) // action depends on current highlighted button
         {
-        case MUSIC_VOLUME:
-            Audio::Instance()->setMusicVolume(VOLUME_DOWN); // music volume down
-            break;
-        case FX_VOLUME:
-            Audio::Instance()->setFXVolume(VOLUME_DOWN); // fx volume down
-            break;
-        case MASTER_VOLUME:
+        case MUSIC_VOLUME:                                   // if music volume slider is selected
+            Audio::Instance()->setMusicVolume(VOLUME_DOWN);  // music volume down
+            break;                                           // exit switch statement
+        case FX_VOLUME:                                      // if fx volume slider is selected
+            Audio::Instance()->setFXVolume(VOLUME_DOWN);     // fx volume down
+            break;                                           // exit switch statement
+        case MASTER_VOLUME:                                  // if master volume slider is selected
             Audio::Instance()->setMasterVolume(VOLUME_DOWN); // master volume down
-            break;
+            break;                                           // exit switch statement
         }
     }
     else if (Input::Instance()->right(DELAY)) // right pressed on keyboard, gamepad or whatever is setup to control the game
@@ -96,15 +100,15 @@ void Pause::handleInput()
 
         switch (m_menuOption) // action depends on current highlighted button
         {
-        case MUSIC_VOLUME:
-            Audio::Instance()->setMusicVolume(VOLUME_UP); // music volume down
-            break;
-        case FX_VOLUME:
-            Audio::Instance()->setFXVolume(VOLUME_UP); // fx volume down
-            break;
-        case MASTER_VOLUME:
+        case MUSIC_VOLUME:                                 // if music volume slider is selected
+            Audio::Instance()->setMusicVolume(VOLUME_UP);  // music volume down
+            break;                                         // exit switch statement
+        case FX_VOLUME:                                    // if fx volume slider is selected
+            Audio::Instance()->setFXVolume(VOLUME_UP);     // fx volume down
+            break;                                         // exit switch statement
+        case MASTER_VOLUME:                                // if master volume slider is selected
             Audio::Instance()->setMasterVolume(VOLUME_UP); // master volume down
-            break;
+            break;                                         // exit switch statement
         }
     }
 }
@@ -115,7 +119,7 @@ void Pause::handleInput()
 void Pause::update(float deltaTime)
 {
     // std::cout << "menu update" << std::endl;
-    GameState::update(deltaTime); // update the menu objects
+    GameState::update(deltaTime); // update the menu objects in base games state class
 
     StatusBar *sb = static_cast<StatusBar *>(audioBar); // cast audiobar from GameObject to set percentage
     sb->setPercent(Audio::Instance()->timePlayed());    // show current song time
@@ -144,7 +148,7 @@ void Pause::draw()
 bool Pause::close()
 {
     std::cout << "pause state - close" << std::endl;
-    // GameState::close();
+    GameState::close(); // clear game objects for this state in game state base class lists
 
-    return true;
+    return true; // todo -- no checks performed this is redundants
 }
