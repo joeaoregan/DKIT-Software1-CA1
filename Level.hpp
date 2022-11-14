@@ -9,9 +9,9 @@
 #ifndef LEVEL_HPP
 #define LEVEL_HPP
 
-#include "GameState.hpp"
+#include "GameState.hpp" // base class header
 
-class Level : public GameState
+class Level : public GameState // level is a direct child of game state
 {
 public:
     bool checkCollision(Rectangle *a, Rectangle *b); // check collisions between objects -- todo - find a better place for this function

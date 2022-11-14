@@ -6,14 +6,14 @@
     Seperate state for level
 */
 
-#include "Game.hpp"
-#include "Constants.hpp"
-#include "Level.hpp"
-#include "Player.hpp"
-#include "BloodCell.hpp"
-#include "Explosion.hpp"
-#include "Pause.hpp"
-#include "InputHandler.hpp"
+#include "Game.hpp"         // access game singleton for scores etc.
+#include "Constants.hpp"    // constant values for window and debugging
+#include "Level.hpp"        // this class header file
+#include "Player.hpp"       // player instance -- todo maybe create in game class and move between levels
+#include "BloodCell.hpp"    // blood cell obstacle
+#include "Explosion.hpp"    // explosion for destroying blood cells
+#include "Pause.hpp"        // enter pause state from play state
+#include "InputHandler.hpp" // handle user input
 
 const game_state Level::s_levelID = LEVEL_1; // int more efficient than string, enum more readable
 
@@ -66,6 +66,9 @@ bool Level::checkCollision(Rectangle *a, Rectangle *b)
     return true; // If none of the sides from A are outside B -> Collision!
 }
 
+/*
+init level class
+*/
 bool Level::init()
 {
     // std::cout << "entering level state" << std::endl;
@@ -83,9 +86,8 @@ bool Level::init()
 
     std::vector<GameObject *> playerObjects = ((Player *)player)->getSubObjects(); // player sub objects to update, render, etc.
 
-    for (unsigned int i = 0; i < playerObjects.size(); i++)
+    for (unsigned int i = 0; i < playerObjects.size(); i++) // for each game object
     {
-        (*playerObjects[i]).setActive(false); // set player objects inactive
         niceList.push_back(playerObjects[i]); // add player sub objects to player objects list
     }
 
@@ -94,17 +96,23 @@ bool Level::init()
     return true; // no errors in initialising -- to do -- check for errors in initialising
 }
 
+/*
+handle user input for level state
+*/
 void Level::handleInput()
 {
-    GameState::handleInput();
+    GameState::handleInput(); // call game state base class user input function for default user input
 
-    if (IsKeyPressed(KEY_ESCAPE))
+    if (IsKeyPressed(KEY_ESCAPE)) // if the escape key is pressed
     {
         // todo -- figure out why key press is carrying over between level and pause states
         std::cout << "level - why is this happening" << std::endl;
     }
 }
 
+/*
+update level state
+*/
 void Level::update(float deltaTime)
 {
     GameState::update(deltaTime); // update the game objects, functionality inherited from GameState
@@ -114,7 +122,7 @@ void Level::update(float deltaTime)
         (*obj).move(); // update the object
     }
 
-    handleCollisions();
+    handleCollisions(); // handle collisions for level state -- todo call collision handling separately for states
 }
 
 /*
@@ -122,34 +130,33 @@ void Level::update(float deltaTime)
 */
 void Level::handleCollisions()
 {
-    for (unsigned int i = 0; i < niceList.size(); i++)
+    for (unsigned int i = 0; i < niceList.size(); i++) // for each player object
     {
-        (*niceList[i]).move(); // update the object
-        if (!niceList[i]->isCollidable())
-            continue; // if the object can't collide, don't bother doing anything else
+        (*niceList[i]).move();            // update the object
+        if (!niceList[i]->isCollidable()) // if the object is collidable (e.g. status bar wouldn't be)
+            continue;                     // don't bother doing anything else
 
-        for (unsigned int j = 0; j < naughtyList.size(); j++)
+        for (unsigned int j = 0; j < naughtyList.size(); j++) // for each object on the enemey / obstacle list
         {
-            if (!naughtyList[j]->getActive())
-                continue; // if the enemy object / obstacle isn't active, no need to do anything
-            if (naughtyList[j]->getID() == EXPLOSION && niceList[i]->getID() != PLAYER)
-                continue; // explosions only collide with players
+            if (!naughtyList[j]->getActive())                                           // if the object is active
+                continue;                                                               // if the enemy object / obstacle isn't active, no need to do anything
+            if (naughtyList[j]->getID() == EXPLOSION && niceList[i]->getID() != PLAYER) // if the object is an explosion and the player object isn't the player ship
+                continue;                                                               // skip the rest as explosions only collide with players
 
             collision = checkCollision(niceList[i]->getRect(), naughtyList[j]->getRect()); // flag if player objects collide with obstacles
 
-            // what to do if there is a collision
-            if (collision)
+            if (collision) // what to do if there is a collision
             {
                 collision = false; // reset collision flag
 
-                if (naughtyList[j]->getID() != EXPLOSION)
+                if (naughtyList[j]->getID() != EXPLOSION) // if the object is not already an explosion
                 {
                     GameObject *exp = new Explosion(naughtyList[j]->getPosition()); // Add an explosion where the object was destroyed
                     naughtyList.push_back(exp);                                     // add to list of objects to render
                 }
 
-                niceList[i]->setCollision(true);    // flag collision has happened for this object
-                naughtyList[j]->setCollision(true); // flag collision has happened for this object
+                niceList[i]->setCollision(true);    // flag collision has happened for this player object
+                naughtyList[j]->setCollision(true); // flag collision has happened for this enemy / obstacle object
 
                 // std::cout << "new expl osion created: " << naughtyList[j]->getPosition().x << ":" << naughtyList[j]->getPosition().y << std::endl;
                 Player *playerType = dynamic_cast<Player *>(niceList[i]);                              // Cast player object from base class GameObject to perform it's own functions that base class doesn't have
@@ -172,6 +179,9 @@ void Level::handleCollisions()
     }
 }
 
+/*
+render draw state
+*/
 void Level::draw()
 {
     GameState::draw(); // render the background objects first
@@ -190,11 +200,15 @@ void Level::draw()
     DrawTextEx(Game::Instance()->getFont(), TextFormat("Level: %01i", Game::Instance()->getLevel()), {20.0F, 10.0F}, fontSizeHeading, 1, WHITE);                      // display the current level
 
     // Blood on screen (red fade)
-    DrawRectanglePro({0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0}, 0, {230, 41, 55, (unsigned char)splat}); // BLOOD
-    if (splat > 5)
-        splat -= 5; // red fade effect for starting level and blood on screen
+    DrawRectanglePro({0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0}, 0, {230, 41, 55, (unsigned char)splat}); // BLOOD fade in at start and when player collides with blood splatter / blood explosion -- todo make this an object
+    splat -= 5;                                                                                            // red fade effect for starting level and blood on screen
+    if (splat < 0 || splat > 255)                                                                          // if splat overlay rectangle goes out of bounds
+        splat = 0;                                                                                         // reset value to 0
 }
 
+/*
+exit level state
+*/
 bool Level::close()
 {
     // std::cout << "exiting level state" << std::endl;

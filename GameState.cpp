@@ -26,7 +26,7 @@ bool GameState::init()
         objects.push_back(bg);             // add background to state objects list
     }
 
-    if (!(getStateID() != LEVEL_1 || getStateID() != LEVEL_2 || getStateID() != LEVEL_3)) // using this space to display the score
+    if (!(getStateID() == LEVEL_1 || getStateID() == LEVEL_2 || getStateID() == LEVEL_3)) // using this space to display the score in level
     {
         objects.push_back(new Text("CA1 Raylib Application", {0, 0}, HEADING, true, WHITE)); // Add heading
     }
