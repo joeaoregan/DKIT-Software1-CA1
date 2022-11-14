@@ -4,16 +4,21 @@
 
     Flashing text class
     Draw flashing text on screen
+    Some flashing text is hidden / shown depending on a menu item being selected in menus
+    It is also used for showing the top score in the high scores list
 */
 
 #ifndef FLASH_TEXT_HPP
 #define FLASH_TEXT_HPP
 
-#include "Text.hpp"
+#include "Text.hpp" // Text parent class -- again oops, I thought everything directly inherited from game object, i did too much things
 
-class FlashingText : public Text
+class FlashingText : public Text // FlashingText is a subclass of Text
 {
 public:
+    /*
+    FlashingText constructor
+    */
     FlashingText(const char *text, Vector2 pos = {0, 0}, int fontSize = 0, bool canHide = true, bool centered = true, Colour unselectedColour = WHITE, Colour selectedColour = BLACK) : Text(text, pos, fontSize, centered, unselectedColour, selectedColour)
     {
         setFlashing(true);   // does this one thing
