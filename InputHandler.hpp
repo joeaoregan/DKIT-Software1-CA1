@@ -13,9 +13,9 @@ const bool DELAY = true; // use delay between button presses
 class InputHandler
 {
 public:
-    ~InputHandler() {} // deconstructor
+    ~InputHandler() {} // deconstructor -- todo implement
 
-    static InputHandler *Instance()
+    static InputHandler *Instance() // singleton instance
     {
         if (s_pInstance == 0) // if there is no instance handler already
         {
